@@ -19,12 +19,32 @@
         <div id="grid-container">
             <div class="grid-items">
                 <div class="text-top-left">Số sản phẩm đã bán</div>
-                <div class="number-center-left">120</div>
+                <div class="number-center-left">
+                <?php
+                    $con = mysqli_connect('localhost', 'root', '', 'bolashop');
+                    $sql = "SELECT COUNT(Soluong) AS tongsoluong FROM chitietdonhang";
+                    $result_sql = mysqli_query($con, $sql);
+                    $row_soluong = mysqli_fetch_assoc($result_sql);
+                    echo $row_soluong["tongsoluong"]; 
+                    mysqli_close($con);
+                    
+                    
+                ?>
+                </div>
                 <div class="text-center-right">Sản phẩm</div>
             </div>
             <div class="grid-items">
                 <div class="text-top-left">Tổng doanh thu</div>
-                <div class="number-center-left">36,450,000</div>
+                <div class="number-center-left"><?php
+                    $con = mysqli_connect('localhost', 'root', '', 'bolashop');
+                    $sql = "SELECT SUM(Tonggiatri) AS tonggiatri FROM donhang";
+                    $result_sql = mysqli_query($con, $sql);
+                    $row_doanhthu = mysqli_fetch_assoc($result_sql);
+                    echo $row_doanhthu["tonggiatri"]; 
+                    mysqli_close($con);
+                    
+                    
+                ?></div>
                 <div class="text-center-right">VNĐ</div>
             </div>
             <div class="grid-items">
@@ -34,6 +54,42 @@
                 <input type="date" id="end-date" />
                 <button type="button" class="filter-btn">Lọc</button>
             </div>
+            <?php
+            $con = mysqli_connect('localhost', 'root', '', 'bolashop');
+            if (!$con) {
+                die("Kết nối không thành công: " . mysqli_connect_error());
+            }
+
+            if (isset($_POST['filter-btn'])) {
+                $start_date = $_POST['start-date'];
+                $end_date =$_POST['end-date'];
+
+                $sql="SELECT * FROM donhang WHERE Ngay BETWEEN '$start_date' AND '$end_date'";
+                $result = mysqli_query($con, $sql);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="table-items">
+                            <div class="customer">
+                                <div class="avt"></div>
+                                <div>' . $row["maKhachhang"] . '</div>
+                            </div>
+                            <div style="width: 20%;">' . $row["Ngay"] . '</div>
+                            <div style="width: 20%;">' . $row["Madonhang"] . '</div>
+                            <div style="width: 20%;">' . $row["Tonggiatri"] . '</div>
+                            <div class="btn">
+                                <select>
+                                    <option id="status" value="1">' . $row["Trangthai"] . '</option>
+                                    <option id="status" value="2">Đang giao hàng</option>
+                                    <option id="status" value="3">Đã chuyển hàng</option>
+                                </select>
+                                <button type="button">Sửa</button>
+                            </div>
+                        </div>';
+                }
+            }
+
+
+            mysqli_close($con);
+            ?>
 
         </div>
         <div id="title">Danh sách hóa đơn</div>
@@ -50,7 +106,46 @@
                 <div><br></div>
                 <div><br></div>
                 <div style="overflow-y: scroll;">
-                    <div class="table-items">
+                <?php
+                    $con = mysqli_connect('localhost', 'root', '', 'bolashop');
+                    if (!$con) {
+                        die("Kết nối không thành công: " . mysqli_connect_error());
+                    }
+                    
+                    $sql = mysqli_query($con, "SELECT * FROM donhang");
+                    while ($row = mysqli_fetch_array($sql)) {
+                        // Truy vấn SQL để tính tổng giá trị của mỗi đơn hàng
+                        $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
+
+                        $row_total = mysqli_fetch_assoc($sql_total);
+                        $total_price = $row_total["TongTien"];
+                    
+                        // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
+                        $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
+                        mysqli_query($con, $update_query);
+                    
+                        echo '<div class="table-items">
+                        <div class="customer">
+                            <div class="avt"></div>
+                            <div>' . $row["maKhachhang"] . '</div>
+                        </div>
+                        <div style="width: 20%;">' . $row["Ngay"] . '</div>
+                        <div style="width: 20%;">' . $row["Madonhang"] . '</div>
+                        <div style="width: 20%;">' . $total_price . '</div>
+                       
+                        
+                        <div class="btn">
+                        <div class="status-orders">' . $row["Trangthai"] . '</div>
+                        </div>
+                        <button type="button" class="order-detail">Chi tiết</button>
+                    </div>';
+                    }
+                    
+                    mysqli_close($con);
+                    
+                    
+                    ?>
+                    <!-- <div class="table-items">
                         <div class="customer">
                             <div class="avt"></div>
                             <div>KH001</div>
@@ -117,7 +212,7 @@
                             </select>
                             <button type="button">Sửa</button>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
 
