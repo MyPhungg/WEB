@@ -1,3 +1,23 @@
+<?php
+include("../page/connectDB.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $maVanChuyen = $_POST['txtMavanchuyen'];
+    $tenVanChuyen = $_POST['txtTenvanchuyen'];
+    $phiVanChuyen = $_POST['txtPhivanchuyen'];
+
+    $sql = "INSERT INTO vanchuyen (Mavc, Ten, Gia) VALUES ('$maVanChuyen', '$tenVanChuyen', '$phiVanChuyen')";
+
+    if (mysqli_query($conn, $sql)) {
+        echo "Dữ liệu đã được thêm vào cơ sở dữ liệu thành công";
+    } else {
+        echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    mysqli_close($conn);
+}
+?>
+
 <html>
     <head>
         <meta charset="utf-8"/>
@@ -8,14 +28,14 @@
         <div class="form-km">
             <form class="formkhuyenmai" id="formkhuyenmai" method="get" action="">
                 <h3>Vận chuyển</h3>
-                <label for="txtMakh">Mã vận chuyển</label>
-                <input type="text" name="txtMakh" value="" />
+                <label for="txtMavanchuyen">Mã vận chuyển</label>
+                <input type="text" name="txtMavanchuyen" value="" />
 
-                <label for="txtTenkh">Tên vận chuyển</label>
-                <input type="text" name="txtTenkh" value="" />
+                <label for="txtTenvanchuyen">Tên vận chuyển</label>
+                <input type="text" name="txtTenvanchuyen" value="" />
 
-                <label for="txtSale">Phí vận chuyển</label>
-                <input type="text" name="txtSale" value="" />
+                <label for="txtPhivanchuyen">Phí vận chuyển</label>
+                <input type="text" name="txtPhivanchuyen" value="" />
 
                 
 

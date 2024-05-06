@@ -1,3 +1,22 @@
+<?php
+include("../page/connectDB.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $maQuyen = $_POST['txtMaquyen'];
+    $tenQuyen = $_POST['txtTenquyen'];
+    $Mota = $_POST['txtMota'];
+
+    $sql = "INSERT INTO quyen (Maquyen, Tenquyen, Mota) VALUES ('$maQuyen', '$tenQuyen', '$Mota')";
+
+    if (mysqli_query($conn, $sql)) {
+        echo "Dữ liệu đã được thêm vào cơ sở dữ liệu thành công";
+    } else {
+        echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    mysqli_close($conn);
+}
+?>
 <html>
     <head>
         <meta charset="utf-8"/>
