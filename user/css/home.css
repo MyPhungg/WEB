@@ -92,12 +92,15 @@
   z-index: 1;
   background-color: #fff;
   height: fit-content;
+  margin-top: 40px;
 }
 
 .menu .option#cart:hover .sub-menu {
   display: block;
 }
-
+.menu .user-icon:hover .sub-menu{
+  display: block;
+}
 .menu .sub-menu ul {
   list-style-type: none;
   margin: 0;

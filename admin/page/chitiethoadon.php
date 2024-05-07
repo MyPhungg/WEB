@@ -3,9 +3,10 @@
 
 <head>
     <title>Chi tiết hóa đơn</title>
-    <link rel="stylesheet" href="../css/chitiethoadon.css" />
-    <link rel="stylesheet" href="../css/dsnv.css" />
-    <link rel="stylesheet" href="../css/phieuxuat.css" />
+    <link rel="stylesheet" href="../css/thongke.css">
+    <link rel="stylesheet" href="../css/chitiethoadon.css">
+    <link rel="stylesheet" href="../css/phieuxuat.css">
+    <link rel="stylesheet" href="../css/dsnv.css">
     <link rel="stylesheet" href="style.css?version=1.0">
 </head>
 
@@ -23,6 +24,8 @@
                                 <option id="status" value="1" selected>Đã thanh toán</option>
                                 <option id="status" value="2">Đang giao hàng</option>
                                 <option id="status" value="3">Đã chuyển hàng</option>
+                                <option id="status" value="4">Đã giao hàng</option>
+                                <option id="status" value="5">Đã hủy hàng<option>
                             </select>
                     </div>
                     <div><br></div>
@@ -36,7 +39,32 @@
                         <!-- <div style="height: 40px;"> <br></div> -->
                         <div><br></div>
                         <div><br></div>
-                        <div class="table-items">
+                        <?php
+                        $con=mysqli_connect("localhost","root",null,"bolashop");
+                        echo $_GET['iddh'];
+                       
+                        if (isset($_GET['iddh'])) {
+                            $maDH = $_GET['iddh'];
+                            $sql = "SELECT chitietdonhang.*, sanpham.*, SUM(sanpham.Giaban*chitietdonhang.Soluong) AS thanhtien
+                            FROM chitietdonhang
+                            JOIN sanpham ON chitietdonhang.MaSanPham = sanpham.MaSanPham
+                            WHERE chitietdonhang.Madonhang = '" . $maDH . "'";
+                            $result = mysqli_query($con,$sql);
+                            if ($row = mysqli_fetch_array($result)) {
+                                echo '<div class="table-items">
+                                <div class="staff">
+                                    <div class="avt-sp"><img src="../img/'.$row["sanpham.img"].'"</div>
+                                    <div>'.$row["sanpham.TenSP"].'</div>
+                                </div>
+                                <div style="width: 20%;">'.$row["sanpham.Giaban"].'</div>
+                                <div style="width: 20%;">'.$row["chitiethonhang.soluong"].'</div>
+                                <div style="width: 30%;">'.$row["thanhtien"].'</div>
+                            </div>';
+                            }
+                            # code...
+                        }
+                        ?>
+                        <!-- <div class="table-items">
                             <div class="staff">
                                 <div class="avt-sp"></div>
                                 <div>Tên sản phẩm</div>
@@ -71,13 +99,14 @@
                             <div style="width: 20%;">100,000 VNĐ</div>
                             <div style="width: 20%;">2</div>
                             <div style="width: 30%;">200,000 VNĐ</div>
-                        </div>
+                        </div> -->
                         <div class="horizontal-line"></div>
                         <div class="page">
                             < 1 2 3 ... >
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
             <div class="right">
                 <div class="right-element">
