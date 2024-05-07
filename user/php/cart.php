@@ -1,69 +1,102 @@
 <?php
-session_start();
-if (isset($_SESSION['user_id'])) {
-    $maKH = $_SESSION['user_id'];
-    if (!isset($_SESSION['giohang'][$maKH])) {
-        //xoa san pham
-        if (isset($_GET['delid']) && ($_GET['delid'] >= 0)) {
-            array_splice($_SESSION['giohang'], $_GET['delid'], 1);
-        }
-        //lay du lieu tu form
-        if (isset($_POST['addcart']) && ($_POST['addcart'])) {
-            $hinh = $_POST['hinh'];
-            $tensp = $_POST['tensp'];
-            $gia = $_POST['gia'];
-            $soluong = $_POST['soluong'];
 
-            $fl = 0;
 
-            //kiem tra san pham co trong gio hang hay khong?
-            for ($i = 0; $i < sizeof($_SESSION['giohang'][$maKH]); $i++) {
-                if ($_SESSION['giohang'][$i][1] == $tensp) {
-                    $fl = 1;
-                    $soluongmoi = $soluong + $_SESSION['giohang'][$i][3];
-                    $_SESSION['giohang'][$i][3] = $soluongmoi;
-                    break;
-                }
-            }
-            //kiem tra trung va them moi san pham vao gio hang 
-            if ($fl == 0) {
-                $sp = [$hinh, $tensp, $gia, $soluong];
-                $_SESSION['giohang'][] = $sp;
-            }
+$server = "localhost";
+$username = "root"; 
+$pass = "";
+$database = "bolashop"; 
+
+$conn = new mysqli($server, $username, $pass, $database);
+
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Thêm sản phẩm vào giỏ 
+if (isset($_POST['addcart']) && ($_POST['addcart'])) {
+    if(isset($_SESSION['user_id'])){
+        $manguoidung = $_SESSION['user_id']; // mã của người dùng
+        $masp = $_POST['Masp'];
+        $soluong = $_POST['soluong'];
+
+        // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng của người dùng chưa
+        $check_query = "SELECT * FROM giohang WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
+        $check_result = $conn->query($check_query);
+
+        if ($check_result->num_rows > 0) {
+            // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+            $existing_item = $check_result->fetch_assoc();
+            $soluong += $existing_item['soluong'];
+            $update_query = "UPDATE giohang SET soluong = '$soluong' WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
+            $conn->query($update_query);
+        } else {
+            // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
+            $insert_query = "INSERT INTO giohang (Manguoidung, Masp, soluong) VALUES ('$manguoidung', '$masp', '$soluong')";
+            $conn->query($insert_query);
         }
+    } else {
+        echo "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.";
     }
 }
 
+// Xóa sản phẩm khỏi giỏ
+if (isset($_GET['delid']) && ($_GET['delid'] >= 0)) {
+    if(isset($_SESSION['user_id'])){
+        $manguoidung = $_SESSION['user_id'];
+        $masp = $_GET['delid'];
 
-
-
+        $delete_query = "DELETE FROM giohang WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
+        $conn->query($delete_query);
+    } else {
+        echo "Vui lòng đăng nhập để xóa sản phẩm khỏi giỏ hàng.";
+    }
+}
 
 function showgiohang()
 {
-    if (isset($_SESSION['giohang']) && (is_array($_SESSION['giohang']))) {
-        $tong = 0;
-        for ($i = 0; $i < sizeof($_SESSION['giohang']); $i++) {
-            $tt = $_SESSION['giohang'][$i][2] * $_SESSION['giohang'][$i][3];
-            $tong += $tt;
-            echo '<tr>
-                    <td>' . ($i + 1) . '</td>
-                    <td><img src="images/' . $_SESSION['giohang'][$i][0] . '" alt=""></td>
-                    <td>' . $_SESSION['giohang'][$i][1] . '</td>
-                    <td>' . $_SESSION['giohang'][$i][2] . '</td>
-                    <td>' . $_SESSION['giohang'][$i][3] . '</td>
-                    <td>
-                        <div>' . $tt . '</div>
-                    </td>
-                    <td>
-                        <a href="cart.php?delid=' . $i . '">Xóa</a>
-                    </td>
-                </tr>';
+    // Khởi tạo session và kết nối đến cơ sở dữ liệu
+    include('connect.php');
+    $conn = connectDB();
+
+    // Lấy mã người dùng từ session
+    $maKH = $_SESSION['user_id'];
+
+    // Truy vấn thông tin sản phẩm từ bảng sản phẩm và hiển thị trong giỏ hàng
+    $sql = "SELECT giohang.*, sanpham.* FROM giohang INNER JOIN sanpham ON giohang.Masp = sanpham.Masp WHERE giohang.Manguoidung = $maKH";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        // Hiển thị thông tin sản phẩm trong giỏ hàng và tính tổng tiền cho mỗi sản phẩm
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<div class="item">';
+            echo '<p>' . $row['TenSP'] . '</p>';
+            echo '<p>' . $row['Gia'] . '</p>';
+            echo '<p>' . $row['Soluong'] . '</p>';
+            
+            // Tính tổng tiền cho sản phẩm hiện tại
+            $tongTienSanPham = $row['Gia'] * $row['Soluong'];
+            echo '<p>' . $tongTienSanPham . '</p>';
+            
+            // Nút Xóa
+            echo '<form method="POST" action="delete_from_cart.php">';
+            echo '<input type="hidden" name="product_id" value="' . $row['Masp'] . '">';
+            echo '<button type="submit" name="delete">Xóa</button>';
+            echo '</form>';
+            echo '</div>';
         }
     } else {
-        echo "Giỏ hàng rỗng!";
+        echo "Giỏ hàng trống!";
     }
+
+    // Đóng kết nối
+    mysqli_close($conn);
 }
+
+
+$conn->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
