@@ -159,11 +159,11 @@
 <!-- Đẩy dữ liệu vào bảng khi bấm thêm vào giỏ hàng -->
 
 <?php
-// include('./connect.php');
-    // $conn = connectDB();
+include('./connect.php');
+    $conn = connectDB();
     $maKH = $_SESSION['user_id'];
     // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["them"])) {
+    if (isset($_POST["them"])&&($_POST["them"])) {
         if (isset($_POST['id']) && isset($_POST['soLuong'])) {
             $id = $_POST['id'];
             $soLuong = $_POST['soLuong'];
@@ -193,9 +193,9 @@
             <!-- <p>Trang chủ >> Balo >> <span class="ten-san-pham">Chi tiết sản phẩm</span></p> -->
             <div class="hienthisanpham">
                 <?php
-                include('./connect.php');
+                // include('./connect.php');
                 // echo $_GET['id'];
-                $conn = connectDB();
+                // $conn = connectDB();
                 if (isset($_GET['id'])) {
                     $maSP = $_GET['id'];
                     $sql = "SELECT * FROM sanpham WHERE Masp=$maSP";
