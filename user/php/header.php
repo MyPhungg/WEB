@@ -40,7 +40,10 @@
         <div class="sub-menu">
             <ul>
                 <li><a href="#">Đăng nhập</a></li>
+                <li><a href="#">Đăng ký</a></li>
                 <li><a href="#">Đăng xuất</a></li>
+                <li><a href="#">Thông tin tài khoản</a></li>
+
 
             </ul>
         </div>

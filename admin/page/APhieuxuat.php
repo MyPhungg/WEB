@@ -14,8 +14,7 @@
 </head>
 
 <body>
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <div id="title">Thống kê</div>
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">        <div id="title">Thống kê</div>
         <div id="grid-container">
             <div class="grid-items">
                 <div class="text-top-left">Số sản phẩm đã bán</div>
@@ -119,26 +118,26 @@
 
                         $row_total = mysqli_fetch_assoc($sql_total);
                         $total_price = $row_total["TongTien"];
+                        $ma = $row["Madonhang"];
                     
                         // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
                         $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
                         mysqli_query($con, $update_query);
-                    
-                        echo '<div class="table-items">
-                        <div class="customer">
-                            <div class="avt"></div>
-                            <div>' . $row["maKhachhang"] . '</div>
-                        </div>
-                        <div style="width: 20%;">' . $row["Ngay"] . '</div>
-                        <div style="width: 20%;">' . $row["Madonhang"] . '</div>
-                        <div style="width: 20%;">' . $total_price . '</div>
-                       
+                        echo '<div class="table-items">';
                         
-                        <div class="btn">
-                        <div class="status-orders">' . $row["Trangthai"] . '</div>
-                        </div>
-                        <button type="button" class="order-detail">Chi tiết</button>
-                    </div>';
+                        echo '<div class="customer">';
+                        echo '<div class="avt"></div>';
+                        echo '<div>' . $row["maKhachhang"] . '</div>';
+                        echo '</div>';
+                        echo '<div style="width: 20%;">' . $row["Ngay"] . '</div>';
+                        echo '<div style="width: 20%;">' . $row["Madonhang"] . '</div>';
+                        echo '<div style="width: 20%;">' . $total_price . '</div>';
+                        echo '<div class="btn">';
+                        echo '<div class="status-orders">' . $row["Trangthai"] . '</div>';
+                        echo '</div>';
+                        echo '<button type="button" class="order-detail"><a href="AHome.php?chon=t&id=donhang&chitiet=ctdh&iddh=' . $ma . '">Chi tiết</a></button>';
+                        echo '</div>';
+                        
                     }
                     
                     mysqli_close($con);
