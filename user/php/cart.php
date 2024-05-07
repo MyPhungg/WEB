@@ -1,68 +1,63 @@
 <?php
-session_start();
-if (isset($_SESSION['user_id'])) {
-    $maKH = $_SESSION['user_id'];
-    if (!isset($_SESSION['giohang'][$maKH])) {
-        //xoa san pham
-        if (isset($_GET['delid']) && ($_GET['delid'] >= 0)) {
-            array_splice($_SESSION['giohang'], $_GET['delid'], 1);
-        }
-        //lay du lieu tu form
-        if (isset($_POST['addcart']) && ($_POST['addcart'])) {
-            $hinh = $_POST['hinh'];
-            $tensp = $_POST['tensp'];
-            $gia = $_POST['gia'];
-            $soluong = $_POST['soluong'];
+    // session_start();
+    if(!isset($_SESSION['giohang'])) $_SESSION['giohang']=[];
+    //xoa san pham
+    if(isset($_GET['delid'])&&($_GET['delid']>=0)){
+        array_splice($_SESSION['giohang'],$_GET['delid'],1);
+     }
+    //lay du lieu tu form
+    if(isset($_POST['addcart'])&&($_POST['addcart'])){
+        $hinh = $_POST['hinh'];
+        $tensp = $_POST['tensp'];
+        $gia = $_POST['gia'];
+        $soluong = $_POST['soluong'];
 
-            $fl = 0;
+        $fl=0;
 
-            //kiem tra san pham co trong gio hang hay khong?
-            for ($i = 0; $i < sizeof($_SESSION['giohang'][$maKH]); $i++) {
-                if ($_SESSION['giohang'][$i][1] == $tensp) {
-                    $fl = 1;
-                    $soluongmoi = $soluong + $_SESSION['giohang'][$i][3];
-                    $_SESSION['giohang'][$i][3] = $soluongmoi;
-                    break;
-                }
-            }
-            //kiem tra trung va them moi san pham vao gio hang 
-            if ($fl == 0) {
-                $sp = [$hinh, $tensp, $gia, $soluong];
-                $_SESSION['giohang'][] = $sp;
+        //kiem tra san pham co trong gio hang hay khong?
+        for($i=0; $i<sizeof($_SESSION['giohang']); $i++){
+            if($_SESSION['giohang'][$i][1]==$tensp){
+                $fl=1;
+                $soluongmoi=$soluong+$_SESSION['giohang'][$i][3];
+                $_SESSION['giohang'][$i][3]=$soluongmoi;
+                break;
             }
         }
-    }
-}
-
-
-
-
-
-function showgiohang()
-{
-    if (isset($_SESSION['giohang']) && (is_array($_SESSION['giohang']))) {
-        $tong = 0;
-        for ($i = 0; $i < sizeof($_SESSION['giohang']); $i++) {
-            $tt = $_SESSION['giohang'][$i][2] * $_SESSION['giohang'][$i][3];
-            $tong += $tt;
-            echo '<tr>
-                    <td>' . ($i + 1) . '</td>
-                    <td><img src="images/' . $_SESSION['giohang'][$i][0] . '" alt=""></td>
-                    <td>' . $_SESSION['giohang'][$i][1] . '</td>
-                    <td>' . $_SESSION['giohang'][$i][2] . '</td>
-                    <td>' . $_SESSION['giohang'][$i][3] . '</td>
-                    <td>
-                        <div>' . $tt . '</div>
-                    </td>
-                    <td>
-                        <a href="cart.php?delid=' . $i . '">Xóa</a>
-                    </td>
-                </tr>';
+        //kiem tra trung va them moi san pham vao gio hang 
+        if($fl==0){
+            $sp=[$hinh,$tensp,$gia,$soluong];
+            $_SESSION['giohang'][]=$sp;
         }
-    } else {
-        echo "Giỏ hàng rỗng!";
+        
+        
     }
-}
+
+    function showgiohang(){
+        if(isset($_SESSION['giohang'])&&(is_array($_SESSION['giohang']))){
+            $tong=0;
+            for ($i=0; $i < sizeof($_SESSION['giohang']); $i++){
+                $tt = $_SESSION['giohang'][$i][2] * $_SESSION['giohang'][$i][3];
+                $tong+=$tt;
+                echo '<tr>
+                    <td>'.($i+1).'</td>
+                    <td><img src="images/'.$_SESSION['giohang'][$i][0].'" alt=""></td>
+                    <td>'.$_SESSION['giohang'][$i][1].'</td>
+                    <td>'.$_SESSION['giohang'][$i][2].'</td>
+                    <td>'.$_SESSION['giohang'][$i][3].'</td>
+                    <td>
+                        <div>'.$tt.'</div>
+                    </td>
+                    <td>
+                        <a href="cart.php?delid='.$i.'">Xóa</a>
+                    </td>
+                </tr>'; 
+
+            }
+        }
+        else{
+            echo "Giỏ hàng rỗng!";
+        }        
+    }
 ?>
 
 <!DOCTYPE html>
@@ -84,14 +79,14 @@ function showgiohang()
                         <h4>Giỏ hàng</h4>
                     </div>
                 </div>
-                <!-- <div class="row">
+                <div class="row">
                     <div class="breadcrumb col-12">
                         <div class="breadcrumb__links horizontal">
                             <div class="breadcrumb__link body2">Trang chủ</div>
                             <div class="breadcrumb__link body2">Giỏ hàng</div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
         <div class="section__container">
@@ -166,13 +161,13 @@ function showgiohang()
                     </div>
                 </div> -->
 
-                    <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
-                    <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
-                </div>
+                <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
+                <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
             </div>
+        </div>
 
 
-            <script src="javascript.js"></script>
+        <script src="javascript.js"></script>
 </body>
 
 
