@@ -1,7 +1,12 @@
+
 <?php session_start();
-$_SESSION['user_id']= "KH001";
-$user_id = $_SESSION['user_id'];
+if(isset($_SESSION['user_id'])){
+  $maTK = $_SESSION['user_id'];
+}
+
 ?>
+
+
 <html>
 
 <head>
@@ -44,6 +49,9 @@ $user_id = $_SESSION['user_id'];
                               }
                               if ($_GET['chon'] == 'ctsp') {
                                 include('./chitietsanpham.php');
+                              }
+                              if ($_GET['chon'] == 'tttk') {
+                                include('./thongtinkhachhang.php');
                               }
                             } else {
                               include('./middleContent.php');
