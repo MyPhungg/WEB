@@ -215,8 +215,9 @@ select{
     height: 60px;
 }
 .submit-btn{
-    float: right;
+    float: left;
     border-radius: 10px;
+    margin-left: 20px;
 }
 .submit-btn:hover{
     background-color: #470138;

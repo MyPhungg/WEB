@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/phieuxuat.css">
     <link rel="stylesheet" href="../css/dsnv.css">
     <link rel="stylesheet" href="style.css?version=1.0">
-    <script>
+    <!-- <script>
         function changeStatus(){
             var selectedStatus = document.getElementById('status').value;
             var xhr = new XMLHttpRequest();
@@ -21,13 +21,24 @@
         };
         xhr.send("selectedStatus=" + selectedStatus);
         }
-    </script>
+    </script> -->
 
 </head>
 
 <body>
     <div>
-        <?php include('./AHeader.php'); ?>
+        <?php include('./AHeader.php'); 
+        $con = mysqli_connect("localhost", "root", "", "bolashop");
+        if(isset($_POST['status'])){
+            $maDH=$_GET["iddh"];
+            $status = $_POST["status"];
+            mysqli_query($con,"UPDATE donhang SET Trangthai=$status WHERE Madonhang=$maDH");
+            header('location:APhieuxuat.php');
+        }
+
+
+        mysqli_close($con);
+        ?>
         <div class="title">Chi tiết đơn hàng</div>
         <!-- <div class="title">Thống kê >> Chi tiết đơn hàng</div> -->
         <div id="flex-container">
@@ -35,45 +46,19 @@
                 <div class="left-element">
                     <div class="status">
                         <div class="status-info">Tình trạng đơn hàng
-                        <div class="btn">
-                            <select id="status">
-                                <option  value="1" selected>Đã thanh toán</option>
-                                <option  value="2">Đang giao hàng</option>
-                                <option  value="3">Đã chuyển hàng</option>
-                                <option  value="4">Đã giao hàng</option>
-                                <option  value="5">Đã hủy hàng<option>
-                            </select>
-                        </div>
-                        <button type="submit" class="submit-btn" onclick="changeStatus()">Lưu thay đổi</button>
-                        <?php
-// Kiểm tra nếu có dữ liệu được gửi từ phía client
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Lấy giá trị được gửi từ client
-    $selectedStatus = $_POST['selectedStatus'];
-
-    // Kết nối đến cơ sở dữ liệu (điều này cần phải được thay đổi để phản ánh thông tin kết nối của bạn)
-    $con = mysqli_connect("localhost", "username", "password", "database");
-
-    // Kiểm tra kết nối
-    if (mysqli_connect_errno()) {
-        echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        exit();
-    }
-    $maDH = $_GET["iddh"];
-    // Tiến hành cập nhật cột "Trangthai" trong cơ sở dữ liệu
-    $updateQuery = "UPDATE donhang SET Trangthai = '$selectedStatus' WHERE Madonhang='$maDH' "; // Thêm điều kiện cần thiết
-
-    // Thực thi truy vấn cập nhật
-    if (mysqli_query($con, $updateQuery)) {
-        echo "Cập nhật thành công!";
-    } else {
-        echo "Lỗi khi cập nhật dữ liệu: " . mysqli_error($con);
-    }
-
-    // Đóng kết nối
-    mysqli_close($con);
-}
-?>
+                            <form method="POST" action="" id="status-form">
+                                <div class="btn">
+                                    <select id="status" name="status">
+                                        <option  value="1">Đã xử lý</option>
+                                        <option  value="2">Đang giao hàng</option>
+                                        
+                                        <option  value="3">Đã giao hàng</option>
+                                        <option  value="4">Đã hủy hàng</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="submit-btn">Lưu thay đổi</button>
+                            </form>
+                        
 
                     </div>
                     <div><br></div>
