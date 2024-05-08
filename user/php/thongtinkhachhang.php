@@ -101,68 +101,107 @@
             <p><a href="./home.php">Trang chủ >> </a><span class="chuXam">Thông tin của tôi</span></p>
             <div class="ThongTinKhachHang">
                 <?php
-                include('./connect.php');
+                function loadData()
+                {
+                    include('./connect.php');
+                    $conn = connectDB();
+                    if (isset($_SESSION['user_id'])) {
+                        $maKH = $_SESSION['user_id'];
+                        $sql = "SELECT * FROM nguoidung WHERE Manguoidung='$maKH'";
+                        $rs = mysqli_query($conn, $sql);
+                        if ($row = mysqli_fetch_array($rs)) {
+                            echo '<div class="photo">
+                            <img src="../img/' . $row["img"] . '" alt="ảnh">
+                        </div>
+                        <div class="ThongTinKhachHang-data1">
+                            <p>Họ tên:</p>
+                            <input type="text" name="name" value="' . $row["Ten"] . '">
+                            <p>Địa chỉ:</p>
+                            <input type="text" name="address" value="' . $row["Diachi"] . '">
+                            <p>Mật khẩu:</p>
+                            <input type="password" name="password" value="' . $row["Matkhau"] . '">
+                        </div>
+                        <div class="ThongTinKhachHang-data2">
+                            <p>Số điện thoại:</p>
+                            <input type="text" name="phone" value="' . $row["Sodienthoai"] . '">
+                            <p>Email:</p>
+                            <input type="text" name="email" value="' . $row["Email"] . '">
+                            <p>Xác nhận mật khẩu:</p>
+                            <input type="password" name="check-password" value="' . $row['Matkhau'] . '">
+                            <p class="">Bạn muốn thay đổi thông tin, <button class="check-ThongTin" id="check-ThongTin" name="thaydoi">Thay đổi</button></p>
+                        </div>';
+                        }
+                        mysqli_close($conn);
+                    } else {
+                        echo "<script>alert('Lỗi');</script>";
+                    }
+                }
+                loadData();
+
+                ?>
+                <!-- <script>
+                    $(document).ready(function(){
+                        loadData();
+                    
+                    $('#check-ThongTin').on('click', function(){
+                        var ten = $('.name').val();
+                        var diachi = $('.address').val();
+                        var matkhau = $('.password').val();
+                        var sdt = $('.phone').val();
+                        var email = $('.email').val();
+                        var rpw = $('.check-password').val();
+                        if(!ten||!diachi||!matkhau||!sdt||!email||!rpw){
+                            alert('Không đủ dữ liệu!');
+
+                        }else{
+                            $.ajax({
+                                url: "XLsuathongtin.php",
+                                method: "POST",
+                                data: {ten:ten, diachi:diachi,matkhau:matkhau,sdt:sdt,email:email,rpw:rpw},
+                                success:function(data){
+                                    alert('Thành công');
+                                    loadData();
+                                }
+                            });
+                        }
+                    });
+                });
+                </script> -->
+
+                <?php
+                $pattern_ten = "/^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆđĐìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưỪừỬữỮứỨựỰỳỲỷỶỹỸýÝỵỴ\\s]+$/"; // chỉ chấp nhận các ký tự chữ và khoảng trắng
+                $pattern_mk_rmk = "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/"; // Mật khẩu phải đủ 8 ký tự, có kí tự in hoa,in thường,ký tự đặc biệt và số 
+                $pattern_email = "/^[\w\.-]+@[\w\.-]+\.\w+$/";
+                $pattern_sdt = "/^0\d{9}$/";
+                // $
+                // include('./connect.php');
                 $conn = connectDB();
                 if (isset($_SESSION['user_id'])) {
                     $maKH = $_SESSION['user_id'];
-                    $sql = "SELECT * FROM nguoidung WHERE Manguoidung='$maKH'";
-                    $rs = mysqli_query($conn, $sql);
-                    if ($row = mysqli_fetch_array($rs)) {
-                        echo '<div class="photo">
-                        <img src="../img/' . $row["img"] . '" alt="ảnh">
-                    </div>
-                    <div class="ThongTinKhachHang-data1">
-                        <p>Họ tên:</p>
-                        <input type="text" name="name" value="' . $row["Ten"] . '">
-                        <p>Địa chỉ:</p>
-                        <input type="text" name="address" value="' . $row["Diachi"] . '">
-                        <p>Mật khẩu:</p>
-                        <input type="password" name="password" value="' . $row["Matkhau"] . '">
-                    </div>
-                    <div class="ThongTinKhachHang-data2">
-                        <p>Số điện thoại:</p>
-                        <input type="text" name="phone" value="' . $row["Sodienthoai"] . '">
-                        <p>Email:</p>
-                        <input type="text" name="email" value="' . $row["Email"] . '">
-                        <p>Xác nhận mật khẩu:</p>
-                        <input type="password" name="check-password" value="' . $row['Matkhau'] . '">
-                        <p class="">Bạn muốn thay đổi thông tin, <button class="check-ThongTin" name="thaydoi">Thay đổi</button></p>
-                    </div>';
-                    }
-                } else {
-                    echo "<script>alert('Lỗi');</script>";
-                }
+                    if (isset($_POST['thaydoi'])) {
+                        if (isset($_POST["name"]) && isset($_POST['address']) && isset($_POST['password']) && isset($_POST['phone']) && isset($_POST['email']) && isset($_POST['check-password'])) {
+                            $ten = $_POST["name"];
+                            $diaChi = $_POST['address'];
+                            $mk = $_POST['password'];
+                            $sdt = $_POST['phone'];
+                            $email = $_POST['email'];
+                            $rmk = $_POST['check-password'];
 
-                ?>
-                <?php
-                if (isset($_POST['thaydoi'])) {
-                    if (isset($_POST["name"]) && isset($_POST['address']) && isset($_POST['password']) && isset($_POST['phone']) && isset($_POST['email']) && isset($_POST['check-password'])) {
-                        $ten = $_POST["name"];
-                        $diaChi = $_POST['address'];
-                        $mk = $_POST['password'];
-                        $sdt = $_POST['phone'];
-                        $email = $_POST['email'];
-                        $rmk = $_POST['check-password'];
-
-                        $sql = "UPDATE nguoidung SET Ten='$ten',
+                            $sql = "UPDATE nguoidung SET Ten='$ten',
                                                     Diachi='$diaChi',
                                                     Matkhau='$mk',
                                                     Sodienthoai='$sdt',
                                                     Email='$email'
                                                WHERE Manguoidung='$maKH'     ";
-                        $rs = mysqli_query($conn, $sql);
-                        if ($rs == true) {
-                            echo "<script>alert('Cập nhật thông tin thành công');</script>";
-                            
-                            
+                            $rs = mysqli_query($conn, $sql);
+                            if ($rs == true) {
+                                echo "<script>alert('Cập nhật thông tin thành công');</script>";
+                                echo "<script>window.location = 'home.php?chon=tttk';</script>";
+                                exit();
+                            } else {
+                                echo "<script>alert('Cập nhật thông tin thất bại');</script>";
+                            }
                         }
-                        else{
-                            echo "<script>alert('Cập nhật thông tin thất bại');</script>";
-
-                        }
-                    } else {
-                        include("./showMessage.php");
-                        showMessageBox("Vui lòng nhập đủ thông tin!", false, 'OK');
                     }
                 }
                 ?>
