@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin khách hàng</title>
+    <link rel="stylesheet" href="../css/thongke.css">
+    <link rel="stylesheet" href="../css/chitiethoadon.css">
+    <link rel="stylesheet" href="../css/phieuxuat.css">
+    <link rel="stylesheet" href="../css/dsnv.css">
     <style>
         a {
             text-decoration: none;
@@ -55,11 +59,12 @@
         .check-ThongTin {
             color: #D61EAD;
             text-decoration: none;
+            color: white;
         }
 
-        table {
+        /* table {
             width: 100%;
-            /* border-collapse: collapse; */
+            /* border-collapse: collapse; 
             border-collapse: separate;
             border-spacing: 0 40px;
         }
@@ -72,7 +77,7 @@
 
         tbody tr {
             /* border: 1px solid black; */
-            /* margin-bottom: 20px; */
+            /* margin-bottom: 20px; 
         }
 
         .LichSuMuaHang {
@@ -90,7 +95,7 @@
         .LichSuMuaHang .right-align {
             text-align: right;
             border-left: none;
-        }
+        } */
     </style>
 </head>
 
@@ -204,50 +209,152 @@
                         }
                     }
                 }
+                mysqli_close($conn);
                 ?>
             </div>
             <h1>Lịch sử mua hàng</h1>
-            <div class="LichSuMuaHang">
-                <table>
-                    <thead class="table-tieuDe">
-                        <tr>
-                            <td class="left-align">
-                                Ngày mua hàng
-                            </td>
-                            <td class="right-align">
-                                Tổng giá trị đơn hàng
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="left-align">1</td>
-                            <td class="right-align">1</td>
-                        </tr>
-                        <tr>
-                            <td class="left-align">2</td>
-                            <td class="right-align">2</td>
-                        </tr>
-                        <tr>
-                            <td class="left-align">3</td>
-                            <td class="right-align">3</td>
-                        </tr>
-                        <tr>
-                            <td class="left-align">1</td>
-                            <td class="right-align">1</td>
-                        </tr>
-                        <tr>
-                            <td class="left-align">2</td>
-                            <td class="right-align">2</td>
-                        </tr>
-                        <tr>
-                            <td class="left-align">3</td>
-                            <td class="right-align">3</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+        <div id="wrapper">
+            <div class="table">
+                <div class="table-title">
+                    <!-- <div style="width: 20%; font-weight: bold;">Khách hàng</div> -->
+                    <div style="width: 25%; font-weight: bold;">Số hóa đơn</div>
+                    <div style="width: 25%; font-weight: bold;">Ngày mua</div>
+                    <div style="width: 25%; font-weight: bold;">Tổng tiền</div>
+                    <div style="width: 25%; font-weight: bold;">Trạng thái</div>
+                </div>
+                <div><br></div>
+                <div><br></div>
+                <div style="overflow-y: scroll;">
+                <?php
+                    $conn = connectDB();
+                    if (isset($_SESSION['user_id'])) {
+                        $maKH = $_SESSION['user_id'];
+                        $sql = mysqli_query($conn, "SELECT * FROM donhang WHERE maKhachhang = '$maKH'");
+                        while ($row = mysqli_fetch_array($sql)) {
+                            // Truy vấn SQL để tính tổng giá trị của mỗi đơn hàng
+                            // $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
+    
+                            // $row_total = mysqli_fetch_assoc($sql_total);
+                            // $total_price = $row_total["TongTien"];
+                            // $ma = $row["Madonhang"];
+                        
+                            // // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
+                            // $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
+                            // mysqli_query($con, $update_query);
+                            echo '<div class="table-items">';
+                            
+                            // echo '<div class="customer">';
+                            echo '<div style="width: 25%;">' . $row["Madonhang"] . '</div>';
+                            echo '<div style="width: 25%;">' . $row["Ngay"] . '</div>';
+                            echo '<div style="width: 25%;">' . $row["Tonggiatri"] . '</div>';
+                            echo '<div class="btn">';
+                            if ($row["Trangthai"] == 0) {
+                                echo '<div class="status-orders">Chưa xác nhận</div>';
+                            }
+                            if ($row["Trangthai"] == 1) {
+                                echo '<div class="status-orders">Đã xử lý</div>';
+                            }
+                            if ($row["Trangthai"] == 2) {
+                                echo '<div class="status-orders">Đang giao hàng</div>';
+                            }
+                            if ($row["Trangthai"] == 3) {
+                                echo '<div class="status-orders">Đã giao hàng</div>';
+                            }
+                            if ($row["Trangthai"] == 4){
+                                echo '<div class="status-orders">Đã hủy hàng</div>';
+                            }
+                           
+                            echo '</div>';
+                            echo '<button type="button" class="order-detail"><a href="home.php?chon=ctdh&maDH=' . $row['Madonhang'] . '">Chi tiết</a></button>';
+                            echo '</div>';
+                            
+                        }
+                    }
+                    
+                    
+                    mysqli_close($conn);
+                    
+                    
+                    ?>
+                    <!-- <div class="table-items">
+                        <div class="customer">
+                            <div class="avt"></div>
+                            <div>KH001</div>
+                        </div>
+                        <div style="width: 20%;">29/03/2004</div>
+                        <div style="width: 20%;">12011252_donhang</div>
+                        <div style="width: 20%;">120210</div>
+                        <div class="btn">
+                            <select>
+                                <option id="status" value="1">Hoàn thành</option>
+                                <option id="status" value="1">Đang giao hàng</option>
+                                <option id="status" value="1">Đã chuyển hàng</option>
+                            </select>
+                            <button type="button">Sửa</button>
+                        </div>
+                    </div>
+                    <div class="table-items">
+                        <div class="customer">
+                            <div class="avt"></div>
+                            <div>KH001</div>
+                        </div>
+                        <div style="width: 20%;">29/03/2004</div>
+                        <div style="width: 20%;">12011252_donhang</div>
+                        <div style="width: 20%;">120210</div>
+                        <div class="btn">
+                            <select>
+                                <option id="status" value="1">Hoàn thành</option>
+                                <option id="status" value="1">Đang giao hàng</option>
+                                <option id="status" value="1">Đã chuyển hàng</option>
+                            </select>
+                            <button type="button">Sửa</button>
+                        </div>
+                    </div>
+                    <div class="table-items">
+                        <div class="customer">
+                            <div class="avt"></div>
+                            <div>KH001</div>
+                        </div>
+                        <div style="width: 20%;">29/03/2004</div>
+                        <div style="width: 20%;">12011252_donhang</div>
+                        <div style="width: 20%;">120210</div>
+                        <div class="btn">
+                            <select>
+                                <option id="status" value="1">Hoàn thành</option>
+                                <option id="status" value="1">Đang giao hàng</option>
+                                <option id="status" value="1">Đã chuyển hàng</option>
+                            </select>
+                            <button type="button">Sửa</button>
+                        </div>
+                    </div>
+                    <div class="table-items">
+                        <div class="customer">
+                            <div class="avt"></div>
+                            <div>KH001</div>
+                        </div>
+                        <div style="width: 20%;">29/03/2004</div>
+                        <div style="width: 20%;">12011252_donhang</div>
+                        <div style="width: 20%;">120210</div>
+                        <div class="btn">
+                            <select>
+                                <option id="status" value="1">Hoàn thành</option>
+                                <option id="status" value="1">Đang giao hàng</option>
+                                <option id="status" value="1">Đã chuyển hàng</option>
+                            </select>
+                            <button type="button">Sửa</button>
+                        </div>
+                    </div> -->
+
+                </div>
 
             </div>
+        </div>
+        
+        <!-- <div class="return"><a href="#">
+                << Quay lại</a>
+        </div> -->
+    </div>
 
         </form>
     </div>
