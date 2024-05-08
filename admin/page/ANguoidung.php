@@ -1,3 +1,31 @@
+<?php
+
+    $server ='localhost';
+    $user ='root';
+    $pass = '';
+    $database = 'bolashop';
+
+    $db = new mysqli($server, $user, $pass,$database);
+
+    if($db)
+    {
+        mysqli_query($db,"SET NAMES 'utf8' ");
+    }
+    else
+    {
+        echo 'ket noi that bai';
+    }
+
+    // $sql = "SELECT * FROM nguoidung Where Loainguoidung='KH' ";
+    $sql = "SELECT * FROM nguoidung WHERE Loainguoidung != 'Q1'";
+    $result = $db->query($sql);
+
+    
+    
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 
@@ -10,14 +38,21 @@
     <!-- <link rel="stylesheet" href="style.css?version=1.0"> -->
 
     <style>
+        
 
     </style>
 </head>
 
 <body>
+    
+
+
+
+
+
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <div class="title">Nhân viên</div>
-        <div class="btn-ThemNV"> + Thêm người dùng mới</div>
+        <div class="title">Người dùng</div>
+        <div class="btn-ThemNV" onclick="window.location.href='themnguoidungmoi.php'"> + Thêm người dùng mới</div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -28,92 +63,87 @@
                     <div style="width: 20%; font-weight: bold;">Mã người dùng</div>
                     <div style="width: 20%; font-weight: bold;">Nhóm quyền</div>
                     <div style="width: 30%; font-weight: bold;">Trạng thái</div>
-
                 </div>
                 <div><br></div>
                 <div><br></div>
                 <div style="overflow-y: scroll;">
-                    <div class="table-items">
-                        <div class="staff">
-                            <div class="avt"></div>
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 20%;">
-                            <div class="button">abc</div>
-                        </div>
-                        <div class="staff">
-                            <select>
-                                <option value="1">Đã duyệt</option>
-                                <option value="1">Chưa duyệt</option>
-                            </select>
-                            <button type="button">Sửa</button>
-                            <button type="button">X</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div class="staff">
-                            <div class="avt"></div>
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 20%;">
-                            <div class="button">abc</div>
-                        </div>
-                        <div class="staff">
-                            <select>
-                                <option value="1">Đã duyệt</option>
-                                <option value="1">Chưa duyệt</option>
-                            </select>
-                            <button type="button">Sửa</button>
-                            <button type="button">X</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div class="staff">
-                            <div class="avt"></div>
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 20%;">
-                            <div class="button">abc</div>
-                        </div>
-                        <div class="staff">
-                            <select>
-                                <option value="1">Đã duyệt</option>
-                                <option value="1">Chưa duyệt</option>
-                            </select>
-                            <button type="button">Sửa</button>
-                            <button type="button">X</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div class="staff">
-                            <div class="avt"></div>
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 20%;">
-                            <div class="button">abc</div>
-                        </div>
-                        <div class="staff">
-                            <select>
-                                <option value="1">Đã duyệt</option>
-                                <option value="1">Chưa duyệt</option>
-                            </select>
-                            <button type="button">Sửa</button>
-                            <button type="button">X</button>
-                        </div>
-                    </div>
+                    <?php
+                    // Hiển thị dữ liệu từ kết quả truy vấn
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="table-items">';
+                            echo '<div class="staff" >';
+                            echo '<div class="avt"></div>';
+                            echo '<div>' . $row['Ten'] . '</div>';
+                            echo '</div>';
+                            echo '<div style="width: 20%;">' . $row['Manguoidung'] . '</div>';
+                            echo '<div style="width: 20%;">';
+                            echo '<div class="button">' . $row['Loainguoidung'] . '</div>';
+                            echo '</div>';
+                            echo '<div class="staff" data-id="' . $row['Manguoidung'] . '">';//staff
+                            echo '<select>';
+                            if ($row['Loainguoidung'] == 'KH') {
+                                echo '<option value="1">Đã duyệt</option>';
+                                // echo '<option value="0">Chưa duyệt</option>';
+                            } else {
+                                echo '<option value="0">Chưa duyệt</option>'; 
+                                // echo '<option value="1">Đã duyệt</option>';
+                            }
+                            echo '</select>';
+                            echo '<button type="button" class="edit-btn">Sửa</button>';
+                            echo '<button type="button" class="delete-btn" >X</button>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo "Không có dữ liệu";
+                    }
+                    ?>
                 </div>
             </div>
         </div>
-
     </div>
 </body>
 
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+//xoa người dùng
+$(document).ready(function() {
+    $('.delete-btn').click(function() {
 
+        var id = $(this).closest('.staff').data('id');
+        $.ajax({
+            type: 'POST',
+            url: 'xoanguoidung.php', 
+            data: { id: id },
+            success: function(response) { 
+                             
+                if(response = 'success')  
+                {
+                    alert ("Đã xóa người dùng có id là: " + id);
+                    location.reload();  
+                }            
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+});
+//sửa người dùng
+$(document).ready(function() {
+    $('.edit-btn').click(function() {
+        // Lấy id của người dùng
+        var id = $(this).closest('.staff').data('id');
+        
+        // Chuyển hướng đến trang suanguoidung.php với tham số id
+        window.location.href = 'suanguoidung.php?id=' + id;
+    });
+});
+
+
+</script>
 
 <!-- <!DOCTYPE html>
 <html>
