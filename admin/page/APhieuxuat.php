@@ -111,7 +111,7 @@
                         die("Kết nối không thành công: " . mysqli_connect_error());
                     }
                     
-                    $sql = mysqli_query($con, "SELECT * FROM donhang");
+                    $sql = mysqli_query($con, "SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung");
                     while ($row = mysqli_fetch_array($sql)) {
                         // Truy vấn SQL để tính tổng giá trị của mỗi đơn hàng
                         $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
@@ -127,15 +127,30 @@
                         
                         echo '<div class="customer">';
                         echo '<div class="avt"></div>';
-                        echo '<div>' . $row["maKhachhang"] . '</div>';
+                        echo '<div>' . $row["Ten"] . '</div>';
                         echo '</div>';
                         echo '<div style="width: 20%;">' . $row["Ngay"] . '</div>';
                         echo '<div style="width: 20%;">' . $row["Madonhang"] . '</div>';
                         echo '<div style="width: 20%;">' . $total_price . '</div>';
                         echo '<div class="btn">';
-                        echo '<div class="status-orders">' . $row["Trangthai"] . '</div>';
+                        if ($row["Trangthai"] == 0) {
+                            echo '<div class="status-orders">Chưa xác nhận</div>';
+                        }
+                        if ($row["Trangthai"] == 1) {
+                            echo '<div class="status-orders">Đã xử lý</div>';
+                        }
+                        if ($row["Trangthai"] == 2) {
+                            echo '<div class="status-orders">Đang giao hàng</div>';
+                        }
+                        if ($row["Trangthai"] == 3) {
+                            echo '<div class="status-orders">Đã giao hàng</div>';
+                        }
+                        if ($row["Trangthai"] == 4){
+                            echo '<div class="status-orders">Đã hủy hàng</div>';
+                        }
+                       
                         echo '</div>';
-                        echo '<button type="button" class="order-detail"><a href="AHome.php?chon=t&id=donhang&chitiet=ctdh&iddh=' . $ma . '">Chi tiết</a></button>';
+                        echo '<button type="button" class="order-detail"><a href="chitiethoadon.php?iddh=' . $ma . '">Chi tiết</a></button>';
                         echo '</div>';
                         
                     }
