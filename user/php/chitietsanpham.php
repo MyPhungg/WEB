@@ -187,6 +187,50 @@ include('./connect.php');
 ?>
 
 <body style="background-color: white;">
+<<<<<<< HEAD
+    <form id="formThemVaoGioHang" method="POST" action="xuliThemgiohang.php"> <!-- Thay thế "trang_xu_ly.php" bằng tên trang xử lý của bạn -->
+    <div class="content-sp">
+        <div class="hienthisanpham">
+            <?php
+            include('./connect.php');
+            $conn = connectDB();
+            if (isset($_GET['id'])) {
+                $maSP = $_GET['id'];
+                $sql = "SELECT * FROM sanpham WHERE Masp=$maSP";
+                $rs = mysqli_query($conn, $sql);
+                if ($row = mysqli_fetch_array($rs)) {
+                    echo '<div class="photo-sp">
+                            <img src="../img/' . $row["Img"] . '" style="width: 80%; height: fit-content;">
+                        </div>
+                        <div class="thongtinsanpham">
+                            <h1>' . $row["Tensp"] . '</h1>
+                            <p> Giá bán: ' . $row["Giaban"] . ' VND</p>
+                            <div class="soLuong">
+                                <P>Số lượng:</P>
+                                <input type="hidden" name="masp" value="' . $maSP . '"> <!-- Trường ẩn chứa mã sản phẩm -->
+                                <div class="soLuong-container">
+                                    <button id="truButton" class="soLuong-button">-</button>
+                                    <input id="soLuongInput" class="soLuong-input" type="number" min="1" value="1" name="soLuong" readonly>
+                                    <button id="congButton" class="soLuong-button">+</button>
+                                </div>
+                            </div>
+                            <div class="conLai">
+                                <p>Còn lại:</p>
+                                <div class="conLai-container">
+                                    <input id="conLaiInput" class="conLai-input" type="number" value="' . $row["Soluongconlai"] . '" readonly>
+                                </div>
+                            </div>
+                            <hr class="line_sp">
+                            <div class="button_muahang">
+                                <div class="themGioHang">
+                                    <input type="submit" class="button_muahang_them" name="them" value="Thêm vào giỏ hàng"> 
+                                </div>
+                                <div class="muaNgay">
+                                    <input type="button" class="button_muahang_muangay" name="mua" value="Mua ngay">
+                                </div>
+                            </div>
+                        </div>';
+=======
     <form id="formThemVaoGioHang" method="POST" action="">
 
         <div class="content-sp">
@@ -235,17 +279,21 @@ include('./connect.php');
         </div>
     </div>';
                     }
+>>>>>>> e9386f8278342b681e047f5cb13e6c6368f7e84c
                 }
-                ?>
-            </div>
+            }
+            ?>
         </div>
-    </form>
+    </div>
+</form>
+
 
 
 
 
 
     <script>
+    
         const truButton = document.getElementById('truButton');
         const congButton = document.getElementById('congButton');
         const soLuongInput = document.getElementById('soLuongInput');
@@ -276,6 +324,10 @@ include('./connect.php');
             }
             soLuongInput.value = quantity;
         });
+
+
+    
+
     </script>
 </body>
 
