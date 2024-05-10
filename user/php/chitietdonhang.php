@@ -90,10 +90,11 @@
 
         .order-info-complete {
             display: block;
-            background-color: black;
+            /* background-color: black; */
             border: solid 2px #ccc;
             border-radius: 20px;
             padding: 20px;
+            margin: 2%;
             /* margin-top: 20px; */
         }
 
@@ -126,10 +127,19 @@
         .line-info-checkout {
             padding: 5px;
         }
+
+        .sp {
+            width: 30%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center
+        }
     </style>
 </head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<body>
+<body style="background-color: white;">
     <div id="bodi">
         <div id="khung">
             <div class="khung">
@@ -180,8 +190,7 @@
                 } else {
                     echo "Lỗi ";
                 }
-                // mysqli_close($conn);
-
+                mysqli_close($conn);
             }
 
 
@@ -204,78 +213,36 @@
 
                 </div>
             </div>
-            <script>
-                // Giả sử bạn có một biến PHP là $progress (đại diện cho phần trăm tiến trình)
-                var progress = <?php echo $tt ?>; //mở thẻ php echo trạng thái ra
-
-                if (progress > 0) {
-                    // Lấy phần tử thanh màu xanh theo id
-                    var progressBar = document.getElementById('progress-bar');
-
-                    // Thay đổi chiều dài của thanh màu xanh
-                    progressBar.style.width = progress + '%';
-                } else {
-                    document.getElementById('progress-wrapper').style.display = "none";
-                    document.getElementById('progress-container').style.display = "none";
-
-                }
-            </script>
 
             <!-- <div id="huy"></div> -->
+
             <div id="wrapper">
                 <div class="table">
                     <div class="table-title">
-                        <!-- <div style="width: 20%; font-weight: bold;">Khách hàng</div> -->
-                        <div style="width: 25%; font-weight: bold;">Số hóa đơn</div>
-                        <div style="width: 25%; font-weight: bold;">Ngày mua</div>
-                        <div style="width: 25%; font-weight: bold;">Tổng tiền</div>
-                        <div style="width: 25%; font-weight: bold;">Trạng thái</div>
+                        <div style="width: 30%; font-weight: bold;">Sản phẩm</div>
+                        <div style="width: 20%; font-weight: bold;">Đơn giá</div>
+                        <div style="width: 20%; font-weight: bold;">Số lượng</div>
+                        <div style="width: 30%; font-weight: bold;">Thành tiền</div>
                     </div>
                     <div><br></div>
                     <div><br></div>
                     <div style="overflow-y: scroll;">
                         <?php
-                        $conn = connectDB();
-                        if (isset($_SESSION['user_id'])) {
-                            $maKH = $_SESSION['user_id'];
-                            $sql = mysqli_query($conn, "SELECT * FROM donhang WHERE maKhachhang = '$maKH'");
+                        if (isset($_GET['maDH'])) {
+                            $maDH = $_GET['maDH'];
+                            // include('./connect.php');
+                            $conn = connectDB();
+                            $sql = mysqli_query($conn, "SELECT * FROM chitietdonhang ctdh, sanpham sp WHERE Madonhang = $maDH AND ctdh.Masp = sp.Masp");
                             while ($row = mysqli_fetch_array($sql)) {
-                                // Truy vấn SQL để tính tổng giá trị của mỗi đơn hàng
-                                // $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
-
-                                // $row_total = mysqli_fetch_assoc($sql_total);
-                                // $total_price = $row_total["TongTien"];
-                                // $ma = $row["Madonhang"];
-
-                                // // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
-                                // $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
-                                // mysqli_query($con, $update_query);
-                                echo '<div class="table-items">';
-
-                                // echo '<div class="customer">';
-                                echo '<div style="width: 25%;">' . $row["Madonhang"] . '</div>';
-                                echo '<div style="width: 25%;">' . $row["Ngay"] . '</div>';
-                                echo '<div style="width: 25%;">' . $row["Tonggiatri"] . '</div>';
-                                echo '<div class="btn">';
-                                if ($row["Trangthai"] == 0) {
-                                    echo '<div class="status-orders">Chưa xác nhận</div>';
-                                }
-                                if ($row["Trangthai"] == 1) {
-                                    echo '<div class="status-orders">Đã xử lý</div>';
-                                }
-                                if ($row["Trangthai"] == 2) {
-                                    echo '<div class="status-orders">Đang giao hàng</div>';
-                                }
-                                if ($row["Trangthai"] == 3) {
-                                    echo '<div class="status-orders">Đã giao hàng</div>';
-                                }
-                                if ($row["Trangthai"] == 4) {
-                                    echo '<div class="status-orders">Đã hủy hàng</div>';
-                                }
-
-                                echo '</div>';
-                                echo '<button type="button" class="order-detail"><a href="chitiethoadon.php?iddh=' . $ma . '">Chi tiết</a></button>';
-                                echo '</div>';
+                                echo '<div class="table-items">
+                                <div class="sp">
+                                    <img src="../img/' . $row["Img"] . '" style="width: 60px; height: 60px">
+                                    <div>' . $row["Tensp"] . '</div>
+                                </div>
+                                <div style="width: 20%;">' . $row["Giaban"] . ' VNĐ</div>
+                                <div style="width: 20%;">' . $row["Soluong"] . '</div>
+                                <div style="width: 30%;">' . $row["Giaban"] * $row["Soluong"] . ' VNĐ</div>
+                            </div>';
                             }
                         }
 
@@ -285,15 +252,115 @@
 
                         ?>
 
+
+
+
+
                     </div>
 
                 </div>
 
             </div>
             <div><br></div>
-
+            <?php
+            if (isset($_GET['maDH'])) {
+                $maDH = $_GET['maDH'];
+                $maKH = $_SESSION['user_id'];
+                $conn = connectDB();
+                $sql = "SELECT Madonhang, vc.Gia, Ngay, nd.Diachi, Tonggiatri FROM donhang dh, vanchuyen vc, nguoidung nd WHERE dh.maKhachhang=nd.Manguoidung AND dh.Mavc = vc.Mavc and nd.Manguoidung='$maKH'AND Madonhang=$maDH";
+                $rs = mysqli_query($conn, $sql);
+                if ($row = mysqli_fetch_assoc($rs)) {
+                    echo '<div class="order-info-complete">
+                    <div class="order-details">
+                        <h2>Thông tin đơn hàng</h2>
+                        <p class="total-row"></p>
+                        <p class="line-info-checkout">Mã đơn hàng: <span id="total-items" class="right-aligned">' . $row["Madonhang"] . '</span></p>
+                        <p class="line-info-checkout">Phí vận chuyển: <span id="shipping-fee" class="right-aligned">' . $row["Gia"] . '</span></p>
+                        <p class="line-info-checkout">Thời gian đặt hàng: <span id="subtotal" class="right-aligned">' . $row["Ngay"] . '</span></p>
+                        <p class="line-info-checkout">Địa chỉ giao hàng: <span id="subtotal" class="right-aligned">' . $row["Diachi"] . '</span></p>
+                        <p class="line-info-checkout">Phương thức thanh toán: <span id="subtotal" class="right-aligned">Thanh toán khi nhận hàng</span>
+                        </p>
+                        <p class="total-row"></p>
+                        <p class="total-price">Tổng cộng: <span id="total" class="right-aligned"></span>' . $row["Tonggiatri"] . '</p>
+                    </div>';
+                }
+            }
+            ?>
 
         </div>
+        <script>
+            function confirmCancel() {
+                var confirmation = confirm("Bạn có chắc chắn muốn hủy đơn hàng không?");
+                if (confirmation) {console.log('aaa');
+                    document.getElementById("cancel-form").submit();
+                }
+            }
+        </script>
+
+        <?php
+        // Kiểm tra xem đã nhấn vào nút hủy đơn chưa
+        if (isset($_POST['cancel_order'])) {
+            echo 'abc';
+            $conn = connectDB();
+            // Lấy mã đơn hàng cần hủy từ form hoặc các nguồn dữ liệu khác
+            $maDonHang = $_POST['maDonHang'];
+
+            // Xác định trạng thái mới của đơn hàng sau khi hủy (ví dụ: gán trạng thái mới là 4 cho trạng thái "Đã hủy")
+            $trangThaiMoi = 4;
+
+            // Tạo truy vấn SQL để cập nhật trạng thái của đơn hàng
+            $sql = "UPDATE donhang SET Trangthai = ? WHERE Madonhang = ?";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, 'ii', $trangThaiMoi, $maDonHang);
+            mysqli_stmt_execute($stmt);
+
+            $affectedRows = mysqli_stmt_affected_rows($stmt);
+            if ($affectedRows > 0) {
+                echo "Cập nhật trạng thái đơn hàng thành công!";
+                echo "<script>window.location = 'home.php?chon=tttk';</script>";
+                exit();
+            } else {
+                echo "Lỗi: " . mysqli_error($conn);
+            }
+            mysqli_close($conn);
+        }
+        ?>
+
+        <form id="cancel-form" name="cancel-form" method="post" action="">
+            <input type="hidden" name="maDonHang" value="<?php echo $maDH; ?>">
+            <!-- <button type="button" name="cancel_order">Hủy đơn hàng</button> -->
+            <button type="submit" name="cancel_order"  onclick="confirmCancel()">Hủy đơn hàng</button>
+
+        </form>
+        <script>
+            // Giả sử bạn có một biến PHP là $progress (đại diện cho phần trăm tiến trình)
+            var progress = <?php echo $tt ?>; //mở thẻ php echo trạng thái ra
+            if (progress == 25) {
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = progress + '%';
+                document.getElementById('cancel-form').style.display = "block";
+                document.getElementById('progress-wrapper').style.display = "block";
+                document.getElementById('progress-container').style.display = "flex";
+
+            }
+            if (progress > 25) {
+                // Lấy phần tử thanh màu xanh theo id
+                var progressBar = document.getElementById('progress-bar');
+                document.getElementById('cancel-form').style.display = "none";
+                document.getElementById('progress-wrapper').style.display = "block";
+                document.getElementById('progress-container').style.display = "flex";
+                // Thay đổi chiều dài của thanh màu xanh
+                progressBar.style.width = progress + '%';
+            }
+            if (progress == 0) {
+                document.getElementById('progress-wrapper').style.display = "none";
+                document.getElementById('progress-container').style.display = "none";
+                document.getElementById('cancel-form').style.display = "none";
+
+            }
+        </script>
+
+    </div>
     </div>
 </body>
 
