@@ -1,11 +1,9 @@
 <?php
-<<<<<<< HEAD
-
 
 $server = "localhost";
-$username = "root"; 
+$username = "root";
 $pass = "";
-$database = "bolashop"; 
+$database = "bolashop";
 
 $conn = new mysqli($server, $username, $pass, $database);
 
@@ -15,7 +13,7 @@ if ($conn->connect_error) {
 
 // Thêm sản phẩm vào giỏ 
 if (isset($_POST['addcart']) && ($_POST['addcart'])) {
-    if(isset($_SESSION['user_id'])){
+    if (isset($_SESSION['user_id'])) {
         $manguoidung = $_SESSION['user_id']; // mã của người dùng
         $masp = $_POST['Masp'];
         $soluong = $_POST['soluong'];
@@ -24,11 +22,12 @@ if (isset($_POST['addcart']) && ($_POST['addcart'])) {
         $check_query = "SELECT * FROM giohang WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
         $check_result = $conn->query($check_query);
 
+        // Kiểm tra số lượng sản phẩm trong giỏ hàng của người dùng
         if ($check_result->num_rows > 0) {
             // Nếu sản phẩm đã tồn tại, cập nhật số lượng
             $existing_item = $check_result->fetch_assoc();
-            $soluong += $existing_item['soluong'];
-            $update_query = "UPDATE giohang SET soluong = '$soluong' WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
+            $new_quantity = $existing_item['soluong'] + $soluong; // Tính toán số lượng mới
+            $update_query = "UPDATE giohang SET soluong = '$new_quantity' WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
             $conn->query($update_query);
         } else {
             // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
@@ -42,7 +41,7 @@ if (isset($_POST['addcart']) && ($_POST['addcart'])) {
 
 // Xóa sản phẩm khỏi giỏ
 if (isset($_GET['delid']) && ($_GET['delid'] >= 0)) {
-    if(isset($_SESSION['user_id'])){
+    if (isset($_SESSION['user_id'])) {
         $manguoidung = $_SESSION['user_id'];
         $masp = $_GET['delid'];
 
@@ -62,103 +61,38 @@ function showgiohang()
     // Lấy mã người dùng từ session
     $maKH = $_SESSION['user_id'];
 
-    // Truy vấn thông tin sản phẩm từ bảng sản phẩm và hiển thị trong giỏ hàng
-    $sql = "SELECT giohang.*, sanpham.* FROM giohang INNER JOIN sanpham ON giohang.Masp = sanpham.Masp WHERE giohang.Manguoidung = $maKH";
+    $sql = "SELECT giohang.*, sanpham.Tensp, sanpham.Giaban, sanpham.Img 
+    FROM giohang 
+    INNER JOIN sanpham ON giohang.Masp = sanpham.Masp 
+    WHERE giohang.Manguoidung = '$maKH'";
     $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) > 0) {
-        // Hiển thị thông tin sản phẩm trong giỏ hàng và tính tổng tiền cho mỗi sản phẩm
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="item">';
-            echo '<p>' . $row['TenSP'] . '</p>';
-            echo '<p>' . $row['Gia'] . '</p>';
-            echo '<p>' . $row['Soluong'] . '</p>';
-            
-            // Tính tổng tiền cho sản phẩm hiện tại
-            $tongTienSanPham = $row['Gia'] * $row['Soluong'];
-            echo '<p>' . $tongTienSanPham . '</p>';
-            
-            // Nút Xóa
-            echo '<form method="POST" action="delete_from_cart.php">';
-            echo '<input type="hidden" name="product_id" value="' . $row['Masp'] . '">';
-            echo '<button type="submit" name="delete">Xóa</button>';
-            echo '</form>';
-            echo '</div>';
-        }
-    } else {
-        echo "Giỏ hàng trống!";
+    // Hiển thị thông tin sản phẩm trong giao diện
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo '<div class="table-items-Q">';
+        echo '<img src="' . $row['Img'] . '" alt="' . $row['Tensp'] . '" style="width: 40%;">';
+        echo '<div style="width: 15%;">' . $row['Giaban'] . ' VND</div>';
+        echo '<div class="btn_tang_giam_soluong">';
+        echo '<button class="quantity-btn decrease" data-masp="' . $row['Masp'] . '" data-action="decrease">-</button>';
+        echo '<div class="soluongsp" data-masp="' . $row['Masp'] . '" contenteditable="true">' . $row['soluong'] . '</div>';
+        echo '<button class="quantity-btn increase" data-masp="' . $row['Masp'] . '" data-action="increase">+</button>';
+        echo '</div>';
+        $tongtiensanpham = $row['Giaban'] * $row['soluong'];
+        echo '<div style="width: 15%;">' . $tongtiensanpham . ' VND</div>';
+        echo '<form method="post" action="xulyxoaspgiohang.php">';
+        echo '<input type="hidden" name="masp" value="' . $row['Masp'] . '">';
+        echo '<button type="submit" name="delete_btn" class="delete-btn">X</button>';
+        echo '</form>';
+        echo '</div>';
     }
 
-    // Đóng kết nối
     mysqli_close($conn);
 }
 
 
 $conn->close();
-=======
-    // session_start();
-    if(!isset($_SESSION['giohang'])) $_SESSION['giohang']=[];
-    //xoa san pham
-    if(isset($_GET['delid'])&&($_GET['delid']>=0)){
-        array_splice($_SESSION['giohang'],$_GET['delid'],1);
-     }
-    //lay du lieu tu form
-    if(isset($_POST['addcart'])&&($_POST['addcart'])){
-        $hinh = $_POST['hinh'];
-        $tensp = $_POST['tensp'];
-        $gia = $_POST['gia'];
-        $soluong = $_POST['soluong'];
 
-        $fl=0;
-
-        //kiem tra san pham co trong gio hang hay khong?
-        for($i=0; $i<sizeof($_SESSION['giohang']); $i++){
-            if($_SESSION['giohang'][$i][1]==$tensp){
-                $fl=1;
-                $soluongmoi=$soluong+$_SESSION['giohang'][$i][3];
-                $_SESSION['giohang'][$i][3]=$soluongmoi;
-                break;
-            }
-        }
-        //kiem tra trung va them moi san pham vao gio hang 
-        if($fl==0){
-            $sp=[$hinh,$tensp,$gia,$soluong];
-            $_SESSION['giohang'][]=$sp;
-        }
-        
-        
-    }
-
-    function showgiohang(){
-        if(isset($_SESSION['giohang'])&&(is_array($_SESSION['giohang']))){
-            $tong=0;
-            for ($i=0; $i < sizeof($_SESSION['giohang']); $i++){
-                $tt = $_SESSION['giohang'][$i][2] * $_SESSION['giohang'][$i][3];
-                $tong+=$tt;
-                echo '<tr>
-                    <td>'.($i+1).'</td>
-                    <td><img src="images/'.$_SESSION['giohang'][$i][0].'" alt=""></td>
-                    <td>'.$_SESSION['giohang'][$i][1].'</td>
-                    <td>'.$_SESSION['giohang'][$i][2].'</td>
-                    <td>'.$_SESSION['giohang'][$i][3].'</td>
-                    <td>
-                        <div>'.$tt.'</div>
-                    </td>
-                    <td>
-                        <a href="cart.php?delid='.$i.'">Xóa</a>
-                    </td>
-                </tr>'; 
-
-            }
-        }
-        else{
-            echo "Giỏ hàng rỗng!";
-        }        
-    }
->>>>>>> e9386f8278342b681e047f5cb13e6c6368f7e84c
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -168,6 +102,39 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/cssdoan.css">
     <title>Document</title>
+    <style>
+        .table-items-Q {
+            margin: 10px 0 10px 0;
+            width: 100%;
+            height: 100px;
+            border: rgb(162, 161, 161) solid 0.5px;
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            /* justify-content: center; */
+            text-align: center;
+            word-break: break-all;
+            border-radius: 10px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            padding: 5px;
+            background-color: #D61EAD;
+            color: white;
+            border: none;
+            align-items: center;
+            margin-left: 70px;
+        }
+
+        .btn_tang_giam_soluong {
+            align-items: center;
+            justify-content: center;
+            width: 20%;
+            display: flex;
+
+        }
+    </style>
 </head>
 
 <body>
@@ -202,72 +169,52 @@ $conn->close();
                     <div><br></div>
                     <div><br></div>
                     <!--DATA-->
-                    <?php showgiohang(); ?>
-
-                    <!-- <div class="table-items">
-                        <div class="product">
-                            <div class="name-product"><img src="image/Home.png" width="65px" height="65px"></div>
-                            <div>Áo sơ mi</div>
-                        </div>
-                        <div class="price">350,000 VNĐ</div>
-                        <div class="product-quantity-info" >
-                            <div class="product-quantity-border">
-                                <button class="quantity-btn decrease" onclick="decreaseQuantity(this)">-</button>
-                                <span class="quantity-value">2</span>
-                                <button class="quantity-btn increase" onclick="increaseQuantity(this)">+</button>
-                            </div>
-                        </div>
-                        <div class="price-sum">700,000 VNĐ</div>
-                        <div class="btn">
-                            <button class="remove-button">X</button>
-                        </div>
+                    <div style="overflow-y: scroll;">
+                        <?php showgiohang(); ?>
                     </div>
-
-                    <div class="table-items">
-                        <div class="product">
-                            <div class="name-product"><img src="image/Home.png" width="65px" height="65px"></div>
-                            <div>Áo sơ mi</div>
-                        </div>
-                        <div class="price">350,000 VNĐ</div>
-                        <div class="product-quantity-info" >
-                            <div class="product-quantity-border">
-                                <button class="quantity-btn decrease" onclick="decreaseQuantity(this)">-</button>
-                                <span class="quantity-value">2</span>
-                                <button class="quantity-btn increase" onclick="increaseQuantity(this)">+</button>
-                            </div>
-                        </div>
-                        <div class="price-sum">700,000 VNĐ</div>
-                        <div class="btn">
-                            <button class="remove-button">X</button>
-                        </div>
+                    <div>
+                        <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
+                        <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
                     </div>
-                    <div class="table-items">
-                        <div class="product">
-                            <div class="name-product"><img src="image/Home.png" width="65px" height="65px"></div>
-                            <div>Áo sơ mi</div>
-                        </div>
-                        <div class="price">350,000 VNĐ</div>
-                        <div class="product-quantity-info" >
-                            <div class="product-quantity-border">
-                                <button class="quantity-btn decrease" onclick="decreaseQuantity(this)">-</button>
-                                <span class="quantity-value">2</span>
-                                <button class="quantity-btn increase" onclick="increaseQuantity(this)">+</button>
-                            </div>
-                        </div>
-                        <div class="price-sum">700,000 VNĐ</div>
-                        <div class="btn">
-                            <button class="remove-button">X</button>
-                        </div>
-                    </div>
-                </div> -->
-
-                <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
-                <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
+                </div>
             </div>
-        </div>
 
 
-        <script src="javascript.js"></script>
+            <script src="javascript.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('.btn_tang_giam_soluong').click(function() {
+                        var masp = $(this).data('masp');
+                        var action = $(this).hasClass('increase') ? 'increase' : 'decrease';
+                        var quantityElement = $('#soluongsp' + masp);
+                        var currentQuantity = parseInt(quantityElement.html());
+
+                        if (action === 'increase') {
+                            currentQuantity++;
+                        } else if (action === 'decrease' && currentQuantity > 1) {
+                            currentQuantity--;
+                        }
+
+                        quantityElement.html(currentQuantity);
+
+                        $.ajax({
+                            url: 'xulycapnhatgiohang.php',
+                            type: 'POST',
+                            data: {
+                                masp: masp,
+                                soluong: currentQuantity
+                            },
+                            success: function(response) {
+                                // Xử lý phản hồi từ server nếu cần
+                                console.log(response);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
 </body>
 
 

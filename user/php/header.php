@@ -40,7 +40,7 @@
         echo '    <div class="user-icon">
         <div class="sub-menu">
             <ul>
-                
+  
             <li><a href="home.php?chon=tttk">Thông tin tài khoản</a></li>
             <li><a href="logout.php">Đăng xuất</a></li>
             </ul>
