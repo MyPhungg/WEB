@@ -47,49 +47,15 @@
                 <div class="text-center-right">VNĐ</div>
             </div>
             <div class="grid-items">
+                <form method="post" name="date-filter">
                 Ngày bắt đầu:
-                <input type="date" id="start-date" />
+                <input type="date" id="start-date" name="start-date"/>
                 Ngày kết thúc:
-                <input type="date" id="end-date" />
-                <button type="button" class="filter-btn">Lọc</button>
+                <input type="date" id="end-date" name="end-date"/>
+                <button type="submit" class="filter-btn">Lọc</button>
+                </form>
             </div>
-            <?php
-            $con = mysqli_connect('localhost', 'root', '', 'bolashop');
-            if (!$con) {
-                die("Kết nối không thành công: " . mysqli_connect_error());
-            }
-
-            if (isset($_POST['filter-btn'])) {
-                $start_date = $_POST['start-date'];
-                $end_date =$_POST['end-date'];
-
-                $sql="SELECT * FROM donhang WHERE Ngay BETWEEN '$start_date' AND '$end_date'";
-                $result = mysqli_query($con, $sql);
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<div class="table-items">
-                            <div class="customer">
-                                <div class="avt"></div>
-                                <div>' . $row["maKhachhang"] . '</div>
-                            </div>
-                            <div style="width: 20%;">' . $row["Ngay"] . '</div>
-                            <div style="width: 20%;">' . $row["Madonhang"] . '</div>
-                            <div style="width: 20%;">' . $row["Tonggiatri"] . '</div>
-                            <div class="btn">
-                                <select>
-                                    <option id="status" value="1">' . $row["Trangthai"] . '</option>
-                                    <option id="status" value="2">Đang giao hàng</option>
-                                    <option id="status" value="3">Đã chuyển hàng</option>
-                                </select>
-                                <button type="button">Sửa</button>
-                            </div>
-                        </div>';
-                }
-            }
-
-
-            mysqli_close($con);
-            ?>
-
+           
         </div>
         <div id="title">Danh sách hóa đơn</div>
 
@@ -106,25 +72,41 @@
                 <div><br></div>
                 <div style="overflow-y: scroll;">
                 <?php
+                    // Kết nối đến cơ sở dữ liệu
                     $con = mysqli_connect('localhost', 'root', '', 'bolashop');
                     if (!$con) {
                         die("Kết nối không thành công: " . mysqli_connect_error());
                     }
-                    
-                    $sql = mysqli_query($con, "SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung");
-                    while ($row = mysqli_fetch_array($sql)) {
-                        // Truy vấn SQL để tính tổng giá trị của mỗi đơn hàng
+
+                    // Kiểm tra xem có lọc theo ngày hay không
+                    if(isset($_POST['start-date']) && isset($_POST['end-date'])) {
+                        $start_date = $_POST['start-date'];
+                        $end_date = $_POST['end-date'];
+                        // Truy vấn SQL để lấy các đơn hàng trong khoảng thời gian được chỉ định
+                        $sql="SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung AND Ngay BETWEEN '$start_date' AND '$end_date'";
+                    } else {
+                        // Truy vấn SQL để lấy tất cả các đơn hàng
+                        $sql = "SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung";
+                    }
+
+                    // Thực thi truy vấn SQL
+                    $result = mysqli_query($con, $sql);
+
+                    // Hiển thị kết quả
+                    while ($row = mysqli_fetch_array($result)) {
                         $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
 
+                        // Lấy tổng giá trị của đơn hàng từ kết quả của truy vấn
                         $row_total = mysqli_fetch_assoc($sql_total);
                         $total_price = $row_total["TongTien"];
                         $ma = $row["Madonhang"];
-                    
+                        
                         // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
                         $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
                         mysqli_query($con, $update_query);
+
+                        // Hiển thị thông tin của đơn hàng
                         echo '<div class="table-items">';
-                        
                         echo '<div class="customer">';
                         echo '<div class="avt"></div>';
                         echo '<div>' . $row["Ten"] . '</div>';
@@ -133,17 +115,30 @@
                         echo '<div style="width: 20%;">' . $row["Madonhang"] . '</div>';
                         echo '<div style="width: 20%;">' . $total_price . '</div>';
                         echo '<div class="btn">';
-                        echo '<div class="status-orders">' . $row["Trangthai"] . '</div>';
+                        if ($row["Trangthai"] == 0) {
+                            echo '<div class="status-orders">Chưa xác nhận</div>';
+                        }
+                        if ($row["Trangthai"] == 1) {
+                            echo '<div class="status-orders">Đã xử lý</div>';
+                        }
+                        if ($row["Trangthai"] == 2) {
+                            echo '<div class="status-orders">Đang giao hàng</div>';
+                        }
+                        if ($row["Trangthai"] == 3) {
+                            echo '<div class="status-orders">Đã giao hàng</div>';
+                        }
+                        if ($row["Trangthai"] == 4){
+                            echo '<div class="status-orders">Đã hủy hàng</div>';
+                        }
                         echo '</div>';
                         echo '<button type="button" class="order-detail"><a href="chitiethoadon.php?iddh=' . $ma . '">Chi tiết</a></button>';
                         echo '</div>';
-                        
                     }
-                    
+                    // Đóng kết nối đến cơ sở dữ liệu
                     mysqli_close($con);
-                    
-                    
-                    ?>
+                ?>
+
+
                     <!-- <div class="table-items">
                         <div class="customer">
                             <div class="avt"></div>

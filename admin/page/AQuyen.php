@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Danh sách chức năng</title>
+    <title>Danh sách quyền</title>
 
     <link rel="stylesheet" href="../css/phieuxuat.css">
     <link rel="stylesheet" href="../css/chitiethoadon.css">
@@ -13,19 +13,20 @@
 
     </style>
 </head>
-
+<?php
+?>
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <div class="title">Danh sách chức năng</div>
-        <div class="btn-ThemNV"> + Thêm chức năng</div>
+        <div class="title">Danh sách quyền</div>
+        <div class="btn-ThemNV"><a href="phanquyen.php"> + Thêm quyền</a></div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
         <div style="display: flex; justify-content: center;">
             <div class="table">
                 <div class="table-title">
-                    <div style="width: 20%; font-weight: bold;">Mã chức năng</div>
-                    <div style="width: 20%; font-weight: bold;">Tên chức năng</div>
+                    <div style="width: 20%; font-weight: bold;">Mã quyền</div>
+                    <div style="width: 20%; font-weight: bold;">Tên quyền</div>
                     <div style="width: 40%; font-weight: bold;">Mô tả</div>
                     <div style="width: 20%; font-weight: bold;">Thao tác</div>
 

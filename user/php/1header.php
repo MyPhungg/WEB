@@ -35,17 +35,30 @@
 
 
     <li class="option" id="cart"><a href="home.php?chon=giohang" style="text-decoration: none; font-size: 16px; color: rgba(0, 0, 0,0.7);">Giỏ hàng </a></li>
-
-    <div class="user-icon">
+    <?php
+    if (session_id()) {
+        echo '    <div class="user-icon">
         <div class="sub-menu">
             <ul>
-                <li><a href="">Đăng nhập</a></li>
-                <li><a href="#">Đăng ký</a></li>
-                <li><a href="#">Đăng xuất</a></li>
-                <li><a href="#">Thông tin tài khoản</a></li>
-
-
+            <li><a href="./dangnhap.php">Đăng nhập</a></li>
+            <li><a href="./dangky.php">Đăng ký</a></li>
+            <li><a href="home.php?chon=tttk">Thông tin tài khoản</a></li>
+            <li><a href="logout.php">Đăng xuất</a></li>
             </ul>
         </div>
-    </div>
-</div>
+    </div>';
+    } else {
+        echo ' <div class="user-icon">
+        <div class="sub-menu">
+            <ul>
+                <li><a href="./dangnhap.php">Đăng nhập</a></li>
+                <li><a href="./dangky.php">Đăng ký</a></li>
+                </ul>
+        </div>
+    </div>';} ?>
+</div><script>
+    // Kiểm tra trạng thái của session và tải lại trang nếu session không tồn tại
+    if (!<?php echo json_encode(session_id()); ?>) {
+        window.location.reload(true); // Tải lại trang một cách đầy đủ
+    }
+</script>

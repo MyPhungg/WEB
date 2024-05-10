@@ -4,7 +4,7 @@
 </div>
 <form name="search" method="get">
 
-    <input type="search" id="search-bar" placeholder="Search..." name="txtSearch" />
+    <input type="search" class="search-bar" placeholder="Search..." name="txtSearch" />
 </form>
 <div class="menu-toggle">
     <button onclick="toggleMenu()">Menu</button>
@@ -16,7 +16,7 @@
             <li>Sản phẩm</li>
         </a></div>
     <?php
-    $con = mysqli_connect("localhost", "root", null, "bolashop");
+    $con = mysqli_connect("localhost", "root", "", "bolashop");
     mysqli_query($con, "set names 'utf8'");
 
 
@@ -54,10 +54,33 @@
                 <li><a href="./dangky.php">Đăng ký</a></li>
                 </ul>
         </div>
-    </div>';} ?>
-</div><script>
+    </div>';
+    } ?>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
     // Kiểm tra trạng thái của session và tải lại trang nếu session không tồn tại
     if (!<?php echo json_encode(session_id()); ?>) {
         window.location.reload(true); // Tải lại trang một cách đầy đủ
     }
+    $(document).ready(function() {
+    $('.search-bar').keyup(function() {
+        var textsearch = $('.search-bar').val();
+        
+        $.ajax({
+            url: 'xulytimkiem.php',
+            type: 'POST',
+            data: { data: textsearch },
+            dataType: 'html',
+            success: function(data) {
+                $('.content-container').html(data);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                
+                // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+            }
+        });
+    });
+});
 </script>

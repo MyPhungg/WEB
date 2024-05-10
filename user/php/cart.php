@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> cbdee85130313472514fab56c07cb1c013254a6e
 $server = "localhost";
 $username = "root";
 $pass = "";

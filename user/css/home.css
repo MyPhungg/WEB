@@ -175,6 +175,7 @@
   }
   
   .footer {
+    z-index: 100000000;
     display: flex;
     width: 100%;
     flex-flow: row wrap;

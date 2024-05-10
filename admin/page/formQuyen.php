@@ -8,7 +8,7 @@
         <div class="form-km">
             <form class="formkhuyenmai" id="formkhuyenmai" method="get" action="">
                 <h3>Quyền</h3>
-                <label for="txtMakh">Mã Quyền/label>
+                <label for="txtMakh">Mã Quyền</label>
                 <input type="text" name="txtMakh" value="" />
 
                 <label for="txtTenkh">Tên Quyền</label>
