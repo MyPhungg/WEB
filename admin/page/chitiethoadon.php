@@ -33,7 +33,7 @@
             $maDH=$_GET["iddh"];
             $status = $_POST["status"];
             mysqli_query($con,"UPDATE donhang SET Trangthai=$status WHERE Madonhang=$maDH");
-            header('location:APhieuxuat.php');
+            header('location:AHome.php?chon=t&id=donhang');
         }
 
 
@@ -51,7 +51,6 @@
                                     <select id="status" name="status">
                                         <option  value="1">Đã xử lý</option>
                                         <option  value="2">Đang giao hàng</option>
-                                        
                                         <option  value="3">Đã giao hàng</option>
                                         <option  value="4">Đã hủy hàng</option>
                                     </select>
