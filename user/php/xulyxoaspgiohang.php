@@ -1,28 +1,39 @@
-// xuly_xoa_sanpham.php
 <?php
-if(isset($_POST['delete_btn']) && isset($_POST['masp'])) {
-    // Khởi tạo session và kết nối đến cơ sở dữ liệu
-    include('connect.php');
-    $conn = connectDB();
+session_start();
+$maKH = $_SESSION['user_id'];
 
-    // Lấy mã sản phẩm cần xóa
-    $masp = $_POST['masp'];
+// Kết nối đến cơ sở dữ liệu
+$server ='localhost';
+$user ='root';
+$pass = '';
+$database = 'bolashop';
 
-    // Lấy mã người dùng từ session
-    $maKH = $_SESSION['user_id'];
+$db = new mysqli($server, $user, $pass,$database);
 
-    // Thực hiện truy vấn xóa sản phẩm khỏi giỏ hàng
-    $sql = "DELETE FROM giohang WHERE Masp = '$masp' AND Manguoidung = '$maKH'";
-    $result = mysqli_query($conn, $sql);
-
-    // Đóng kết nối
-    mysqli_close($conn);
-
-    // Chuyển hướng trở lại trang giỏ hàng hoặc trang cần hiển thị sau khi xóa
-    header("Location: cart.php");
-    exit();
-} else {
-    // Xử lý trường hợp không có dữ liệu hoặc yêu cầu không hợp lệ
-    // Redirect hoặc xử lý theo logic của bạn
+if($db)
+{
+    mysqli_query($db,"SET NAMES 'utf8' ");
 }
+else
+{
+    echo 'ket noi that bai';
+}
+
+// Lấy id từ yêu cầu POST
+if(isset($_POST['id'])) {
+    $idsp = $_POST['id'];
+    
+    // Xóa dòng dữ liệu từ bảng giohang
+    $sql = "DELETE FROM giohang WHERE Manguoidung = '$maKH' AND Masp = '$idsp'";
+
+    if ($db->query($sql) === TRUE) {
+        echo "success";
+    } else {
+        echo "Lỗi: " . $db->error;
+    } 
+}
+
+// Đóng kết nối với cơ sở dữ liệu
+$db->close();
+
 ?>

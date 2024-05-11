@@ -1,8 +1,5 @@
 <?php
-<<<<<<< HEAD
 
-=======
->>>>>>> cbdee85130313472514fab56c07cb1c013254a6e
 $server = "localhost";
 $username = "root";
 $pass = "";
@@ -15,7 +12,7 @@ if ($conn->connect_error) {
 }
 
 // Thêm sản phẩm vào giỏ 
-if (isset($_POST['addcart']) && ($_POST['addcart'])) {
+if (isset($_POST['them']) && ($_POST['them'])) {
     if (isset($_SESSION['user_id'])) {
         $manguoidung = $_SESSION['user_id']; // mã của người dùng
         $masp = $_POST['Masp'];
@@ -42,18 +39,7 @@ if (isset($_POST['addcart']) && ($_POST['addcart'])) {
     }
 }
 
-// Xóa sản phẩm khỏi giỏ
-if (isset($_GET['delid']) && ($_GET['delid'] >= 0)) {
-    if (isset($_SESSION['user_id'])) {
-        $manguoidung = $_SESSION['user_id'];
-        $masp = $_GET['delid'];
 
-        $delete_query = "DELETE FROM giohang WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
-        $conn->query($delete_query);
-    } else {
-        echo "Vui lòng đăng nhập để xóa sản phẩm khỏi giỏ hàng.";
-    }
-}
 
 function showgiohang()
 {
@@ -84,7 +70,7 @@ function showgiohang()
         echo '<div style="width: 15%;">' . $tongtiensanpham . ' VND</div>';
         echo '<form method="post" action="xulyxoaspgiohang.php">';
         echo '<input type="hidden" name="masp" value="' . $row['Masp'] . '">';
-        echo '<button type="submit" name="delete_btn" class="delete-btn">X</button>';
+        echo '<button type="submit" name="delete_btn" class="delete-btn" data-id="' . $row['Masp'] . '">X</button>';
         echo '</form>';
         echo '</div>';
     }
@@ -175,10 +161,10 @@ $conn->close();
                     <div style="overflow-y: scroll;">
                         <?php showgiohang(); ?>
                     </div>
-                    <div>
-                        <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
-                        <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
-                    </div>
+                </div>
+                <div>
+                    <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
+                    <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
                 </div>
             </div>
 
@@ -187,32 +173,54 @@ $conn->close();
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
                 $(document).ready(function() {
-                    $('.btn_tang_giam_soluong').click(function() {
+                    $('.quantity-btn').click(function() {
                         var masp = $(this).data('masp');
-                        var action = $(this).hasClass('increase') ? 'increase' : 'decrease';
-                        var quantityElement = $('#soluongsp' + masp);
-                        var currentQuantity = parseInt(quantityElement.html());
-
-                        if (action === 'increase') {
-                            currentQuantity++;
-                        } else if (action === 'decrease' && currentQuantity > 1) {
-                            currentQuantity--;
-                        }
-
-                        quantityElement.html(currentQuantity);
+                        var action = $(this).data('action');
+                        var soluongElement = $(this).siblings('.soluongsp');
 
                         $.ajax({
-                            url: 'xulycapnhatgiohang.php',
                             type: 'POST',
+                            url: 'xulysoluongspgiohang.php',
                             data: {
                                 masp: masp,
-                                soluong: currentQuantity
+                                action: action
                             },
                             success: function(response) {
-                                // Xử lý phản hồi từ server nếu cần
-                                console.log(response);
+                                // Cập nhật số lượng sản phẩm trên giao diện
+                                soluongElement.text(response);
+                                location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
                             }
                         });
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    $('.delete-btn').click(function() {
+                        var id = $(this).data('id');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: 'xulyxoaspgiohang.php',
+                            data: {
+                                id: id
+                            },
+                            success: function(response) {
+                                if (response === 'success') {
+                                    alert("Đã xóa sản phẩm khỏi giỏ hàng");
+                                    location.reload();
+                                } else {
+                                    alert("Xóa không thành công!");
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+
                     });
                 });
             </script>
