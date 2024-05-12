@@ -11,7 +11,7 @@ $maVC = $_POST['data'];
 //     echo "<script>alert('Vui lòng chọn phương thức vận chuyển!')</script>";
 // }
 $stmt = mysqli_prepare($conn, "SELECT Gia FROM vanchuyen WHERE Mavc = ?");
-mysqli_stmt_bind_param($stmt, 'i', $maVC);
+mysqli_stmt_bind_param($stmt, 's', $maVC);
 mysqli_stmt_execute($stmt);
 // $affectedRows = mysqli_stmt_affected_rows($stmt);
 mysqli_stmt_bind_result($stmt, $phiVC);

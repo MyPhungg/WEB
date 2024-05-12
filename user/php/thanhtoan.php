@@ -142,7 +142,7 @@ function connect()
                         <option selected>Chọn mã giảm giá</option>
 
                         <?php
-                        $sqlGiamGia = "SELECT * FROM giamgia WHERE NOW() BETWEEN Ngaybatdau AND Ngayketthuc;";
+                        $sqlGiamGia = "SELECT * FROM giamgia WHERE NOW() BETWEEN Ngaybatdau AND Ngayketthuc AND Magiamgia!='MG000';";
                         $rsGiamGia = mysqli_query($conn, $sqlGiamGia);
                         if (mysqli_num_rows($rsGiamGia) > 0) {
                             while ($row = mysqli_fetch_array($rsGiamGia)) {
@@ -152,6 +152,10 @@ function connect()
                         ?><script>
                             $('#giamGia').change(function() {
                                 var valueSelected = $(this).val();
+                                if(valueSelected==''){
+                                    valueSelected = 'MG000';
+                                }
+                                console.log(valueSelected);
                                 $.ajax({
                                     url: 'XLgiamgia.php',
                                     type: 'POST',
@@ -285,24 +289,23 @@ function connect()
                     // Điều hướng đến trang complete.php
                     var tonggiatri = (document.getElementById('thanhtien').textContent).split(" ");
                     var maVC = document.getElementById('vanChuyen').value;
+                    if(maVC=="Chọn phương thức vận chuyển"){
+                        alert("Vui lòng chọn phương thức vận chuyển!");
+                        return false;
+                    }
                     var maGiamGia = document.getElementById('giamGia').value;
                     var maGG;
-                    if (maGiamGia == "Chọn mã giảm giá") {
-                        maGG = '';
+                    if (maGiamGia == 'Chọn mã giảm giá') {
+                        maGG = 'MG000';
                     } else {
                         maGG = maGiamGia;
                     }
                     var maKH = <?php echo json_encode($maNguoiDung); ?>;
                     var currentDate = new Date();
-                    console.log(tonggiatri);
-                    console.log(maVC);
-                    console.log(maGG);
-                    console.log(maKH);
                     var year = currentDate.getFullYear();
                     var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
                     var day = currentDate.getDate();
                     var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
-                    console.log(ngay);
                     $.ajax({
                         url: 'XLthanhtoan.php',
                         type: 'POST',
@@ -315,7 +318,8 @@ function connect()
                         },
                         // dataType: 'html',
                         success: function(data) {
-                            // $('#giamgia').html(data);
+                            // console.log(data);
+                            // $('#compltete-button').html(data);
                             $('#form_complete_payment').show();
                         },
                         error: function(xhr, status, error) {
@@ -327,35 +331,7 @@ function connect()
             </script>
             <button id="complete-order" class="complete-button" onclick="redirectToComplete()">Hoàn tất đơn hàng</button>
             <!-- <button id="complete-order" class="complete-button">Hoàn tất đơn hàng</button> -->
-            <!-- <?php function ThemDonHang()
-                    {
-                        $conn = mysqli_connect("localhost", "root", "", "bolashop");
-                        if (!$conn) {
-                            die("Lỗi" . mysqli_connect_error());
-                        }
-                        $maGiamGia = "MG001";
-                        $maVC = 'VC001';
-                        global $tongGiaTri;
-                        $sql = "INSERT INTO donhang (Tonggiatri, Magiamgia, MaVC) VALUES ($tongGiaTri,'$maGiamGia','$maVC')";
-                        if (mysqli_query($conn, $sql) == true) {
-                            $maNguoiDung = "KH001";
-
-                            $sqlGioHang = "SELECT Masp, Soluong FROM giohang WHERE Manguoidung='$maNguoiDung'";
-                            $rs = mysqli_query($conn, $sqlGioHang);
-                            if (!$rs) {
-                                die("Lỗi truy vấn: " . mysqli_error($conn));
-                            }
-                            if (mysqli_num_rows($rs) > 0) {
-                                while ($row = mysqli_fetch_array($rs)) {
-                                    echo '<div>' . "Sản phẩm" . $row["Tensp"] . " Số lượng" . $row["Soluong"] . '</div>';
-                                }
-                            }
-                            $sqlChiTiet = "INSERT INTO chitietdonhang (Madonhang, Masp, Soluong) VALUES ()";
-                        } else {
-                            echo "Thêm đơn hàng thất bại.";
-                        }
-                    }
-                    ThemDonHang(); ?> -->
+            
 
 
         </div>

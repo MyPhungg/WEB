@@ -9,7 +9,7 @@ $maGG = $_POST['data'];
 // Truy vấn cơ sở dữ liệu để lấy phí vận chuyển
 
 $stmt = mysqli_prepare($conn, "SELECT Mucgiam FROM giamgia WHERE Magiamgia = ?");
-mysqli_stmt_bind_param($stmt, 'i', $maGG);
+mysqli_stmt_bind_param($stmt, 's', $maGG);
 mysqli_stmt_execute($stmt);
 // $affectedRows = mysqli_stmt_affected_rows($stmt);
 mysqli_stmt_bind_result($stmt, $giamgia);
