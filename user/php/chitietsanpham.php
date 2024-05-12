@@ -159,38 +159,61 @@
 <!-- Đẩy dữ liệu vào bảng khi bấm thêm vào giỏ hàng -->
 
 <?php
+
 include('./connect.php');
 $conn = connectDB();
-$maKH = $_SESSION['user_id'];
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-if (isset($_POST["them"]) && ($_POST["them"])) {
-    if (isset($_POST['id']) && isset($_POST['soLuong'])) {
-        $id = $_POST['id'];
-        $soLuong = $_POST['soLuong'];
 
-        // Thực hiện cập nhật CSDL ở đây, ví dụ:
-        $sql = "INSERT INTO giohang(Manguoidung, Masp, Soluong) VALUES($maKH, $id, $soLuong)";
-        if (mysqli_query($conn, $sql)) {
-            echo "alert('Thêm vào giỏ hàng thành công!')";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
+    // Lấy thông tin từ form
+    $maSP = $_POST['masp'];
+    $soLuong = $_POST['soLuong'];
+    if (isset($_SESSION['user_id'])) {
+        $maKH = $_SESSION['user_id'];
+        // Kiểm tra xem thông tin có hợp lệ không
+        if (!empty($maSP) && !empty($soLuong) && !empty($maKH)) {
+            // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng của người dùng chưa
+            $check_query = "SELECT * FROM giohang WHERE Manguoidung = '$maKH' AND Masp = '$maSP'";
+            $check_result = $conn->query($check_query);
+            // Kiểm tra số lượng sản phẩm trong giỏ hàng của người dùng
+            if ($check_result->num_rows > 0) {
+                // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+                $existing_item = $check_result->fetch_assoc();
+                $new_quantity = $existing_item['soluong'] + $soLuong; // Tính toán số lượng mới
+                $update_query = "UPDATE giohang SET soluong = '$new_quantity' WHERE Manguoidung = '$maKH' AND Masp = '$maSP'";
+                if ($conn->query($update_query)) {
+                    echo "";
+                } else {
+                    echo "";
+                    echo "Lỗi: " . mysqli_error($conn);
+                }
+            } else {
+                // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
+                $insert_query = "INSERT INTO giohang (Manguoidung, Masp, soluong) VALUES ('$maKH', '$maSP', '$soLuong')";
+                if ($conn->query($insert_query)) {
+                    echo "";
+                } else {
+                    echo "";
+                    echo "Lỗi: " . mysqli_error($conn);
+                }
+            }
         } else {
-            echo "alert('Thêm vào giỏ hàng thất bại!')";
-            echo "Lỗi: " . mysqli_error($conn);
+            echo 'alert("Dữ liệu không hợp lệ!");';
         }
     } else {
-        echo "Dữ liệu không hợp lệ!";
+        // Xử lý khi 'user_id' không tồn tại trong phiên
+        echo 'alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");';
     }
-} else {
-    echo "alert('lỗi!')";
 }
 ?>
 
+
+
+
 <body style="background-color: white;">
-    <form id="formThemVaoGioHang" method="POST" action="xuliThemgiohang.php"> <!-- Thay thế "trang_xu_ly.php" bằng tên trang xử lý của bạn -->
+    <form id="formThemVaoGioHang" method="POST" action="">
         <div class="content-sp">
             <div class="hienthisanpham">
                 <?php
-                // include('./connect.php');
-                // $conn = connectDB();
                 if (isset($_GET['id'])) {
                     $maSP = $_GET['id'];
                     $sql = "SELECT * FROM sanpham WHERE Masp=$maSP";
@@ -229,7 +252,6 @@ if (isset($_POST["them"]) && ($_POST["them"])) {
                         </div>';
                     }
                 }
-
                 ?>
             </div>
         </div>

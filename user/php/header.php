@@ -51,7 +51,7 @@
         echo ' <div class="user-icon">
         <div class="sub-menu">
             <ul>
-                <li><a href="./dangnhap.php">Đăng nhập</a></li>
+                
                 <li><a href="./dangky.php">Đăng ký</a></li>
                 </ul>
         </div>

@@ -166,7 +166,7 @@ table td{
     display: flex;
     flex-direction: column;
     position: relative;
-
+    
 }
 #wrapper {
     display: grid;
@@ -341,3 +341,4 @@ table {
     justify-content: space-around;
     align-items: center;
 }
+
