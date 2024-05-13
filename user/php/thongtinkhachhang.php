@@ -137,20 +137,26 @@
                         </script>
                         <div class="ThongTinKhachHang-data1">
                             <p>Họ tên:</p>
-                            <input type="text" name="name" value="' . $row["Ten"] . '">
+                            <input type="text" id="name" name="name" value="' . $row["Ten"] . '">
+                            <div id="tbTen"></div>
                             <p>Địa chỉ:</p>
-                            <input type="text" name="address" value="' . $row["Diachi"] . '">
+                            <input type="text" id="address" name="address" value="' . $row["Diachi"] . '">
+                            <div id="tbDiaChi"></div>
                             <p>Mật khẩu:</p>
-                            <input type="password" name="password" value="' . $row["Matkhau"] . '">
+                            <input type="password" id="password" name="password" value="' . $row["Matkhau"] . '">
+                            <div id="tbMatKhau"></div>
                         </div>
                         <div class="ThongTinKhachHang-data2">
                             <p>Số điện thoại:</p>
-                            <input type="text" name="phone" value="' . $row["Sodienthoai"] . '">
+                            <input type="text" id="phone" name="phone" value="' . $row["Sodienthoai"] . '">
+                            <div id="tbSDT"></div>
                             <p>Email:</p>
-                            <input type="text" name="email" value="' . $row["Email"] . '">
+                            <input type="text" id="email" name="email" value="' . $row["Email"] . '">
+                            <div id="tbEmail"></div>
                             <p>Xác nhận mật khẩu:</p>
-                            <input type="password" name="check-password" value="' . $row['Matkhau'] . '">
-                            <p class="">Bạn muốn thay đổi thông tin, <button class="check-ThongTin" id="check-ThongTin" name="thaydoi">Thay đổi</button></p>
+                            <input type="password" id="check-password" name="check-password" value="' . $row['Matkhau'] . '">
+                            <div id="tbLaiMatKhau"></div>
+                            <p class="">Bạn muốn thay đổi thông tin, <button class="check-ThongTin" id="check-ThongTin" name="thaydoi" onclick="validateForm(event)">Thay đổi</button></p>
                         </div>';
                         }
                         mysqli_close($conn);
@@ -162,6 +168,90 @@
 
                 ?>
 
+                <script>
+                    // Regex pattern
+
+
+
+                    function validateForm(event) {
+                        var pattern_ten = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆđĐìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưỪừỬữỮứỨựỰỳỲỷỶỹỸýÝỵỴ\s]+$/;
+                        var pattern_mk_rmk = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+                        var pattern_email = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+                        var pattern_sdt = /^0\d{9}$/;
+                        var ten = document.getElementById('name').value;
+                        var diaChi = document.getElementById('address').value;
+                        var mk = document.getElementById('password').value;
+                        var sdt = document.getElementById('phone').value;
+                        var email = document.getElementById('email').value;
+                        var rmk = document.getElementById('check-password').value;
+                        if (!ten) {
+                            document.getElementById('tbTen').innerHTML = 'Tên không được phép bỏ trống!';
+                            document.getElementById('name').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!diaChi) {
+                            document.getElementById('tbDiaChi').innerHTML = 'Địa chỉ không được phép bỏ trống!';
+                            document.getElementById('address').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!mk) {
+                            document.getElementById('tbMatKhau').innerHTML = 'Mật khẩu không được phép bỏ trống!';
+                            document.getElementById('password').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!sdt) {
+                            document.getElementById('tbSDT').innerHTML = 'Số điện thoại không được phép bỏ trống!';
+                            document.getElementById('phone').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!email) {
+                            document.getElementById('tbEmail').innerHTML = 'Email không được phép bỏ trống!';
+                            document.getElementById('email').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!rmk) {
+                            document.getElementById('tbLaiMatKhau').innerHTML = 'Nhập lại mật khẩu không được phép bỏ trống!';
+                            document.getElementById('check-password').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!pattern_ten.test(ten)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbTen').innerHTML = 'Tên không được phép có ký tự đặc biệt!';
+                            document.getElementById('name').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (!pattern_mk_rmk.test(mk)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbMatKhau').innerHTML = 'Mật khẩu phải đủ 8 ký tự, có kí tự in hoa,in thường,ký tự đặc biệt và số!';
+                            document.getElementById('password').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (!pattern_sdt.test(sdt)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbSDT').innerHTML = 'Số điện thoại gồm 10 số, bắt đầu bằng 0';
+                            document.getElementById('phone').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (!pattern_email.test(email)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbEmail').innerHTML = 'Email phải có @ và .';
+                            document.getElementById('email').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (rmk != mk) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbLaiMatKhau').innerHTML = 'Mật khẩu không trùng!';
+                            document.getElementById('check-password').focus();event.preventDefault();
+                            return false;
+                        }
+                        
+                    }
+                    // Kiểm tra dữ liệu
+                </script>
 
                 <?php
                 $pattern_ten = "/^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆđĐìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưỪừỬữỮứỨựỰỳỲỷỶỹỸýÝỵỴ\\s]+$/"; // chỉ chấp nhận các ký tự chữ và khoảng trắng
@@ -175,7 +265,8 @@
                 if (isset($_SESSION['user_id'])) {
                     $maKH = $_SESSION['user_id'];
                     if (isset($_POST['thaydoi'])) {
-                        if (isset($_POST["name"]) && isset($_POST['address']) && isset($_POST['password']) && isset($_POST['phone']) && isset($_POST['email']) && isset($_POST['check-password'])) {
+
+                        if (!empty($_POST["name"]) && !empty($_POST['address']) && !empty($_POST['password']) && !empty($_POST['phone']) && !empty($_POST['email']) && !empty($_POST['check-password'])) {
                             if (!empty($_FILES["txtHinhAnh"]["name"])) {
                                 echo "abc";
                                 $ten = $_POST["name"];
@@ -216,7 +307,6 @@
                                 $sdt = $_POST['phone'];
                                 $email = $_POST['email'];
                                 $rmk = $_POST['check-password'];
-
 
                                 $sql = "UPDATE nguoidung SET Ten=?, Diachi=?, Matkhau=?, Sodienthoai=?, Email=? WHERE Manguoidung=?";
                                 $stmt = mysqli_prepare($conn, $sql);

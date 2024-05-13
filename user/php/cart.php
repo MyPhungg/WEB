@@ -99,6 +99,10 @@ $conn->close();
     <link rel="stylesheet" href="../css/cssdoan.css">
     <title>Document</title>
     <style>
+        a{
+            color: black;
+            text-decoration: none;
+        }
         .table-items-Q {
             margin: 10px 0 10px 0;
             width: 100%;
@@ -145,7 +149,7 @@ $conn->close();
                 <div class="row">
                     <div class="breadcrumb col-12">
                         <div class="breadcrumb__links horizontal">
-                            <div class="breadcrumb__link body2">Trang chủ</div>
+                            <div class="breadcrumb__link body2"><a href="home.php">Trang chủ</a></div>
                             <div class="breadcrumb__link body2">Giỏ hàng</div>
                         </div>
                     </div>
