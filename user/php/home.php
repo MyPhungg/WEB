@@ -56,6 +56,8 @@ if(isset($_SESSION['user_id'])){
                               if ($_GET['chon'] == 'ctdh') {
                                 include('./chitietdonhang.php');
                               }
+                              if ($_GET['chon'] == 'thanhtoan') {
+                                include('./thanhtoan.php');}
                             } else {
                               include('./middleContent.php');
                             } ?></div>

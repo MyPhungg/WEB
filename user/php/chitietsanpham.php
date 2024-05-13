@@ -178,8 +178,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
             if ($check_result->num_rows > 0) {
                 // Nếu sản phẩm đã tồn tại, cập nhật số lượng
                 $existing_item = $check_result->fetch_assoc();
-                $new_quantity = $existing_item['soluong'] + $soLuong; // Tính toán số lượng mới
-                $update_query = "UPDATE giohang SET soluong = '$new_quantity' WHERE Manguoidung = '$maKH' AND Masp = '$maSP'";
+                $new_quantity = $existing_item['Soluong'] + $soLuong; // Tính toán số lượng mới
+                $update_query = "UPDATE giohang SET Soluong = '$new_quantity' WHERE Manguoidung = '$maKH' AND Masp = '$maSP'";
                 if ($conn->query($update_query)) {
                     echo "";
                 } else {
@@ -188,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
                 }
             } else {
                 // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
-                $insert_query = "INSERT INTO giohang (Manguoidung, Masp, soluong) VALUES ('$maKH', '$maSP', '$soLuong')";
+                $insert_query = "INSERT INTO giohang (Manguoidung, Masp, Soluong) VALUES ('$maKH', '$maSP', '$soLuong')";
                 if ($conn->query($insert_query)) {
                     echo "";
                 } else {
@@ -197,11 +197,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
                 }
             }
         } else {
-            echo 'alert("Dữ liệu không hợp lệ!");';
+            echo '<script>alert("Dữ liệu không hợp lệ!");</script>';
         }
     } else {
         // Xử lý khi 'user_id' không tồn tại trong phiên
-        echo 'alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");';
+        echo '<script>alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        window.location.href = "dangnhap.php";
+        </script>';
+    }
+}
+//Mua ngay
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["mua"])) {
+    // Lấy thông tin từ form
+    $_SESSION['Masp'] = $_POST['masp'];
+    $_SESSION['Soluong'] = $_POST['soLuong'];
+
+    if (isset($_SESSION['user_id'])) {
+        echo '<script>window.location.href = "home.php?chon=thanhtoan&loai=muangay";</script>';
+    } else {
+        // Xử lý khi 'user_id' không tồn tại trong phiên
+        echo '<script>alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        window.location.href = "dangnhap.php";
+        </script>';
     }
 }
 ?>
@@ -246,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
                                     <input type="submit" class="button_muahang_them" name="them" value="Thêm vào giỏ hàng"> 
                                 </div>
                                 <div class="muaNgay">
-                                    <input type="button" class="button_muahang_muangay" name="mua" value="Mua ngay">
+                                    <input type="submit" class="button_muahang_muangay" name="mua" value="Mua ngay">
                                 </div>
                             </div>
                         </div>';
@@ -265,10 +282,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
     <script>
         const truButton = document.getElementById('truButton');
         const congButton = document.getElementById('congButton');
-        const soLuongInput = document.getElementById('soLuongInput');
+        soLuongInput = document.getElementById('soLuongInput');
         const conLaiInput = document.getElementById('conLaiInput');
 
-        truButton.addEventListener('click', () => {
+        truButton.addEventListener('click', (event) => {
+            event.preventDefault();
             let quantity = parseInt(soLuongInput.value);
             if (quantity > 1) {
                 quantity--;
@@ -276,7 +294,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
             }
         });
 
-        congButton.addEventListener('click', () => {
+        congButton.addEventListener('click', (event) => {
+            event.preventDefault();
             let quantity = parseInt(soLuongInput.value);
             if (quantity < conLaiInput.value) {
                 quantity++;
@@ -286,7 +305,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
 
         });
 
-        soLuongInput.addEventListener('change', () => {
+        soLuongInput.addEventListener('change', (event) => {
+            event.preventDefault();
             let quantity = parseInt(soLuongInput.value);
             if (quantity < 1) {
                 quantity = 1;
@@ -294,6 +314,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
             soLuongInput.value = quantity;
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </body>
 
 </html>
@@ -301,27 +323,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["them"])) {
 
     //     <div class="content-sp">
     //         <p>Trang chủ >> Balo >> <span class="ten-san-pham">Chi tiết sản phẩm</span></p> -->
-// <div class="hienthisanpham">
-    // <?php
-        //             // include('./connect.php');
-        //             // echo $_GET['id'];
-        //             // $conn = connectDB();
-        //             if (isset($_GET['id'])) {
-        //                 $maSP = $_GET['id'];
-        //                 $sql = "SELECT * FROM sanpham WHERE Masp=$maSP";
-        //                 $rs = mysqli_query($conn, $sql);
-        //                 if ($row = mysqli_fetch_array($rs)) {
-        //                     echo '<div class="photo-sp">
-        //             <img src="../img/' . $row["Img"] . '" style="width: 80%; height: fit-content;">
-        //         </div>
-        // <div class="thongtinsanpham">
-        //     <h1>' . $row["Tensp"] . '</h1>
-        //     <p> Giá bán: ' . $row["Giaban"] . ' VND</p>
+<div class="hienthisanpham">
+    <?php
+    //             // include('./connect.php');
+    //             // echo $_GET['id'];
+    //             // $conn = connectDB();
+    //             if (isset($_GET['id'])) {
+    //                 $maSP = $_GET['id'];
+    //                 $sql = "SELECT * FROM sanpham WHERE Masp=$maSP";
+    //                 $rs = mysqli_query($conn, $sql);
+    //                 if ($row = mysqli_fetch_array($rs)) {
+    //                     echo '<div class="photo-sp">
+    //             <img src="../img/' . $row["Img"] . '" style="width: 80%; height: fit-content;">
+    //         </div>
+    // <div class="thongtinsanpham">
+    //     <h1>' . $row["Tensp"] . '</h1>
+    //     <p> Giá bán: ' . $row["Giaban"] . ' VND</p>
 
-        //     <div class="soLuong">
-        //         <P>Số lượng:</P>
-        //             <input type="hidden" name="id" value="<?php echo $maSP ; 
-        ?>">
+    //     <div class="soLuong">
+    //         <P>Số lượng:</P>
+    //             <input type="hidden" name="id" value="<?php echo $maSP ; 
+    ?>
     <!--  //             <div class="soLuong-container">
     //                 <button id="truButton" class="soLuong-button">-</button>
     //                 <input id="soLuongInput" class="soLuong-input" type="number" min="1" value="1" name="soLuong" readonly>

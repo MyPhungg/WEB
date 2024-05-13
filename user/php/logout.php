@@ -1,11 +1,11 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <?php
 // Khởi đầu session
-// session_start();
+session_start();
 
 // Hủy toàn bộ dữ liệu session
 session_destroy();
-
-// Chuyển hướng người dùng đến trang đăng nhập hoặc trang khác
-header("Location: home.php"); // Điều hướng đến trang đăng nhập
+echo "<script>window.location.href = 'home.php';</script>";
 exit(); // Dừng kịch bản tiếp tục thực thi sau khi chuyển hướng
 ?>
