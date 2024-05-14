@@ -15,6 +15,17 @@
 </head>
 <?php
 ?>
+<?php
+$servername = "localhost";
+$user = "root";
+$password = "";
+$dbname = "bolashop";
+
+$conn = new mysqli($servername, $user, $password, $dbname);
+$sql="SELECT * FROM quyen";
+$query=mysqli_query($conn, $sql);
+mysqli_close($conn);
+?>
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Danh sách quyền</div>
@@ -34,11 +45,12 @@
                 <div><br></div>
                 <div><br></div>
                 <div style="overflow-y: scroll;">
+                <?php foreach($query as $key => $value) { ?>
                     <div class="table-items">
                         <div style="width: 20%;">
-                            <div>Võ Lê Hoàng Tân</div>
+                            <div><?php echo $value["Maquyen"]; ?></div>
                         </div>
-                        <div style="width: 20%;">NV001</div>
+                        <div style="width: 20%;"><?php echo $value["Tenquyen"]; ?></div>
                         <div style="width: 40%;">abc</div>
                         <div style="width: 20%;">
                             <button type="button"
@@ -46,54 +58,7 @@
                             <button type="button">Xóa</button>
                         </div>
                     </div>
-                    <div class="table-items">
-                        <div style="width: 20%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 40%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button"
-                                style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 20%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 40%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button"
-                                style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 20%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 40%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button"
-                                style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 20%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 20%;">NV001</div>
-                        <div style="width: 40%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button"
-                                style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
+                    <?php }?>
                 </div>
 
                 <div class="horizontal-line"></div>

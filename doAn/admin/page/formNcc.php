@@ -36,9 +36,7 @@
            } else {
                echo "Lỗi trong quá trình chuẩn bị truy vấn.";
            }
-       } else {
-           echo "Dữ liệu không được gửi đi.";
-       }
+       } 
        
        mysqli_close($con);
        
@@ -59,7 +57,7 @@
                 <input type="text" name="Sdt" value="" required/>
 
                 <div class="group-btn">
-                    <button type="button" id="delBtn" class="delBtn">Hủy</button>
+                    <button type="button" id="delBtn" class="delBtn" onclick="history.back();">Hủy</button>
                     <button type="reset" id="resetBtn" class="resetBtn">Đặt lại</button>
                     <button type="Submit" name="submitBtn" id="submitBtn" class="submitBtn">Lưu</button>
                 </div>
