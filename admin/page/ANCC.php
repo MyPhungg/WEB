@@ -103,25 +103,7 @@ mysqli_close($conn);
     </div>
    
     <script>
-        // function showThemNCC() {
-        //     // Hiển thị lớp phủ và cửa sổ thêm nhà cung cấp
-        //     document.getElementById('wrapper-NCC').style.display = 'flex';
-        //     // document.getElementById('wrapper-NCC').style
-
-        //     // Thêm lớp phủ làm mờ cho nội dung chính
-        //     document.getElementById('NCC').classList.add('overlay');
-
-        //     // Hiển thị cửa sổ thêm nhà cung cấp ở trung tâm
-        //     // document.getElementById('themNCC').style.display = 'block';
-        // }
-
-        // function closeThemNCC() {
-        //     // Ẩn lớp phủ và cửa sổ thêm nhà cung cấp
-        //     document.getElementById('wrapper-NCC').style.display = 'none';
-
-        //     // Gỡ bỏ lớp phủ làm mờ cho nội dung chính
-        //     document.getElementById('NCC').classList.remove('overlay');
-        // }
+        
         function delNcc(name){
             return confirm("Bạn chắc chắn muốn xóa "+name+" ?");
         }
