@@ -1,4 +1,9 @@
 <style>
+    
+    a{
+        color: black;
+        text-decoration: none;
+    }
     .form_TTKhachHang{
         border: 2px solid black;
         padding: 20px;
@@ -7,9 +12,11 @@
         color: #1f010193;
     }
     .ThongTinKhachHang{
+        height: 400px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); 
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
     .ThongTinKhachHang-data1,.ThongTinKhachHang-data2{
         width: 30%;
@@ -83,9 +90,9 @@
 
 <?php
 // Kiểm tra xem id của người dùng đã được truyền qua URL chưa
-if (isset($_GET['id'])) {
+if (isset($_GET['maND'])) {
     // Lấy id từ URL
-    $id = $_GET['id'];
+    $id = $_GET['maND'];
 
     // Kết nối đến cơ sở dữ liệu và thực hiện truy vấn để lấy thông tin của người dùng
     $server ='localhost';
@@ -116,6 +123,7 @@ if (isset($_GET['id'])) {
             $diachi = $row['Diachi'];
             $password = $row['Matkhau'];
             $status =$row['Loainguoidung'];
+            $img = $row['img'];
             // Hiển thị form nhập liệu với các trường được điền sẵn thông tin của người dùng
             ?>
             <!DOCTYPE html>
@@ -124,9 +132,9 @@ if (isset($_GET['id'])) {
             <body>
             <form id="SND" action="XLsuanguoidung.php" method="post">
             <h1>Sửa thông tin người dùng</h1>
-            <p>Trang chủ >> <span class="chuXam">Người dùng >> Sửa thông tin người dùng</span></p>
+            <p><a href="AHome.php">Trang chủ >> </a><span class="chuXam"><a href="AHome.php?chon=t&id=nguoidung">Người dùng >> </a>Sửa thông tin người dùng</span></p>
             <div class="ThongTinKhachHang">
-                <div class="photo" style="background-image: url('https://inkythuatso.com/uploads/thumbnails/800/2023/03/1-hinh-anh-ngay-moi-hanh-phuc-sieu-cute-inkythuatso-09-13-35-50.jpg');"></div>
+                <div class="photo" style="background-image: url('../img/<?php echo $img; ?>');"></div>
                     <div class="ThongTinKhachHang-data1">
                     <p>Tên đăng nhập:</p>
                     <input type="text" name="id" id="id" value="<?php echo $id; ?>" readonly >
