@@ -120,6 +120,7 @@
                         echo '<div style="width: 20%;">' . $row["Ngay"] . '</div>';
                         echo '<div style="width: 20%;">' . $row["Madonhang"] . '</div>';
                         echo '<div style="width: 20%;">' . $row["Tonggiatri"]. '</div>';
+                        // echo '<div style="width: 20%;">' . $row["Tonggiatri"] . '</div>';
                         echo '<div class="btn">';
                         if ($row["Trangthai"] == 0) {
                             echo '<div class="status-orders">Chưa xác nhận</div>';
