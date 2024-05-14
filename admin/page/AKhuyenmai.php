@@ -17,7 +17,7 @@
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Khuyến mãi</div>
-        <div class="btn-ThemNV"> + Thêm khuyến mãi</div>
+        <div class="btn-ThemNV" onclick="redirectToForm()"> + Thêm khuyến mãi</div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -32,51 +32,43 @@
                 </div>
                 <div><br></div>
                 <div><br></div>
-                <div style="overflow-y: scroll;">
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
+                <div style="overflow-y: scroll;overflow-x: hidden;">
+
+                    <?php
+                    $servername = "localhost";
+                    $user = "root";
+                    $password = "";
+                    $dbname = "bolashop";
+
+                    $conn = new mysqli($servername, $user, $password, $dbname);
+
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT Magiamgia, tenGiamgia, Mucgiam FROM giamgia";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        // Output data of each row
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="table-items">';
+                            echo '<div style="width: 30%;">' . $row["Magiamgia"] . '</div>';
+                            echo '<div style="width: 30%;">' . $row["tenGiamgia"] . '</div>';
+                            echo '<div style="width: 20%;">' . $row["Mucgiam"] . '</div>';
+                            echo '<div style="width: 20%;">';
+                            echo '<button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;" onclick="window.location.href=\'suamagiamgia.php?Magiamgia=' . $row["Magiamgia"] . '\'">Sửa</button>';
+                            echo '<input type="hidden" name="Magiamgia" value="' . $row["Magiamgia"] . '">';
+                            echo '<button type="button" class="delete-btn" onclick="deleteItem(\'' . $row["Magiamgia"] . '\')">Xóa</button>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo "trống!!!";
+                    }
+                    $conn->close();
+                    ?>
+
 
                 </div>
 
@@ -85,6 +77,39 @@
         </div>
 
     </div>
+    <script>
+        function deleteItem(maKhuyenMai) {
+            console.log('Xóa mã khuyến mãi:', maKhuyenMai); // Kiểm tra giá trị maKhuyenMai
+            if (confirm('Bạn có chắc chắn muốn xóa mã khuyến mãi này?')) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'xulyxoakhuyenmai.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    console.log('Trạng thái:', xhr.status); // Kiểm tra trạng thái HTTP
+                    console.log('Phản hồi:', xhr.responseText); // Kiểm tra phản hồi từ PHP
+                    if (xhr.status === 200 && xhr.responseText.trim() === 'Xóa thành công') {
+                        alert('Xóa mã khuyến mãi thành công!');
+                        location.reload();
+                        var element = document.getElementById('item-' + maKhuyenMai);
+                        if (element) {
+                            element.parentNode.removeChild(element);
+                        }
+                    } else {
+                        alert('Đã xảy ra lỗi khi xóa mã khuyến mãi: ' + xhr.responseText);
+                    }
+                };
+                xhr.onerror = function() {
+                    console.error('Đã xảy ra lỗi khi gửi yêu cầu AJAX');
+                };
+                xhr.send('Magiamgia=' + maKhuyenMai);
+            }
+        }
+    </script>
+    <script>
+        function redirectToForm() {
+            window.location.href = "formThemKm.php";
+        }
+    </script>
 </body>
 
 </html>
