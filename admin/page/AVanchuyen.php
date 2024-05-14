@@ -15,9 +15,25 @@
 </head>
 
 <body>
+<?php
+$conn = mysqli_connect('localhost', 'root', '', 'bolashop');
+$sql = "SELECT * FROM vanchuyen";
+$rs_ncc = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($rs_ncc);
+
+
+if(isset($_POST["timkiem"])){
+    $searchKey = trim($_POST["txtTimKiem"]);
+    $sql_search = "SELECT * FROM vanchuyen WHERE Mavc LIKE '%$searchKey%' OR Ten LIKE '%$searchKey%'";
+    $rs_vc = mysqli_query($conn, $sql_search);
+}
+
+
+mysqli_close($conn);
+?>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Đơn vị vận chuyển</div>
-        <div class="btn-ThemNV"> + Thêm đơn vị vận chuyển</div>
+        <div class="btn-ThemNV"> <a href="formVanchuyen.php">+ Thêm đơn vị vận chuyển </a></div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -33,49 +49,19 @@
                 <div><br></div>
                 <div><br></div>
                 <div style="overflow-y: scroll;">
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
+                <?php foreach($rs_vc as $key => $value) {?>
+                        <div class="table-items">
+                            
+                            <div style="width: 20%;"><?php echo $value["Mavc"]; ?></div>
+                            <div style="width: 30%;"><?php echo $value["Ten"]; ?></div>
+                            <div style="width: 20%;"><?php echo $value["Gia"]; ?></div>
+                           
+                            <div class="thaotac">
+                                <button type="button"><a href="formSuaVc.php?idncc=<?php echo $value["Mancc"] ?>">Sửa</a></button>
+                                <button onclick="return delNcc('<?php echo $value['Ten']; ?>')" type="button"><a href="xoaVc.php?idncc=<?php echo $value["Mavc"]; ?>">Xóa</a></button>
+                            </div> 
                         </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
-                    </div>
-                    <div class="table-items">
-                        <div style="width: 30%;">
-                            <div>Võ Lê Hoàng Tân</div>
-                        </div>
-                        <div style="width: 30%;">NV001</div>
-                        <div style="width: 20%;">abc</div>
-                        <div style="width: 20%;">
-                            <button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
-                            <button type="button">Xóa</button>
-                        </div>
+                        <?php }?>
                     </div>
 
 
