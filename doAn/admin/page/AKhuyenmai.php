@@ -68,15 +68,11 @@
                     }
                     $conn->close();
                     ?>
-
-
                 </div>
-
-
             </div>
         </div>
-
     </div>
+
     <script>
         function deleteItem(maKhuyenMai) {
             console.log('Xóa mã khuyến mãi:', maKhuyenMai); // Kiểm tra giá trị maKhuyenMai
@@ -110,6 +106,8 @@
             window.location.href = "formThemKm.php";
         }
     </script>
+    
+
 </body>
 
 </html>
