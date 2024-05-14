@@ -83,7 +83,7 @@
                         $start_date = $_POST['start-date'];
                         $end_date = $_POST['end-date'];
                         // Truy vấn SQL để lấy các đơn hàng trong khoảng thời gian được chỉ định
-                        $sql="SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung AND Ngay BETWEEN '$start_date' AND '$end_date'";
+                        $sql="SELECT *, nguoidung.Ten, nguoidung.img FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung AND Ngay BETWEEN '$start_date' AND '$end_date'";
                     } else {
                         // Truy vấn SQL để lấy tất cả các đơn hàng
                         $sql = "SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung";
@@ -108,7 +108,7 @@
                         // Hiển thị thông tin của đơn hàng
                         echo '<div class="table-items">';
                         echo '<div class="customer">';
-                        echo '<div class="avt"></div>';
+                        echo '<div ><img src="../../img/'.$row['img'].'"class="avt"></div>';
                         echo '<div>' . $row["Ten"] . '</div>';
                         echo '</div>';
                         echo '<div style="width: 20%;">' . $row["Ngay"] . '</div>';
@@ -212,9 +212,9 @@
 
             </div>
         </div>
-        <div class="return"><a href="#">
+        <!-- <div class="return"><a href="#">
                 << Quay lại</a>
-        </div>
+        </div> -->
     </div>
 
 

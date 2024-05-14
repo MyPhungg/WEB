@@ -36,9 +36,7 @@
            } else {
                echo "Lỗi trong quá trình chuẩn bị truy vấn.";
            }
-       } else {
-           echo "Dữ liệu không được gửi đi.";
-       }
+       } 
        
        mysqli_close($con);
        

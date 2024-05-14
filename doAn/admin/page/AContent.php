@@ -12,7 +12,16 @@ if (isset($_GET['chon']) && isset($_GET['id'])) {
     } else if ($_GET['id'] == 'donhang') {
         include_once('./APhieuxuat.php');
     } else if ($_GET['id'] == 'nhacungcap') {
-        include_once('./ANCC.php');
+        // if (isset($_GET['loai'])) {
+
+        //     if ($_GET['loai'] == 'them') {
+        //         include_once('./formNcc.php');
+        //     } else if ($_GET['loai'] == 'sua') {
+        //         include_once('./formSuaNcc.php');
+        //     }
+        // } else {
+            include_once('./ANCC.php');
+        // }
     } else if ($_GET['id'] == 'nguoidung') {
         if (isset($_GET['loai'])) {
             if ($_GET['loai'] == 'them') {

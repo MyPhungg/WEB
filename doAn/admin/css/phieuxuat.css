@@ -131,6 +131,10 @@ select:focus{
     width: 70px;
     height: fit-content;
 }
+.order-detail a{
+   color: white;
+   text-decoration: none;
+}
 /* #wrapper {
     display: grid;
     place-items: center;

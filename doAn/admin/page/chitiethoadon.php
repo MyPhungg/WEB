@@ -87,7 +87,7 @@
                             while ($row = mysqli_fetch_array($result)) {
                                 echo '<div class="table-items">
                                 <div class="staff">
-                                    <div class="avt-sp"><img src="../img/'.$row["Img"].'"></div>
+                                    <div class="avt-sp"><img src="../../img/'.$row["Img"].'"></div>
                                     <div>'.$row["Tensp"].'</div>
                                 </div>
                                 <div style="width: 20%;">'.$row["Giaban"].'</div>
