@@ -196,11 +196,8 @@
     margin: 10px;
     padding: 10px;
     display:flex;
-  
-   position: relative;
-   
-    
-    
+    align-items: center;
+    justify-content: flex-start;  
 }
 .content-item .item label{
    margin-top: 40px;
@@ -323,6 +320,7 @@ right:200px ;
 height: 25px;
 width: 50px;
 }
+
 .content-item .item .ip_xoa_sp{
 width: 30px;
 height: 25px;

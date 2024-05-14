@@ -32,6 +32,23 @@
 }
 
 
+.btn_sua_sp {
+  background: #D61EAD;
+    color: #ffffff;
+    border: 0.2px solid rgba(0, 0, 0, 0.6);
+    position: absolute;
+    bottom: 40px;
+    border-radius: 4px;
+}
+.btn_sua_sp:hover {
+  background-color: #0056b3;  /* Màu nền khi hover */
+}
+.item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
 
 .addleft {
     width: 45%;
