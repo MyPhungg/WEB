@@ -2,7 +2,7 @@
 <?php
 // header('Content-Type: application/json');    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        
+        $ngay = $_POST['ngay'];
         $name = $_POST['name'];
         $phone = $_POST['phone'];
         $address = $_POST['address'];
@@ -91,7 +91,7 @@
             exit;
             
         } else {
-            $sql = "INSERT INTO nguoidung (Manguoidung, Matkhau, Ten, Email, Sodienthoai, Diachi, Loainguoidung) VALUES ('$id', '$password','$name', '$email', '$phone', '$address','Q1')";
+            $sql = "INSERT INTO nguoidung (Manguoidung, Matkhau, Ten, Email, Sodienthoai, Diachi, Ngaytao, Loainguoidung) VALUES ('$id', '$password','$name', '$email', '$phone', '$address','$ngay','Q0')";
             
             if (mysqli_query($db, $sql)) {
                 $response = array(

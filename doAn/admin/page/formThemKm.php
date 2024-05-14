@@ -38,6 +38,7 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
 </head>
 
 <body>
+    <h1><a href="AHome.php">Trang chủ>></a><a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a></h1>
     <div class="form-km">
         <form class="formkhuyenmai" id="formkhuyenmai" method="get" action="">
             <h3>Khuyến mãi</h3>
@@ -68,7 +69,7 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
     </div>
     <script>
         function redirectToAKhuyenmai() {
-            window.location.href = "AKhuyenmai.php";
+            window.location.href = "AHome.php?chon=t&id=khuyenmai";
         }
     </script>
 </body>

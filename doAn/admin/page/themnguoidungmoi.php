@@ -59,7 +59,7 @@
         border: 1px solid black;
     }
 
-        .TaoND {
+        #TND .TaoND {
         background-color: #D61EAD;
         color: #fff;
         border: none;
@@ -124,12 +124,17 @@ $(document).ready(function(){
         var id = $("#id").val();
         var email = $("#email").val();
         var password = $("#password").val();
-
+        var currentDate = new Date();
+                var year = currentDate.getFullYear();
+                var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
+                var day = currentDate.getDate();
+                var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
+                
         
         $.ajax({
             type: 'POST',
             url: 'XLthemnguoidung.php',
-            data: { name: name, phone: phone, address: address, id: id, email: email, password: password },
+            data: { name: name, phone: phone, address: address, id: id, email: email, password: password, ngay: ngay },
             dataType: 'json', 
             success: function(response){
                 if(response.status === 'success'){

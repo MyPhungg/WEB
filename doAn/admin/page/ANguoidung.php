@@ -82,11 +82,11 @@
                             echo '</div>';
                             echo '<div class="staff" data-id="' . $row['Manguoidung'] . '">';//staff
                             echo '<select>';
-                            if ($row['Loainguoidung'] == 'KH') {
-                                echo '<option value="1">Đã duyệt</option>';
+                            if ($row['Loainguoidung'] == 'Q0') {
+                                echo '<option value="0">Chưa duyệt</option>'; 
                                 // echo '<option value="0">Chưa duyệt</option>';
                             } else {
-                                echo '<option value="0">Chưa duyệt</option>'; 
+                                echo '<option value="1">Đã duyệt</option>';
                                 // echo '<option value="1">Đã duyệt</option>';
                             }
                             echo '</select>';
