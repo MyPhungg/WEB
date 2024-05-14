@@ -15,7 +15,7 @@ if (isset($_POST["txtThemsanpham"])) {
         $soluong = $_POST["txtSoluongnhap"];
         $gianhap = $_POST["txtGianhap"];
         $giaban = $_POST["txtGiaban"];
-        $path = "../../img/";
+        $path = "../img/";
 
         // Kiểm tra xem sản phẩm đã tồn tại trong cơ sở dữ liệu chưa
         $sql_check_product = mysqli_query($conn, "SELECT * FROM sanpham WHERE Tensp = '$tensp'");
@@ -52,7 +52,7 @@ if (isset($_POST["txtThemsanpham"])) {
 <body>
 <div id="topmenu">
            
-            <?php require('header.php'); ?>
+<?php require('header.php'); ?>
         </div>
     <form action="" method="POST" enctype="multipart/form-data" class="addsp">
     <h1>Thêm sản phẩm</h1>
@@ -129,6 +129,33 @@ if (isset($_POST["txtThemsanpham"])) {
    
      </div> 
     </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('.addsp');
+
+    form.addEventListener('submit', function(event) {
+        var soluongnhap = document.querySelector('input[name="txtSoluongnhap"]').value;
+        var gianhap = document.querySelector('input[name="txtGianhap"]').value;
+        var giaban = document.querySelector('input[name="txtGiaban"]').value;
+
+        if (!Number.isInteger(parseInt(soluongnhap))) {
+            alert("Vui lòng nhập số nguyên cho số lượng nhập.");
+            event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu nếu dữ liệu không hợp lệ
+        }
+
+        if (!Number.isInteger(parseInt(gianhap))) {
+            alert("Vui lòng nhập số nguyên cho giá nhập.");
+            event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu nếu dữ liệu không hợp lệ
+        }
+
+        if (!Number.isInteger(parseInt(giaban))) {
+            alert("Vui lòng nhập số nguyên cho giá bán.");
+            event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu nếu dữ liệu không hợp lệ
+        }
+    });
+});
+</script>
+
 </body>
 <script src="../scripts/main.js"></script>
 </html>

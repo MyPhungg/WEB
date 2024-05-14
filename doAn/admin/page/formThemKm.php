@@ -38,6 +38,7 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
 </head>
 
 <body>
+    <h1><a href="AHome.php">Trang chủ>></a><a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a></h1>
     <div class="form-km">
         <form class="formkhuyenmai" id="formkhuyenmai" method="get" action="">
             <h3>Khuyến mãi</h3>
@@ -68,8 +69,23 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
     </div>
     <script>
         function redirectToAKhuyenmai() {
-            window.location.href = "AKhuyenmai.php";
+            window.location.href = "AHome.php?chon=t&id=khuyenmai";
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('formkhuyenmai');
+
+            form.addEventListener('submit', function(event) {
+                var txtSale = document.querySelector('input[name="txtSale"]').value;
+                var regex = /^[0-9]+$/;
+
+                if (!regex.test(txtSale)) {
+                    alert("Vui lòng nhập số nguyên cho mức giảm.");
+                    event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu nếu dữ liệu không hợp lệ
+                }
+            });
+        });
     </script>
 </body>
 

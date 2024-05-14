@@ -195,7 +195,7 @@ $(document).ready(function(){
             success: function(response){
                 if(response.status === 'success'){
                     alert(response.message); 
-                    window.location.href = "ANguoidung.php"; 
+                    window.location.href = "AHome.php?chon=t&id=nguoidung"; 
                 } 
                 else if(response.status === 'PASSWORD')
                 {

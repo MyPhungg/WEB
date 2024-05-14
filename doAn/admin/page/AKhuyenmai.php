@@ -68,15 +68,11 @@
                     }
                     $conn->close();
                     ?>
-
-
                 </div>
-
-
             </div>
         </div>
-
     </div>
+
     <script>
         function deleteItem(maKhuyenMai) {
             console.log('Xóa mã khuyến mãi:', maKhuyenMai); // Kiểm tra giá trị maKhuyenMai
@@ -107,9 +103,11 @@
     </script>
     <script>
         function redirectToForm() {
-            window.location.href = "formThemKm.php";
+            window.location.href = "AHome.php?chon=t&id=khuyenmai&loai=them";
         }
     </script>
+    
+
 </body>
 
 </html>
