@@ -151,7 +151,11 @@
         $(document).ready(function() {
             $("#DK").submit(function(event) {
                 event.preventDefault();
-
+                var currentDate = new Date();
+                var year = currentDate.getFullYear();
+                var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
+                var day = currentDate.getDate();
+                var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
                 var name = $("#name").val();
                 var phone = $("#phone").val();
                 var address = $("#address").val();
@@ -169,7 +173,8 @@
                         id: id,
                         email: email,
                         password: password,
-                        checkPW: checkPW
+                        checkPW: checkPW,
+                        ngay: ngay
                     },
                     dataType: 'json',
                     success: function(response) {
@@ -195,7 +200,8 @@
                             alert(response.message);
                         }
                     },
-                    error: function(xhr, status, error) { console.log('bbbb');
+                    error: function(xhr, status, error) {
+                        console.log('bbbb');
                         console.log(xhr.responseText);
                     }
                 });

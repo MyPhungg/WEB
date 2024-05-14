@@ -8,7 +8,7 @@
         $id = $_POST['id'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-
+$ngay = $_POST['ngay'];
 
         // $phone = intval($phone);// khi gửi dữ liệu qua ajax bị chuyển thành chuỗi phải ép trở về int
         
@@ -76,7 +76,7 @@
             exit;
             
         } else {
-            $sql = "INSERT INTO nguoidung (Manguoidung, Matkhau, Ten, Email, Sodienthoai, Diachi, Loainguoidung) VALUES ('$id', '$password','$name', '$email', '$phone', '$address','Q2')";
+            $sql = "INSERT INTO nguoidung (Manguoidung, Matkhau, Ten, Email, Sodienthoai, Diachi, Ngaytao, Loainguoidung) VALUES ('$id', '$password','$name', '$email', '$phone', '$address','$ngay','Q0')";
             
             if (mysqli_query($db, $sql)) {
                 $response = array(

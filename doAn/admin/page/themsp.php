@@ -15,7 +15,7 @@ if (isset($_POST["txtThemsanpham"])) {
         $soluong = $_POST["txtSoluongnhap"];
         $gianhap = $_POST["txtGianhap"];
         $giaban = $_POST["txtGiaban"];
-        $path = "../../img/";
+        $path = "../img/";
 
         // Kiểm tra xem sản phẩm đã tồn tại trong cơ sở dữ liệu chưa
         $sql_check_product = mysqli_query($conn, "SELECT * FROM sanpham WHERE Tensp = '$tensp'");

@@ -103,7 +103,7 @@
     </script>
     <script>
         function redirectToForm() {
-            window.location.href = "formThemKm.php";
+            window.location.href = "AHome.php?chon=t&id=khuyenmai&loai=them";
         }
     </script>
     

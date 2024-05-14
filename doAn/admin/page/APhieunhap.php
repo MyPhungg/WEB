@@ -54,6 +54,15 @@
             border-radius: 20px;
             padding-bottom: 40px;
         }
+        .wrapper-pn {
+            /*border: solid 0.5px rgb(152, 152, 152);*/
+            width: 90%;
+            margin-top: 10px;
+            margin-left: 5%;
+            /* box-shadow: 0 7px 7px 0 rgb(87, 87, 87); */
+            border-radius: 20px;
+            padding-bottom: 40px;
+        }
 
         .top {
             display: flex;
@@ -160,6 +169,20 @@
             margin-left: 100px;
 
         }
+        .table-items-details {
+        margin: 10px 0 10px 0;
+        width: 100%;
+        height: 100px;
+        border: rgb(162, 161, 161) solid 0.5px;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        text-align: center;
+        word-break: break-all;
+        border-radius: 10px;
+
+}
     </style>
 </head>
 
@@ -173,49 +196,66 @@
             </div> -->
 
             <!-- </div> -->
-            <div class="wrapper-ctpn">
+            <div class="wrapper-pn">
                 <div class="top">
                     <div class="top-left">
                         <!--sửa-->
                         <div class="top-items">Mã sản phẩm</div>
-                        <select>
-                            <option value="1" id="id-Sp" selected>1</option>
-                            <option value="1" id="id-Sp" selected>1</option>
-                            <option value="1" id="id-Sp" selected>1</option>
+                        <select id="sel1">
+                        <option value="0"  selected>Mã</option>
+                            <?php 
+                            include 'connectDB.php';
+
+                            // Truy vấn cơ sở dữ liệu để lấy dữ liệu danh sách
+                            $sql = "SELECT * FROM sanpham";
+                            $result_sanpham = mysqli_query($conn,$sql);
+                            while($row=mysqli_fetch_array($result_sanpham)){
+                                
+
+                            ?>
+                             <option value="<?php echo $row['Masp']?>" id="<?php echo $row['Masp']?>" ><?php echo $row['Masp']?></option>
+                            <?php }?>
                         </select>
-                        <button class="btn-ThemPN">+ Thêm</button>
+                        <button class="btn-ThemPN"  type="button" onclick="addSP_toPN()">+ Thêm</button>
 
 
                     </div>
                     <!--sửa-->
-                    <div class="top-left">
-                        <div class="top-items">Phiếu nhập</div>
-                        <select>
-                            <option value="1" id="id-Sp" selected>1-CTY1</option>
-                            <option value="1" id="id-Sp" selected>1-CTY2</option>
-                            <option value="1" id="id-Sp" selected>1-CTY3</option>
-                        </select>
-                        <button class="btn-ThemPN">+ Thêm sản phẩm mới</button>
-
-                    </div>
+                    
                     <div class="top-left">
                         <div class="top-items">Mã nhà cung cấp</div>
-                        <select>
-                            <option value="1" id="id-Sp" selected>1-CTY1</option>
-                            <option value="1" id="id-Sp" selected>1-CTY2</option>
-                            <option value="1" id="id-Sp" selected>1-CTY3</option>
+                        <select id="sel2">
+                        <option value="0"  selected>Mã</option>
+                            <?php 
+                            include 'connectDB.php';
+
+                            // Truy vấn cơ sở dữ liệu để lấy dữ liệu danh sách
+                            $sql = "SELECT * FROM nhacungcap";
+                            $result_nhacungcap = mysqli_query($conn,$sql);
+                            while($row=mysqli_fetch_array($result_nhacungcap)){
+                                
+
+                            ?>
+                             <option value="<?php echo $row['Mancc']?>" id="<?php echo $row['Mancc']?>" ><?php echo $row['Mancc']?></option>
+                            <?php }?>
                         </select>
+                        <button class="btn-ThemPN">+ Thêm sản phẩm mới</button>     
+                    </div>
+                    <div class="top-left">
+                        <div class="top-items">Phiếu nhập</div>
+                        <input type="text" class="top-items"  id="mapn" name="txtmapn" readonly>
+                       
 
                     </div>
                     <!--sửa-->
                     <div class="top-left">
                         <div class="top-items">Đơn giá</div>
-                        <input type="text" class="top-items" name="txtMaNCC">
+                        <input type="text" class="top-items"  id="dongia" name="txtdongia" readonly>
                         <!-- <button class="btn-Xem">Xem thông tin</button> -->
                     </div>
                     <div class="top-left">
                         <div class="top-items">Số lượng</div>
-                        <input type="text" class="top-items" name="txtMaNV">
+                        <input type="text" class="top-items" name="txtsoluong">
                     </div>
                 </div>
                 <div style="display: flex; justify-content: center;">
@@ -229,8 +269,8 @@
                         </div>
                         <div><br></div>
                         <div><br></div>
-                        <div style="overflow-y: scroll;">
-                            <div class="table-items">
+                        <div style="overflow-y: scroll;" id="new-item">
+                            <!-- <div class="table-items">
                                 <div style="width: 20%;">SP001</div>
                                 <div class="staff">
                                     <div class="avt-sp"></div>
@@ -243,49 +283,8 @@
                                     <button type="button">X</button>
 
                                 </div>
-                            </div>
-                            <div class="table-items">
-                                <div style="width: 20%;">SP001</div>
-                                <div class="staff">
-                                    <div class="avt-sp"></div>
-                                    <div>Len milk cotton</div>
-                                </div>
-                                <div style="width: 30%;">15000 VNĐ
-                                </div>
-                                <div class="soluong">
-                                    <input type="text" value="1" style="text-align: center;width: 60%;">
-                                    <button type="button">X</button>
-
-                                </div>
-                            </div>
-                            <div class="table-items">
-                                <div style="width: 20%;">SP001</div>
-                                <div class="staff">
-                                    <div class="avt-sp"></div>
-                                    <div>Len milk cotton</div>
-                                </div>
-                                <div style="width: 30%;">15000 VNĐ
-                                </div>
-                                <div class="soluong">
-                                    <input type="text" value="1" style="text-align: center;width: 60%;">
-                                    <button type="button">X</button>
-
-                                </div>
-                            </div>
-                            <div class="table-items">
-                                <div style="width: 20%;">SP001</div>
-                                <div class="staff">
-                                    <div class="avt-sp"></div>
-                                    <div>Len milk cotton</div>
-                                </div>
-                                <div style="width: 30%;">15000 VNĐ
-                                </div>
-                                <div class="soluong">
-                                    <input type="text" value="1" style="text-align: center;width: 60%;">
-                                    <button type="button">X</button>
-
-                                </div>
-                            </div>
+                            </div> -->
+                            
                         </div>
                     </div>
 
@@ -295,14 +294,14 @@
                 <!--sửa: đem ra ngoài div-->
                 <div id="end-themPN">
                     <div class="total-price"><b>Tổng Tiền:</b>
-                        <input type="text" name="txtTongtien" id="txtTongtien">
+                        <input type="number" name="txtTongtien" id="txtTongtien" value="0" readonly>
                         VND
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content:right;">
                         <!--  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"
                  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"-->
                         <button class="btn-HoanTat">Hủy</button>
-                        <button class="btn-HoanTat">Hoàn tất</button>
+                        <button class="btn-HoanTat" >Hoàn tất</button>
 
                     </div>
                 </div>
@@ -322,29 +321,9 @@
         <!-- </div> -->
         <div class="wrapper-ctpn">
             <div class="top">
-                <div class="top-left">
-                    <div class="top-items">Mã phiếu nhập</div>
-                    <input type="text" class="top-items" name="txtMaPN">
-                </div>
-                <div class="top-left">
-                    <div class="top-items">Mã nhà cung cấp</div>
-                    <input type="text" class="top-items" name="txtMaNCC">
-                    <button class="btn-Xem">Xem thông tin</button>
-                </div>
-                <div class="top-left">
-                    <div class="top-items">Mã nhân viên nhập hàng</div>
-                    <input type="text" class="top-items" name="txtMaNV">
-                    <button class="btn-Xem">Xem thông tin</button>
-                </div>
-                <div class="top-left">
-                    <div class="top-items">Ngày tạo</div>
-                    <input type="text" class="top-items" name="txtNgaytao">
-                </div>
-                <div class="top-left">
-                    <div class="top-items">Tổng tiền</div>
-                    <input type="text" class="top-items" name="txtMaNV">
-                </div>
+           
             </div>
+
             <div style="display: flex; justify-content: center;">
                 <div class="table">
                     <div class="table-title">
@@ -356,8 +335,8 @@
                     </div>
                     <div><br></div>
                     <div><br></div>
-                    <div style="overflow-y: scroll;">
-                        <div class="table-items">
+                    <div style="overflow-y: scroll;" class="table_item_details">
+                        <!-- <div class="table-items-details">
                             <div class="staff">
                                 <div class="avt-sp"></div>
                                 <div>Len milk cotton</div>
@@ -368,43 +347,10 @@
                             <div style="width: 20%;">
                                 <input type="text" value="1" readonly style="text-align: center;width: 90%;">
                             </div>
-                        </div>
-                        <div class="table-items">
-                            <div class="staff">
-                                <div class="avt-sp"></div>
-                                <div>Len milk cotton</div>
-                            </div>
-                            <div style="width: 20%;">SP001</div>
-                            <div style="width: 30%;">15000 VNĐ
-                            </div>
-                            <div style="width: 20%;">
-                                <input type="text" value="1" readonly style="text-align: center;width: 90%;">
-                            </div>
-                        </div>
-                        <div class="table-items">
-                            <div class="staff">
-                                <div class="avt-sp"></div>
-                                <div>Len milk cotton</div>
-                            </div>
-                            <div style="width: 20%;">SP001</div>
-                            <div style="width: 30%;">15000 VNĐ
-                            </div>
-                            <div style="width: 20%;">
-                                <input type="text" value="1" readonly style="text-align: center;width: 90%;">
-                            </div>
-                        </div>
-                        <div class="table-items">
-                            <div class="staff">
-                                <div class="avt-sp"></div>
-                                <div>Len milk cotton</div>
-                            </div>
-                            <div style="width: 20%;">SP001</div>
-                            <div style="width: 30%;">15000 VNĐ
-                            </div>
-                            <div style="width: 20%;">
-                                <input type="text" value="1" readonly style="text-align: center;width: 90%;">
-                            </div>
-                        </div>
+                        </div> -->
+                       
+                        
+                       
                     </div>
 
                 </div>
@@ -416,7 +362,7 @@
     <div id="phieunhap">
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             <div class="title">Phiếu nhập</div>
-            <div class="btn-ThemNV" onclick="showThemPhieuNhap()"> + Thêm phiếu nhập</div>
+            <div class="btn-ThemNV" type="button" onclick="showThemPhieuNhap()"> + Thêm phiếu nhập</div>
             <div style="clear: both;"></div>
             <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
             <div><br></div>
@@ -431,48 +377,9 @@
                     </div>
                     <div><br></div>
                     <div><br></div>
-                    <div style="overflow-y: scroll;">
-                        <!-- hàm showChiTiet chưa dùng được -->
-                        <div class="table-items" onclick="showChiTiet()"> 
-                            <div style="width: 20%;">PN001</div>
-                            <div style="width: 20%;">NV001</div>
-                            <div style="width: 20%;">NCC001</div>
-                            <div style="width: 20%;">29/03/2024</div>
-                            <div class="status-phieunhap">
-                                <!-- <div>Bình thường</div> -->
-                                <button type="button">X</button>
-                            </div>
-                        </div>
-                        <div class="table-items">
-                            <div style="width: 20%;">PN001</div>
-                            <div style="width: 20%;">NV001</div>
-                            <div style="width: 20%;">NCC001</div>
-                            <div style="width: 20%;">29/03/2024</div>
-                            <div class="status-phieunhap">
-                                <!-- <div>Bình thường</div> -->
-                                <button type="button">X</button>
-                            </div>
-                        </div>
-                        <div class="table-items">
-                            <div style="width: 20%;">PN001</div>
-                            <div style="width: 20%;">NV001</div>
-                            <div style="width: 20%;">NCC001</div>
-                            <div style="width: 20%;">29/03/2024</div>
-                            <div class="status-phieunhap">
-                                <!-- <div>Bình thường</div> -->
-                                <button type="button">X</button>
-                            </div>
-                        </div>
-                        <div class="table-items">
-                            <div style="width: 20%;">PN001</div>
-                            <div style="width: 20%;">NV001</div>
-                            <div style="width: 20%;">NCC001</div>
-                            <div style="width: 20%;">29/03/2024</div>
-                            <div class="status-phieunhap">
-                                <!-- <div>Bình thường</div> -->
-                                <button type="button">X</button>
-                            </div>
-                        </div>
+                    <div style="overflow-y: scroll;" class="table_item">
+                        
+                       
                     </div>
                    
 
@@ -481,6 +388,7 @@
 
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function showThemPhieuNhap() {
             var a = document.getElementById('themPN');
@@ -496,12 +404,148 @@
             a.style.display = "none";
             b.style.display = "none";
         }
-
-        function showChiTiet() {
+        function confirm_addPN(){
+            
+        }
+        function addSP_toPN(){
+            var masp=document.getElementById('sel1').value;
+            var soluong=document.getElementsByName('txtsoluong')[0].value;
+           
+            $.ajax({
+                url: 'new_item_add.php',
+                type: 'POST',
+                data: { data : masp , sl:soluong},
+                dataType: 'html',
+                success: function(data) {
+                    var currentData = $('#new-item').html(); // Lấy dữ liệu hiện tại
+                    var newData = currentData + data; // Gộp dữ liệu mới vào dữ liệu hiện tại
+                    $('#new-item').html(newData); // Đặt lại nội dung phần tử HTML
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+            $.ajax({
+                url: 'xl_thanhtien_add.php',
+                type: 'POST',
+                data: { data : masp , sl:soluong},
+                dataType: 'html',
+                success: function(data) {
+                    var currentData =$('#txtTongtien').val(); // Lấy dữ liệu hiện tại
+                    var newData = parseInt(currentData) + parseInt(data); // Gộp dữ liệu mới vào dữ liệu hiện tại
+                    $('#txtTongtien').val(newData); // Đặt lại nội dung phần tử HTML
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+            
+            
+        }
+        function showChiTiet(button) {
+            var mapn= button.id;
+            console.log(mapn);
+            $.ajax({
+                url: 'load_ctpn.php',
+                type: 'POST',
+                data: { data : mapn },
+                dataType: 'html',
+                success: function(data) {
+                    $('.top').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+            $.ajax({
+                url: 'load_table_ct.php',
+                type: 'POST',
+                data: { data : mapn },
+                dataType: 'html',
+                success: function(data) {
+                    $('.table_item_details').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
             document.getElementById('chiTietPhieuNhap').style.display = "block";
             document.getElementById('phieunhap').style.display = "none";
         }
+        
+      $(document).ready(function(){
+        $.ajax({
+                url: 'load_phieunhap.php',
+                type: 'POST',
+             
+                dataType: 'html',
+                success: function(data) {
+                    $('.table_item').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            }); 
+       });
+       $('#sel1').change(function() {
+            var dongia = $(this).val();
+            
+            $.ajax({
+                url: 'hiendongia.php',
+                type: 'POST',
+                data: { data: dongia },
+                dataType: 'html',
+                success: function(data) {
+                    $('#dongia').val(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+        });
+        $('.btn-ThemNV').click(function() {
+           
+            $.ajax({
+                url: 'maphieunhap.php',
+                type: 'POST',
+             
+                dataType: 'html',
+                success: function(data) {
+                    $('#mapn').val(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+        });
+        
+        function delete_new_item(div){
+            var masp= div.id;
+            var confirmation = confirm("Bạn có chắc chắn muốn xóa?"); // Hiển thị hộp thoại xác nhận
+
+            if (confirmation) {
+
+            $(this).closest('.table-items').remove();
+            
+            }
+        }
+    
     </script>
+ 
 </body>
 
 </html>

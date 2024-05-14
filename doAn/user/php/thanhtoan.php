@@ -43,8 +43,8 @@ function connect()
                 <div class="row">
                     <div class="breadcrumb col-12">
                         <div class="breadcrumb__links horizontal">
-                            <div class="breadcrumb__link body2">Trang chủ</div>
-                            <div class="breadcrumb__link body2">Giỏ hàng</div>
+                            <div class="breadcrumb__link body2"><a href="home.php">Trang chủ</a></div>
+                            <div class="breadcrumb__link body2"><a href="home.php?chon=giohang">Giỏ hàng</a></div>
                             <div class="breadcrumb__link body2">Thanh toán</div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@ function connect()
                 if (!$conn) {
                     die("Lỗi" . mysqli_connect_error());
                 }
-                $maNguoiDung = "KH001";
+                $maNguoiDung = $_SESSION['user_id'];
                 $sql = "SELECT * FROM nguoidung WHERE Manguoidung='$maNguoiDung'";
                 $rs = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($rs) > 0) {

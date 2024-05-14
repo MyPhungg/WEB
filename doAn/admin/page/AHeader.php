@@ -62,7 +62,7 @@
                     }
                     ?>
                     <div class="user-icon">
-                        <img src="../../img/<?php echo $imgSrc; ?>" alt="Avatar" class="avt">
+                        <img src="../img/<?php echo $imgSrc; ?>" alt="Avatar" class="avt">
 
                         <div class="sub-menu">
                             <ul>
