@@ -291,7 +291,7 @@
         <script>
             function confirmCancel() {
                 var confirmation = confirm("Bạn có chắc chắn muốn hủy đơn hàng không?");
-                if (confirmation) {console.log('aaa');
+                if (confirmation) {
                     document.getElementById("cancel-form").submit();
                 }
             }
@@ -300,7 +300,6 @@
         <?php
         // Kiểm tra xem đã nhấn vào nút hủy đơn chưa
         if (isset($_POST['cancel_order'])) {
-            echo 'abc';
             $conn = connectDB();
             // Lấy mã đơn hàng cần hủy từ form hoặc các nguồn dữ liệu khác
             $maDonHang = $_POST['maDonHang'];
@@ -316,9 +315,29 @@
 
             $affectedRows = mysqli_stmt_affected_rows($stmt);
             if ($affectedRows > 0) {
-                echo "Cập nhật trạng thái đơn hàng thành công!";
-                echo "<script>window.location = 'home.php?chon=tttk';</script>";
-                exit();
+
+                $sqlCTDH = "SELECT * FROM chitietdonhang WHERE Madonhang=?";
+                $stmtCTDH = mysqli_prepare($conn, $sqlCTDH);
+                mysqli_stmt_bind_param($stmtCTDH, 'i',  $maDonHang);
+                mysqli_stmt_execute($stmtCTDH);
+                $result = mysqli_stmt_get_result($stmtCTDH);
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $soluong = $row["Soluong"];
+                    $masp = $row["Masp"];
+
+                    $sqlCapNhatSoLuong = "UPDATE sanpham SET Soluongconlai=Soluongconlai+? WHERE Masp=?";
+
+                    $stmtCNSL = mysqli_prepare($conn, $sqlCapNhatSoLuong);
+
+                    mysqli_stmt_bind_param($stmtCNSL, 'ii', $soluong, $masp);
+
+                    mysqli_stmt_execute($stmtCNSL);
+                    
+                    echo "Cập nhật trạng thái đơn hàng thành công!";
+                    echo "<script>window.location = 'home.php?chon=tttk';</script>";
+                    exit();
+                }
             } else {
                 echo "Lỗi: " . mysqli_error($conn);
             }
@@ -329,7 +348,7 @@
         <form id="cancel-form" name="cancel-form" method="post" action="">
             <input type="hidden" name="maDonHang" value="<?php echo $maDH; ?>">
             <!-- <button type="button" name="cancel_order">Hủy đơn hàng</button> -->
-            <button type="submit" name="cancel_order"  onclick="confirmCancel()">Hủy đơn hàng</button>
+            <button type="submit" name="cancel_order" onclick="confirmCancel()">Hủy đơn hàng</button>
 
         </form>
         <script>

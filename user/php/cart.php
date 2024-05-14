@@ -10,7 +10,11 @@ $conn = new mysqli($server, $username, $pass, $database);
 if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
-
+if (!isset($_SESSION["user_id"])) {
+    echo '<script>alert("Vui lòng đăng nhập để xem giỏ hàng.");
+    window.location.href = "dangnhap.php";
+    </script>';
+}
 // Thêm sản phẩm vào giỏ 
 if (isset($_POST['them']) && ($_POST['them'])) {
     if (isset($_SESSION['user_id'])) {
@@ -26,12 +30,12 @@ if (isset($_POST['them']) && ($_POST['them'])) {
         if ($check_result->num_rows > 0) {
             // Nếu sản phẩm đã tồn tại, cập nhật số lượng
             $existing_item = $check_result->fetch_assoc();
-            $new_quantity = $existing_item['soluong'] + $soluong; // Tính toán số lượng mới
-            $update_query = "UPDATE giohang SET soluong = '$new_quantity' WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
+            $new_quantity = $existing_item['Soluong'] + $soluong; // Tính toán số lượng mới
+            $update_query = "UPDATE giohang SET Soluong = '$new_quantity' WHERE Manguoidung = '$manguoidung' AND Masp = '$masp'";
             $conn->query($update_query);
         } else {
             // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
-            $insert_query = "INSERT INTO giohang (Manguoidung, Masp, soluong) VALUES ('$manguoidung', '$masp', '$soluong')";
+            $insert_query = "INSERT INTO giohang (Manguoidung, Masp, Soluong) VALUES ('$manguoidung', '$masp', '$soluong')";
             $conn->query($insert_query);
         }
     } else {
@@ -59,14 +63,17 @@ function showgiohang()
     // Hiển thị thông tin sản phẩm trong giao diện
     while ($row = mysqli_fetch_assoc($result)) {
         echo '<div class="table-items-Q">';
-        echo '<img src="' . $row['Img'] . '" alt="' . $row['Tensp'] . '" style="width: 40%;">';
+        echo '<div style="width: 40%; display: flex; justify-content: space-evenly; align-items: center;">';
+        echo '<img src="../img/' . $row['Img'] . '" alt="' . $row['Tensp'] . '" style="width: 50px;"> 
+        <div>' . $row['Tensp'] . '</div>
+        </div>';
         echo '<div style="width: 15%;">' . $row['Giaban'] . ' VND</div>';
         echo '<div class="btn_tang_giam_soluong">';
         echo '<button class="quantity-btn decrease" data-masp="' . $row['Masp'] . '" data-action="decrease">-</button>';
-        echo '<div class="soluongsp" data-masp="' . $row['Masp'] . '" contenteditable="true">' . $row['soluong'] . '</div>';
+        echo '<div class="soluongsp" data-masp="' . $row['Masp'] . '" contenteditable="true">' . $row['Soluong'] . '</div>';
         echo '<button class="quantity-btn increase" data-masp="' . $row['Masp'] . '" data-action="increase">+</button>';
         echo '</div>';
-        $tongtiensanpham = $row['Giaban'] * $row['soluong'];
+        $tongtiensanpham = $row['Giaban'] * $row['Soluong'];
         echo '<div style="width: 15%;">' . $tongtiensanpham . ' VND</div>';
         echo '<form method="post" action="xulyxoaspgiohang.php">';
         echo '<input type="hidden" name="masp" value="' . $row['Masp'] . '">';
@@ -92,6 +99,10 @@ $conn->close();
     <link rel="stylesheet" href="../css/cssdoan.css">
     <title>Document</title>
     <style>
+        a{
+            color: black;
+            text-decoration: none;
+        }
         .table-items-Q {
             margin: 10px 0 10px 0;
             width: 100%;
@@ -138,7 +149,7 @@ $conn->close();
                 <div class="row">
                     <div class="breadcrumb col-12">
                         <div class="breadcrumb__links horizontal">
-                            <div class="breadcrumb__link body2">Trang chủ</div>
+                            <div class="breadcrumb__link body2"><a href="home.php">Trang chủ</a></div>
                             <div class="breadcrumb__link body2">Giỏ hàng</div>
                         </div>
                     </div>
@@ -163,8 +174,8 @@ $conn->close();
                     </div>
                 </div>
                 <div>
-                    <button id="backButton" class="type-back">&lt; Trở lại mua sắm</button>
-                    <button id="cart-checkout-btn" class="custom-button">Thanh toán</button>
+                    <button id="backButton" class="type-back">&lt; <a href="home.php">Trở lại mua sắm</a></button>
+                    <button id="cart-checkout-btn" class="custom-button" ><a href="home.php?chon=thanhtoan">Thanh toán</a></button>
                 </div>
             </div>
 

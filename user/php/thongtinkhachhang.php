@@ -43,6 +43,7 @@
             overflow: hidden;
             position: relative;
             margin: auto;
+
         }
 
         .ThongTinKhachHang input[type="text"],
@@ -77,7 +78,7 @@
 
         tbody tr {
             /* border: 1px solid black; */
-            /* margin-bottom: 20px; 
+        /* margin-bottom: 20px; 
         }
 
         .LichSuMuaHang {
@@ -98,10 +99,11 @@
         } */
     </style>
 </head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <body>
     <div class="form_TTKhachHang">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <h1>Thông tin của tôi</h1>
             <p><a href="./home.php">Trang chủ >> </a><span class="chuXam">Thông tin của tôi</span></p>
             <div class="ThongTinKhachHang">
@@ -115,25 +117,46 @@
                         $sql = "SELECT * FROM nguoidung WHERE Manguoidung='$maKH'";
                         $rs = mysqli_query($conn, $sql);
                         if ($row = mysqli_fetch_array($rs)) {
-                            echo '<div class="photo">
-                            <img src="../img/' . $row["img"] . '" alt="ảnh">
-                        </div>
+                            echo '<div style="display:flex; flex-direction: column;">
+                                <div class="photo">
+                                    <img id="hinhAnh" src="../img/' . $row["img"] . '" alt="ảnh" style="width: 100%; height:100%;">
+                                </div>
+                                <input type="file" id="uploadInput" name="txtHinhAnh" onchange="hienThiAnh(event)">
+                                </div>
+                        <script>
+                        function hienThiAnh(event) {
+                            var input = event.target;
+                            var reader = new FileReader();
+                            reader.onload = function(){
+                                var dataURL = reader.result;
+                                var img = document.getElementById("hinhAnh");
+                                img.src = dataURL;
+                            };
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                        </script>
                         <div class="ThongTinKhachHang-data1">
                             <p>Họ tên:</p>
-                            <input type="text" name="name" value="' . $row["Ten"] . '">
+                            <input type="text" id="name" name="name" value="' . $row["Ten"] . '">
+                            <div id="tbTen"></div>
                             <p>Địa chỉ:</p>
-                            <input type="text" name="address" value="' . $row["Diachi"] . '">
+                            <input type="text" id="address" name="address" value="' . $row["Diachi"] . '">
+                            <div id="tbDiaChi"></div>
                             <p>Mật khẩu:</p>
-                            <input type="password" name="password" value="' . $row["Matkhau"] . '">
+                            <input type="password" id="password" name="password" value="' . $row["Matkhau"] . '">
+                            <div id="tbMatKhau"></div>
                         </div>
                         <div class="ThongTinKhachHang-data2">
                             <p>Số điện thoại:</p>
-                            <input type="text" name="phone" value="' . $row["Sodienthoai"] . '">
+                            <input type="text" id="phone" name="phone" value="' . $row["Sodienthoai"] . '">
+                            <div id="tbSDT"></div>
                             <p>Email:</p>
-                            <input type="text" name="email" value="' . $row["Email"] . '">
+                            <input type="text" id="email" name="email" value="' . $row["Email"] . '">
+                            <div id="tbEmail"></div>
                             <p>Xác nhận mật khẩu:</p>
-                            <input type="password" name="check-password" value="' . $row['Matkhau'] . '">
-                            <p class="">Bạn muốn thay đổi thông tin, <button class="check-ThongTin" id="check-ThongTin" name="thaydoi">Thay đổi</button></p>
+                            <input type="password" id="check-password" name="check-password" value="' . $row['Matkhau'] . '">
+                            <div id="tbLaiMatKhau"></div>
+                            <p class="">Bạn muốn thay đổi thông tin, <button class="check-ThongTin" id="check-ThongTin" name="thaydoi" onclick="validateForm(event)">Thay đổi</button></p>
                         </div>';
                         }
                         mysqli_close($conn);
@@ -144,34 +167,91 @@
                 loadData();
 
                 ?>
-                <!-- <script>
-                    $(document).ready(function(){
-                        loadData();
-                    
-                    $('#check-ThongTin').on('click', function(){
-                        var ten = $('.name').val();
-                        var diachi = $('.address').val();
-                        var matkhau = $('.password').val();
-                        var sdt = $('.phone').val();
-                        var email = $('.email').val();
-                        var rpw = $('.check-password').val();
-                        if(!ten||!diachi||!matkhau||!sdt||!email||!rpw){
-                            alert('Không đủ dữ liệu!');
 
-                        }else{
-                            $.ajax({
-                                url: "XLsuathongtin.php",
-                                method: "POST",
-                                data: {ten:ten, diachi:diachi,matkhau:matkhau,sdt:sdt,email:email,rpw:rpw},
-                                success:function(data){
-                                    alert('Thành công');
-                                    loadData();
-                                }
-                            });
+                <script>
+                    // Regex pattern
+
+
+
+                    function validateForm(event) {
+                        var pattern_ten = /^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆđĐìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưỪừỬữỮứỨựỰỳỲỷỶỹỸýÝỵỴ\s]+$/;
+                        var pattern_mk_rmk = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+                        var pattern_email = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+                        var pattern_sdt = /^0\d{9}$/;
+                        var ten = document.getElementById('name').value;
+                        var diaChi = document.getElementById('address').value;
+                        var mk = document.getElementById('password').value;
+                        var sdt = document.getElementById('phone').value;
+                        var email = document.getElementById('email').value;
+                        var rmk = document.getElementById('check-password').value;
+                        if (!ten) {
+                            document.getElementById('tbTen').innerHTML = 'Tên không được phép bỏ trống!';
+                            document.getElementById('name').focus();event.preventDefault();
+                            return false;
                         }
-                    });
-                });
-                </script> -->
+                        if (!diaChi) {
+                            document.getElementById('tbDiaChi').innerHTML = 'Địa chỉ không được phép bỏ trống!';
+                            document.getElementById('address').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!mk) {
+                            document.getElementById('tbMatKhau').innerHTML = 'Mật khẩu không được phép bỏ trống!';
+                            document.getElementById('password').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!sdt) {
+                            document.getElementById('tbSDT').innerHTML = 'Số điện thoại không được phép bỏ trống!';
+                            document.getElementById('phone').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!email) {
+                            document.getElementById('tbEmail').innerHTML = 'Email không được phép bỏ trống!';
+                            document.getElementById('email').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!rmk) {
+                            document.getElementById('tbLaiMatKhau').innerHTML = 'Nhập lại mật khẩu không được phép bỏ trống!';
+                            document.getElementById('check-password').focus();event.preventDefault();
+                            return false;
+                        }
+                        if (!pattern_ten.test(ten)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbTen').innerHTML = 'Tên không được phép có ký tự đặc biệt!';
+                            document.getElementById('name').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (!pattern_mk_rmk.test(mk)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbMatKhau').innerHTML = 'Mật khẩu phải đủ 8 ký tự, có kí tự in hoa,in thường,ký tự đặc biệt và số!';
+                            document.getElementById('password').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (!pattern_sdt.test(sdt)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbSDT').innerHTML = 'Số điện thoại gồm 10 số, bắt đầu bằng 0';
+                            document.getElementById('phone').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (!pattern_email.test(email)) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbEmail').innerHTML = 'Email phải có @ và .';
+                            document.getElementById('email').focus();event.preventDefault();
+                            return false;
+                        }
+
+                        if (rmk != mk) {
+                            // Xử lý khi dữ liệu không hợp lệ
+                            document.getElementById('tbLaiMatKhau').innerHTML = 'Mật khẩu không trùng!';
+                            document.getElementById('check-password').focus();event.preventDefault();
+                            return false;
+                        }
+                        
+                    }
+                    // Kiểm tra dữ liệu
+                </script>
 
                 <?php
                 $pattern_ten = "/^[a-zA-ZàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆđĐìÌỉỈĩĨíÍịỊòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢùÙủỦũŨúÚụỤưỪừỬữỮứỨựỰỳỲỷỶỹỸýÝỵỴ\\s]+$/"; // chỉ chấp nhận các ký tự chữ và khoảng trắng
@@ -181,103 +261,134 @@
                 // $
                 // include('./connect.php');
                 $conn = connectDB();
+                // if (isset($_POST["thaydoi"])) {
                 if (isset($_SESSION['user_id'])) {
                     $maKH = $_SESSION['user_id'];
                     if (isset($_POST['thaydoi'])) {
-                        if (isset($_POST["name"]) && isset($_POST['address']) && isset($_POST['password']) && isset($_POST['phone']) && isset($_POST['email']) && isset($_POST['check-password'])) {
-                            $ten = $_POST["name"];
-                            $diaChi = $_POST['address'];
-                            $mk = $_POST['password'];
-                            $sdt = $_POST['phone'];
-                            $email = $_POST['email'];
-                            $rmk = $_POST['check-password'];
 
-                            $sql = "UPDATE nguoidung SET Ten='$ten',
-                                                    Diachi='$diaChi',
-                                                    Matkhau='$mk',
-                                                    Sodienthoai='$sdt',
-                                                    Email='$email'
-                                               WHERE Manguoidung='$maKH'     ";
-                            $rs = mysqli_query($conn, $sql);
-                            if ($rs == true) {
-                                echo "<script>alert('Cập nhật thông tin thành công');</script>";
-                                echo "<script>window.location = 'home.php?chon=tttk';</script>";
-                                exit();
+                        if (!empty($_POST["name"]) && !empty($_POST['address']) && !empty($_POST['password']) && !empty($_POST['phone']) && !empty($_POST['email']) && !empty($_POST['check-password'])) {
+                            if (!empty($_FILES["txtHinhAnh"]["name"])) {
+                                echo "abc";
+                                $ten = $_POST["name"];
+                                $diaChi = $_POST['address'];
+                                $mk = $_POST['password'];
+                                $sdt = $_POST['phone'];
+                                $email = $_POST['email'];
+                                $rmk = $_POST['check-password'];
+
+                                $tenTep = $_FILES['txtHinhAnh']['name'];
+                                $duongDanTam = $_FILES['txtHinhAnh']['tmp_name'];
+                                $duongDanLuu = "../img/" . $tenTep;
+                                if (move_uploaded_file($duongDanTam, $duongDanLuu)) {
+                                    $hinhanh = $tenTep;
+                                    $sql = "UPDATE nguoidung SET Ten=?, Diachi=?, Matkhau=?, Sodienthoai=?, Email=?, img=? WHERE Manguoidung=?";
+                                    $stmt = mysqli_prepare($conn, $sql);
+                                    mysqli_stmt_bind_param($stmt, "sssssss", $ten, $diaChi, $mk, $sdt, $email, $hinhanh, $maKH);
+                                    mysqli_stmt_execute($stmt);
+                                    echo "aaaa";
+                                    // Kiểm tra kết quả
+                                    if (mysqli_stmt_affected_rows($stmt) > 0) {
+                                        echo "<script>alert('Cập nhật thông tin thành công');</script>";
+                                        echo "<script>window.location = 'home.php?chon=tttk';</script>";
+                                        exit();
+                                    } else {
+
+                                        // echo "<script>alert('Cập nhật thông tin thất bại');</script>";
+                                        echo "" . mysqli_error($conn);
+                                    }
+
+                                    mysqli_stmt_close($stmt);
+                                }
                             } else {
-                                echo "<script>alert('Cập nhật thông tin thất bại');</script>";
+                                // var_dump($_POST);
+                                $ten = $_POST["name"];
+                                $diaChi = $_POST['address'];
+                                $mk = $_POST['password'];
+                                $sdt = $_POST['phone'];
+                                $email = $_POST['email'];
+                                $rmk = $_POST['check-password'];
+
+                                $sql = "UPDATE nguoidung SET Ten=?, Diachi=?, Matkhau=?, Sodienthoai=?, Email=? WHERE Manguoidung=?";
+                                $stmt = mysqli_prepare($conn, $sql);
+                                mysqli_stmt_bind_param($stmt, "ssssss", $ten, $diaChi, $mk, $sdt, $email,  $maKH);
+                                mysqli_stmt_execute($stmt);
+                                echo "bbbb";
+                                // Kiểm tra kết quả
+                                if (mysqli_stmt_affected_rows($stmt) > 0) {
+                                    echo "<script>alert('Cập nhật thông tin thành công');</script>";
+                                    echo "<script>window.location = 'home.php?chon=tttk';</script>";
+                                    exit();
+                                } else {
+                                    echo mysqli_error($conn);
+                                    echo "<script>alert('Cập nhật thông tin thất bại');</script>";
+                                }
+
+                                mysqli_stmt_close($stmt);
                             }
                         }
                     }
                 }
+                // }
+
                 mysqli_close($conn);
                 ?>
             </div>
             <h1>Lịch sử mua hàng</h1>
+            <script>
 
-        <div id="wrapper">
-            <div class="table">
-                <div class="table-title">
-                    <!-- <div style="width: 20%; font-weight: bold;">Khách hàng</div> -->
-                    <div style="width: 25%; font-weight: bold;">Số hóa đơn</div>
-                    <div style="width: 25%; font-weight: bold;">Ngày mua</div>
-                    <div style="width: 25%; font-weight: bold;">Tổng tiền</div>
-                    <div style="width: 25%; font-weight: bold;">Trạng thái</div>
-                </div>
-                <div><br></div>
-                <div><br></div>
-                <div style="overflow-y: scroll;">
-                <?php
-                    $conn = connectDB();
-                    if (isset($_SESSION['user_id'])) {
-                        $maKH = $_SESSION['user_id'];
-                        $sql = mysqli_query($conn, "SELECT * FROM donhang WHERE maKhachhang = '$maKH'");
-                        while ($row = mysqli_fetch_array($sql)) {
-                            // Truy vấn SQL để tính tổng giá trị của mỗi đơn hàng
-                            // $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
-    
-                            // $row_total = mysqli_fetch_assoc($sql_total);
-                            // $total_price = $row_total["TongTien"];
-                            // $ma = $row["Madonhang"];
-                        
-                            // // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
-                            // $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
-                            // mysqli_query($con, $update_query);
-                            echo '<div class="table-items">';
-                            
-                            // echo '<div class="customer">';
-                            echo '<div style="width: 25%;">' . $row["Madonhang"] . '</div>';
-                            echo '<div style="width: 25%;">' . $row["Ngay"] . '</div>';
-                            echo '<div style="width: 25%;">' . $row["Tonggiatri"] . '</div>';
-                            echo '<div class="btn">';
-                            if ($row["Trangthai"] == 0) {
-                                echo '<div class="status-orders">Chưa xác nhận</div>';
+            </script>
+            <div id="wrapper">
+                <div class="table">
+                    <div class="table-title">
+                        <!-- <div style="width: 20%; font-weight: bold;">Khách hàng</div> -->
+                        <div style="width: 25%; font-weight: bold;">Số hóa đơn</div>
+                        <div style="width: 25%; font-weight: bold;">Ngày mua</div>
+                        <div style="width: 25%; font-weight: bold;">Tổng tiền</div>
+                        <div style="width: 25%; font-weight: bold;">Trạng thái</div>
+                    </div>
+                    <div><br></div>
+                    <div><br></div>
+                    <div style="overflow-y: scroll;">
+                        <?php
+                        $conn = connectDB();
+                        if (isset($_SESSION['user_id'])) {
+                            $maKH = $_SESSION['user_id']; //SELECT * FROM table_name ORDER BY ngay_column DESC
+                            $sql = mysqli_query($conn, "SELECT * FROM donhang WHERE maKhachhang = '$maKH' ORDER BY Ngay DESC");
+                            while ($row = mysqli_fetch_array($sql)) {
+                                echo '<div class="table-items">';
+
+                                echo '<div style="width: 25%;">' . $row["Madonhang"] . '</div>';
+                                echo '<div style="width: 25%;">' . $row["Ngay"] . '</div>';
+                                echo '<div style="width: 25%;">' . $row["Tonggiatri"] . '</div>';
+                                echo '<div class="btn">';
+                                if ($row["Trangthai"] == 0) {
+                                    echo '<div class="status-orders">Chưa xác nhận</div>';
+                                }
+                                if ($row["Trangthai"] == 1) {
+                                    echo '<div class="status-orders">Đã xử lý</div>';
+                                }
+                                if ($row["Trangthai"] == 2) {
+                                    echo '<div class="status-orders">Đang giao hàng</div>';
+                                }
+                                if ($row["Trangthai"] == 3) {
+                                    echo '<div class="status-orders">Đã giao hàng</div>';
+                                }
+                                if ($row["Trangthai"] == 4) {
+                                    echo '<div class="status-orders">Đã hủy hàng</div>';
+                                }
+
+                                echo '</div>';
+                                echo '<button type="button" class="order-detail"><a href="home.php?chon=ctdh&maDH=' . $row['Madonhang'] . '">Chi tiết</a></button>';
+                                echo '</div>';
                             }
-                            if ($row["Trangthai"] == 1) {
-                                echo '<div class="status-orders">Đã xử lý</div>';
-                            }
-                            if ($row["Trangthai"] == 2) {
-                                echo '<div class="status-orders">Đang giao hàng</div>';
-                            }
-                            if ($row["Trangthai"] == 3) {
-                                echo '<div class="status-orders">Đã giao hàng</div>';
-                            }
-                            if ($row["Trangthai"] == 4){
-                                echo '<div class="status-orders">Đã hủy hàng</div>';
-                            }
-                           
-                            echo '</div>';
-                            echo '<button type="button" class="order-detail"><a href="home.php?chon=ctdh&maDH=' . $row['Madonhang'] . '">Chi tiết</a></button>';
-                            echo '</div>';
-                            
                         }
-                    }
-                    
-                    
-                    mysqli_close($conn);
-                    
-                    
-                    ?>
-                    <!-- <div class="table-items">
+
+
+                        mysqli_close($conn);
+
+
+                        ?>
+                        <!-- <div class="table-items">
                         <div class="customer">
                             <div class="avt"></div>
                             <div>KH001</div>
@@ -346,17 +457,17 @@
                         </div>
                     </div> -->
 
-                </div>
+                    </div>
 
+                </div>
             </div>
-        </div>
-        
-        <!-- <div class="return"><a href="#">
+
+            <!-- <div class="return"><a href="#">
                 << Quay lại</a>
         </div> -->
     </div>
 
-        </form>
+    </form>
     </div>
 </body>
 

@@ -6,6 +6,10 @@
     <title>Thông tin khách hàng</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
+    a{
+        color: black;
+        text-decoration: none;
+    }
     .form_TTKhachHang{
         border: 2px solid black;
         padding: 20px;
@@ -79,7 +83,7 @@
     <div class="form_TTKhachHang">
         <form id="TND" action="XLthemnguoidung.php" method="post">
             <h1>Thêm người dùng mới</h1>
-            <p>Trang chủ >> <span class="chuXam">Người dùng -> Thêm người dùng mới</span></p>
+            <p><a href="AHome.php">Trang chủ >> </a><span class="chuXam"><a href="AHome.php?chon=t&id=nguoidung">Người dùng >></a></span><span> Thêm người dùng mới</span></p>
             <div class="ThongTinKhachHang">
                 <div class="photo">
                     <img src="" alt="ảnh">
