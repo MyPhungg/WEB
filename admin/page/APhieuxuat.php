@@ -95,13 +95,11 @@
 
                    
                     while ($row = mysqli_fetch_array($result)) {
-<<<<<<< HEAD
                        
                         $ma = $row["Madonhang"];
                         
                         // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
                         
-=======
                         // $sql_total = mysqli_query($con, "SELECT SUM(s.Giaban * c.Soluong) AS TongTien FROM chitietdonhang c JOIN sanpham s ON c.Masp = s.Masp WHERE c.Madonhang = " . $row["Madonhang"]);
 
                         // // Lấy tổng giá trị của đơn hàng từ kết quả của truy vấn
@@ -112,7 +110,6 @@
                         // // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
                         // $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
                         // mysqli_query($con, $update_query);
->>>>>>> 5d36cf01c2a62f73be66917c0b9c07e66428e3b1
 
                         
                         echo '<div class="table-items">';
@@ -122,11 +119,7 @@
                         echo '</div>';
                         echo '<div style="width: 20%;">' . $row["Ngay"] . '</div>';
                         echo '<div style="width: 20%;">' . $row["Madonhang"] . '</div>';
-<<<<<<< HEAD
                         echo '<div style="width: 20%;">' . $row["Tonggiatri"]. '</div>';
-=======
-                        echo '<div style="width: 20%;">' . $row["Tonggiatri"] . '</div>';
->>>>>>> 5d36cf01c2a62f73be66917c0b9c07e66428e3b1
                         echo '<div class="btn">';
                         if ($row["Trangthai"] == 0) {
                             echo '<div class="status-orders">Chưa xác nhận</div>';
