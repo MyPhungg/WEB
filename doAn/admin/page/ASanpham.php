@@ -64,42 +64,42 @@ $connn->close();
 
 <body>
     <?php
-    $conn = mysqli_connect("localhost", "root", "", "bolashop");
-    $dssp = array();
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['sapxep']) && isset($_POST['kieusap'])) {
-            $sapxep = $_POST['sapxep'];
-            $kieuxep = $_POST['kieusap'];
-            if ($kieuxep == 'giam') {
-                $kieusapxep = 'DESC';
-            } else {
-                $kieusapxep = 'ASC';
-            }
-            $sql_sanpham = mysqli_query($conn, "SELECT * FROM sanpham ORDER BY $sapxep $kieusapxep");
-            while ($row_sanpham = mysqli_fetch_array($sql_sanpham)) {
-                $textupd = "";
-                $textdel = "";
-                if (!$isUpdate) {
-                    $textupd = "hidden";
-                }
-                if (!$isDelete) {
-                    $textdel = "hidden";
-                }
+    // $conn = mysqli_connect("localhost", "root", "", "bolashop");
+    // $dssp = array();
+    // if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //     if (isset($_POST['sapxep']) && isset($_POST['kieusap'])) {
+    //         $sapxep = $_POST['sapxep'];
+    //         $kieuxep = $_POST['kieusap'];
+    //         if ($kieuxep == 'giam') {
+    //             $kieusapxep = 'DESC';
+    //         } else {
+    //             $kieusapxep = 'ASC';
+    //         }
+    //         $sql_sanpham = mysqli_query($conn, "SELECT * FROM sanpham ORDER BY $sapxep $kieusapxep");
+    //         while ($row_sanpham = mysqli_fetch_array($sql_sanpham)) {
+    //             $textupd = "";
+    //             $textdel = "";
+    //             if (!$isUpdate) {
+    //                 $textupd = "hidden";
+    //             }
+    //             if (!$isDelete) {
+    //                 $textdel = "hidden";
+    //             }
 
-                echo '<div class="item" id="item-' . $row_sanpham["Masp"] . '">';
-                echo '<img src="../../img/' . $row_sanpham["Img"] . '" alt="">';
-                echo '<label class="item-tensp">' . $row_sanpham["Tensp"] . '</label>';
-                echo '<label class="item-dongia">' . $row_sanpham["Giaban"] . ' VND</label>';
-                echo '<label class="item-soluong">' . $row_sanpham["Soluongconlai"] . '</label>';
-                echo '<div class="item-actions">';
-                echo '<a href="AHome.php?chon=t&id=sanpham&loai=sua&Masp=' . $row_sanpham["Masp"] . '" class="btn_sua_sp  ' . $textupd . '">Sửa</a>';
-                echo '<button type="button" class="delete-btn-sp  ' . $textdel . '" onclick="deleteItem(\'' . $row_sanpham["Masp"] . '\')">Xóa</button>';
-                echo '</div>';
-                echo '</div>';
-            }
-        }echo '<script>window.location.href="AHome.php?chon=t&id=sanpham"</script>';
-        exit;
-    }
+    //             echo '<div class="item" id="item-' . $row_sanpham["Masp"] . '">';
+    //             echo '<img src="../../img/' . $row_sanpham["Img"] . '" alt="">';
+    //             echo '<label class="item-tensp">' . $row_sanpham["Tensp"] . '</label>';
+    //             echo '<label class="item-dongia">' . $row_sanpham["Giaban"] . ' VND</label>';
+    //             echo '<label class="item-soluong">' . $row_sanpham["Soluongconlai"] . '</label>';
+    //             echo '<div class="item-actions">';
+    //             echo '<a href="AHome.php?chon=t&id=sanpham&loai=sua&Masp=' . $row_sanpham["Masp"] . '" class="btn_sua_sp  ' . $textupd . '">Sửa</a>';
+    //             echo '<button type="button" class="delete-btn-sp  ' . $textdel . '" onclick="deleteItem(\'' . $row_sanpham["Masp"] . '\')">Xóa</button>';
+    //             echo '</div>';
+    //             echo '</div>';
+    //         }
+    //     }echo '<script>window.location.href="AHome.php?chon=t&id=sanpham"</script>';
+    //     exit;
+    // }
     
     ?>
     <form action="" name="quanli_sp" method="get" class="ql_sp">
@@ -114,7 +114,7 @@ $connn->close();
 
         </div>
         <!-- <form id="sapxep" method="post" action="ASanpham.php"> -->
-            <div><select id="sapxep">
+            <!-- <div><select id="sapxep">
                     <option value="Masp">Theo mã sản phẩm</option>
                     <option value="Tensp">Theo tên sản phẩm</option>
                     <option value="Giaban">Theo giá sản phẩm</option>
@@ -124,9 +124,9 @@ $connn->close();
                     <option value="giam">Giảm</option>
                 </select>
                 <br>
-                <!-- <button type="submit" id="btn-sapxep">Sắp xếp</button> -->
-            </div>
-        <!-- </form> -->
+                 <button type="submit" id="btn-sapxep">Sắp xếp</button> 
+            </div> 
+         </form> -->
         <div class="content_form-qlsp">
             <div class="header-content-qlsp">
                 <label for="">Sản phẩm</label>
