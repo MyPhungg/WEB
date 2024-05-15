@@ -193,27 +193,31 @@ function connect()
                     <p class="total-row"></p>
 
                     <?php
-                    if (isset($_GET["loai"]) == 'muangay') {
-                        $maNguoiDung = $_SESSION["user_id"];
-                        $maSP = $_SESSION["Masp"];
-                        $soLuong = $_SESSION["Soluong"];
-
-                        $sql = "SELECT * FROM sanpham sp WHERE Masp = '$maSP'";
-                        $rs = mysqli_query($conn, $sql);
-                        if (!$rs) {
-                            die("Lỗi truy vấn: " . mysqli_error($conn));
-                        }
-                        if (mysqli_num_rows($rs) > 0) {
-                            while ($row = mysqli_fetch_array($rs)) {
-                                echo '<br>
-                            <div class="list-title">
-                                    <div style="width: 50%;" id="'.$maSP.'">' . $row["Tensp"] . ' </div>
-                                    <div style="width: 25%; text-align: center">' . $soLuong . '</div>
-                                    <div style="width: 25%; text-align: center">' . $row["Giaban"] . ' VNĐ</div>
-                            </div>';
+                    if (isset($_GET["loai"])){
+                        if($_GET["loai"]== 'muangay'){
+                            $maNguoiDung = $_SESSION["user_id"];
+                            $maSP = $_SESSION["Masp"];
+                            $soLuong = $_SESSION["Soluong"];
+    
+                            $sql = "SELECT * FROM sanpham sp WHERE Masp = '$maSP'";
+                            $rs = mysqli_query($conn, $sql);
+                            if (!$rs) {
+                                die("Lỗi truy vấn: " . mysqli_error($conn));
+                            }
+                            if (mysqli_num_rows($rs) > 0) {
+                                while ($row = mysqli_fetch_array($rs)) {
+                                    echo '<br>
+                                <div class="list-title">
+                                        <div style="width: 50%;" id="' . $maSP . '">' . $row["Tensp"] . ' </div>
+                                        <div style="width: 25%; text-align: center">' . $soLuong . '</div>
+                                        <div style="width: 25%; text-align: center">' . $row["Giaban"] . ' VNĐ</div>
+                                </div>';
+                                }
                             }
                         }
-                    } else {
+                    } 
+                        
+                     else {
                         $maNguoiDung = $_SESSION["user_id"];
 
                         $sql = "SELECT * FROM sanpham sp, giohang gh WHERE sp.Masp=gh.Masp AND Manguoidung='$maNguoiDung'";
@@ -225,7 +229,7 @@ function connect()
                             while ($row = mysqli_fetch_array($rs)) {
                                 echo '<br>
                                 <div class="list-title">
-                                        <div style="width: 50%;" id="'.$row["Masp"].'">' . $row["Tensp"] . ' </div>
+                                        <div style="width: 50%;" id="' . $row["Masp"] . '">' . $row["Tensp"] . ' </div>
                                         <div style="width: 25%; text-align: center">' . $row["Soluong"] . '</div>
                                         <div style="width: 25%; text-align: center">' . $row["Giaban"] . ' VNĐ</div>
                                 </div>';
@@ -247,7 +251,7 @@ function connect()
 
                     <?php
                     global $gia;
-                    if (isset($_GET["loai"]) == 'muangay') {
+                    if (isset($_GET['loai']) == 'muangay') {
                         $maNguoiDung = $_SESSION["user_id"];
                         $maSP = $_SESSION["Masp"];
                         $soLuong = $_SESSION["Soluong"];
@@ -347,6 +351,11 @@ function connect()
 
 
             <script>
+                function getParameterByName(name) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name);
+                }
+
                 function redirectToComplete() {
                     // Điều hướng đến trang complete.php
                     var tonggiatri = (document.getElementById('thanhtien').textContent).split(" ");
@@ -362,36 +371,70 @@ function connect()
                     } else {
                         maGG = maGiamGia;
                     }
-                    var maKH = <?php echo json_encode($maNguoiDung); ?>;
-                    var maSP = <?php echo json_encode($maSP); ?>;
-                    var soLuong = <?php echo json_encode($soLuong); ?>;
-                    var currentDate = new Date();
-                    var year = currentDate.getFullYear();
-                    var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
-                    var day = currentDate.getDate();
-                    var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
-                    $.ajax({
-                        url: 'XLthanhtoan.php',
-                        type: 'POST',
-                        data: {
-                            tonggiatri: tonggiatri[0],
-                            maVC: maVC,
-                            maGG: maGG,
-                            maKH: maKH,
-                            ngay: ngay,
-                            maSP: maSP,
-                            soLuong:soLuong,
-                        },
-                        // dataType: 'html',
-                        success: function(data) {
-                            // console.log(data);
-                            // $('#compltete-button').html(data);
-                            $('#form_complete_payment').show();
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr.responseText);
-                        }
-                    });
+                    var loai = getParameterByName('loai');
+                    console.log(loai);
+                    if (loai == 'muangay') {
+                        var maKH = <?php echo json_encode($maNguoiDung); ?>;
+                        var maSP = <?php echo json_encode($maSP); ?>;
+                        var soLuong = <?php echo json_encode($soLuong); ?>;
+                        var currentDate = new Date();
+                        var year = currentDate.getFullYear();
+                        var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
+                        var day = currentDate.getDate();
+                        var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
+                        $.ajax({
+                            url: 'XLthanhtoan.php',
+                            type: 'POST',
+                            data: {
+                                tonggiatri: tonggiatri[0],
+                                maVC: maVC,
+                                maGG: maGG,
+                                maKH: maKH,
+                                ngay: ngay,
+                                maSP: maSP,
+                                soLuong: soLuong,
+                            },
+                            // dataType: 'html',
+                            success: function(data) {
+                                // console.log(data);
+                                // $('#compltete-button').html(data);
+                                $('#form_complete_payment').show();
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    } else {
+                        var maKH = <?php echo json_encode($maNguoiDung); ?>;
+                        
+                        var currentDate = new Date();
+                        var year = currentDate.getFullYear();
+                        var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
+                        var day = currentDate.getDate();
+                        var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
+                        $.ajax({
+                            url: 'XLthanhtoan.php',
+                            type: 'POST',
+                            data: {
+                                tonggiatri: tonggiatri[0],
+                                maVC: maVC,
+                                maGG: maGG,
+                                maKH: maKH,
+                                ngay: ngay
+                                
+                            },
+                            // dataType: 'html',
+                            success: function(data) {
+                                // console.log(data);
+                                // $('#compltete-button').html(data);
+                                $('#form_complete_payment').show();
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+
                     // document.getElementById("form_complete_payment").style.display = "block";
                 }
             </script>

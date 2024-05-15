@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 
@@ -16,48 +14,53 @@
 </head>
 
 <body>
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">        <div id="title">Thống kê</div>
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div id="title">Thống kê</div>
         <div id="grid-container">
             <div class="grid-items">
                 <div class="text-top-left">Số sản phẩm đã bán</div>
                 <div class="number-center-left">
-                <?php
+                    <?php
                     $con = mysqli_connect('localhost', 'root', '', 'bolashop');
-                    $sql = "SELECT COUNT(Soluong) AS tongsoluong FROM chitietdonhang";
+                    $sql = "SELECT SUM(Soluong) AS tongsoluong FROM chitietdonhang ctdh, donhang dh WHERE ctdh.Madonhang=dh.Madonhang AND Trangthai='3'";
                     $result_sql = mysqli_query($con, $sql);
                     $row_soluong = mysqli_fetch_assoc($result_sql);
-                    echo $row_soluong["tongsoluong"]; 
+                    echo $row_soluong["tongsoluong"];
                     mysqli_close($con);
-                    
-                    
-                ?>
+
+
+                    ?>
                 </div>
                 <div class="text-center-right">Sản phẩm</div>
             </div>
             <div class="grid-items">
                 <div class="text-top-left">Tổng doanh thu</div>
                 <div class="number-center-left"><?php
-                    $con = mysqli_connect('localhost', 'root', '', 'bolashop');
-                    $sql = "SELECT SUM(Tonggiatri) AS tonggiatri FROM donhang";
-                    $result_sql = mysqli_query($con, $sql);
-                    $row_doanhthu = mysqli_fetch_assoc($result_sql);
-                    echo $row_doanhthu["tonggiatri"]; 
-                    mysqli_close($con);
-                    
-                    
-                ?></div>
+                                                $con = mysqli_connect('localhost', 'root', '', 'bolashop');
+                                                $sql = "SELECT SUM(Tonggiatri) AS tonggiatri FROM donhang WHERE Trangthai='3'";
+                                                $result_sql = mysqli_query($con, $sql);
+                                                $row_doanhthu = mysqli_fetch_assoc($result_sql);
+                                                if ($row_doanhthu == "") {
+                                                    echo "0";
+                                                } else {
+                                                    echo $row_doanhthu["tonggiatri"];
+                                                }
+                                                mysqli_close($con);
+
+
+                                                ?></div>
                 <div class="text-center-right">VNĐ</div>
             </div>
             <div class="grid-items">
                 <form method="post" name="date-filter">
-                Ngày bắt đầu:
-                <input type="date" id="start-date" name="start-date"/>
-                Ngày kết thúc:
-                <input type="date" id="end-date" name="end-date"/>
-                <button type="submit" class="filter-btn">Lọc</button>
+                    Ngày bắt đầu:
+                    <input type="date" id="start-date" name="start-date" />
+                    Ngày kết thúc:
+                    <input type="date" id="end-date" name="end-date" />
+                    <button type="submit" class="filter-btn">Lọc</button>
                 </form>
             </div>
-           
+
         </div>
         <div id="title">Danh sách hóa đơn</div>
 
@@ -73,7 +76,7 @@
                 <div><br></div>
                 <div><br></div>
                 <div style="overflow-y: scroll;">
-                <?php
+                    <?php
                     // Kết nối đến cơ sở dữ liệu
                     $con = mysqli_connect('localhost', 'root', '', 'bolashop');
                     if (!$con) {
@@ -81,14 +84,14 @@
                     }
 
                     // Kiểm tra xem có lọc theo ngày hay không
-                    if(isset($_POST['start-date']) && isset($_POST['end-date'])) {
+                    if (isset($_POST['start-date']) && isset($_POST['end-date'])) {
                         $start_date = $_POST['start-date'];
                         $end_date = $_POST['end-date'];
                         // Truy vấn SQL để lấy các đơn hàng trong khoảng thời gian được chỉ định
-                        $sql="SELECT *, nguoidung.Ten, nguoidung.img FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung AND Ngay BETWEEN '$start_date' AND '$end_date'";
+                        $sql = "SELECT *, nguoidung.Ten, nguoidung.img FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung AND Ngay BETWEEN '$start_date' AND '$end_date' ORDER BY Ngay DESC";
                     } else {
                         // Truy vấn SQL để lấy tất cả các đơn hàng
-                        $sql = "SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung";
+                        $sql = "SELECT *, nguoidung.Ten FROM donhang JOIN nguoidung WHERE donhang.maKhachhang = nguoidung.Manguoidung ORDER BY Ngay DESC";
                     }
 
                     // Thực thi truy vấn SQL
@@ -102,7 +105,7 @@
                         // $row_total = mysqli_fetch_assoc($sql_total);
                         // $total_price = $row_total["TongTien"];
                         // $ma = $row["Madonhang"];
-                        
+
                         // // Cập nhật giá trị tổng tiền vào cột Tonggiatri trong bảng donhang
                         // $update_query = "UPDATE donhang SET Tonggiatri = $total_price WHERE Madonhang = " . $row["Madonhang"];
                         // mysqli_query($con, $update_query);
@@ -110,7 +113,7 @@
                         // Hiển thị thông tin của đơn hàng
                         echo '<div class="table-items">';
                         echo '<div class="customer">';
-                        echo '<div ><img src="../../img/'.$row['img'].'"class="avt"></div>';
+                        echo '<div ><img src="../../img/' . $row['img'] . '"class="avt"></div>';
                         echo '<div>' . $row["Ten"] . '</div>';
                         echo '</div>';
                         echo '<div style="width: 20%;">' . $row["Ngay"] . '</div>';
@@ -129,7 +132,7 @@
                         if ($row["Trangthai"] == 3) {
                             echo '<div class="status-orders">Đã giao hàng</div>';
                         }
-                        if ($row["Trangthai"] == 4){
+                        if ($row["Trangthai"] == 4) {
                             echo '<div class="status-orders">Đã hủy hàng</div>';
                         }
                         echo '</div>';
@@ -138,7 +141,7 @@
                     }
                     // Đóng kết nối đến cơ sở dữ liệu
                     mysqli_close($con);
-                ?>
+                    ?>
 
 
                     <!-- <div class="table-items">

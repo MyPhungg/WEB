@@ -1,3 +1,20 @@
+<?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN011");
+
+$isCreate = $userAuth->checkCreatePermission("CN011");
+$isUpdate = $userAuth->checkUpdatePermission("CN011");
+$isDelete = $userAuth->checkDeletePermission("CN011");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -33,7 +50,7 @@ mysqli_close($conn);
 ?>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Đơn vị vận chuyển</div>
-        <div class="btn-ThemNV"> <a href="AHome.php?chon=t&id=vanchuyen&loai=them">+ Thêm đơn vị vận chuyển </a></div>
+        <div class="btn-ThemNV <?=$isCreate?"":"hidden"?>"> <a href="AHome.php?chon=t&id=vanchuyen&loai=them">+ Thêm đơn vị vận chuyển </a></div>
         <div style="clear: both;"></div>
         <form action="" method="post">
                 <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
@@ -60,8 +77,8 @@ mysqli_close($conn);
                             <div style="width: 20%;"><?php echo $value["Gia"]; ?></div>
                            
                             <div class="thaotac">
-                                <button type="button"><a href="AHome.php?chon=t&id=vanchuyen&loai=sua&idvc=<?php echo $value["Mavc"] ?>">Sửa</a></button>
-                                <button onclick="return delNcc('<?php echo $value['Ten']; ?>')" type="button"><a href="xoaVc.php?idncc=<?php echo $value["Mavc"]; ?>">Xóa</a></button>
+                                <button class="<?=$isUpdate?"":"hidden"?>" type="button"><a href="AHome.php?chon=t&id=vanchuyen&loai=sua&idvc=<?php echo $value["Mavc"] ?>">Sửa</a></button>
+                                <button class="<?=$isDelete?"":"hidden"?>" onclick="return delNcc('<?php echo $value['Ten']; ?>')" type="button"><a href="xoaVc.php?idncc=<?php echo $value["Mavc"]; ?>">Xóa</a></button>
                             </div> 
                         </div>
                         <?php }?>

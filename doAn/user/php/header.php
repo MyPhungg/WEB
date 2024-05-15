@@ -1,7 +1,15 @@
 
 <?php
+<<<<<<< HEAD
 require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/role_check.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
+=======
+
+require_once('../../role_check.php');
+require_once('../../db_connect.php');
+
+
+>>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -17,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
 
 <div class="menu">
 
-    <div class="option" id="product" onclick="bannerHide()" href='home.php?idtl=""'><a href='home.php?idtl'>
+    <div class="option" id="product" onclick="bannerHide()" ><a href='#' class='category-link' data-idtl="">
             <li>Sản phẩm</li>
         </a></div>
     <?php
@@ -29,7 +37,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
     while ($row = mysqli_fetch_array($result)) {
         $id = $row['Madanhmuc'];
         $name = $row['Tendanhmuc'];
-        echo "<div class='option' id='$id' onclick='bannerHide()'><a href='home.php?idtl=$id'><li>$name</li></a> </div>";
+        echo "<div class='option ' id='$id' onclick='bannerHide()'><a data-idtl='$id'  class='category-link' href='home.php?idtl' ><li>$name</li></a> </div>";
     }
 
 
@@ -80,8 +88,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
                     $conn = new Database();
                     $userAuth = new userAuth($conn);
                     $isAdmin = $userAuth->isAdmin();
-                    // Nếu đã đăng nhập
-                    echo '<li><a href="../../admin/page/AHome.php"   class="<?= $isAdmin ? "" : "hidden" ?> >Trang quản trị</a></li>';
+                    $textadm="";
+                    if(!$isAdmin) {
+                        $textadm="hidden";
+                    }  
+                    echo '<li><a href="../../admin/page/AHome.php"   class="'.$textadm.'" >Trang quản trị</a></li>';
                     echo '<li><a href="home.php?chon=tttk">Thông tin tài khoản</a></li>';
                     echo '<li><a href="./logout.php">Đăng xuất</a></li>';
                 } else {
@@ -101,7 +112,24 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
         window.location.reload(true); // Tải lại trang một cách đầy đủ
     }
     $(document).ready(function() {
-        $('.search-bar').keyup(function() {
+        var idtl="";
+        var trang=1;
+        $.ajax({
+                url: 'content.php',
+                type: 'GET',
+                data:{idtl:idtl,trang:trang},
+                dataType: 'html',
+                success: function(data) {
+                    $('.content-container').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+    });
+    $('.search-bar').keyup(function() {
             var textsearch = $('.search-bar').val();
 
             $.ajax({
@@ -121,6 +149,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
                 }
             });
         });
+<<<<<<< HEAD
         $('input[type=checkbox]').change(function(){
         var brand = [];
         var gender = [];
@@ -145,4 +174,64 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
     });
     });
     
+=======
+
+        $(document).ready(function() {
+    function loadProducts(trang, danhmuc) {
+        $.ajax({
+            url: 'content.php',
+            type: 'GET',
+            data: {
+                trang: trang,
+                idtl: danhmuc,
+                ajax: 1
+            },
+            success: function(response) {
+                const data = JSON.parse(response);
+                let productsHtml = '';
+                data.products.forEach(product => {
+                    productsHtml += `<div class='content-item' ><a href='home.php?chon=ctsp&id=${product.Masp}'>`;
+                    productsHtml += `<div class='product-image'><img src='../../img/${product.Img}' alt=''></div>`;
+                    productsHtml += `<h3>${product.Tensp}</h3>`;
+                    productsHtml += `<p>Giá: ${product.Giaban} VND</p>`;
+                    productsHtml += `</a></div>`;
+                });
+                productsHtml +=` <div class='page-segment'>
+                
+                </div>`;
+
+                $('.content-container').html(productsHtml);
+                let sotrang=parseInt(data.totalPages);
+                let paginationHtml = '';
+                for (let i = 1; i <= sotrang ; i++) {
+                    paginationHtml += `<li><a href='#' class='page-link' data-trang='${i}' data-idtl='${danhmuc}'>${i}</a></li>`;
+                }
+                $('.page-segment').html(paginationHtml);
+            }
+        });
+    }
+
+    $(document).on('click', '.page-link', function(e) {
+        e.preventDefault();
+        const trang = $(this).data('trang');
+        const danhmuc = $(this).data('idtl');
+        loadProducts(trang, danhmuc);
+    });
+
+    $(document).on('click', '.category-link', function(e) {
+        
+        e.preventDefault();
+        const danhmuc = $(this).data('idtl');
+      
+        loadProducts(1, danhmuc); // Load first page of the selected category
+    });
+
+    // Initial load
+    loadProducts(1, '');
+});
+
+        
+   
+   
+>>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
 </script>

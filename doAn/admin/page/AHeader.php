@@ -85,7 +85,7 @@ function checkReadPermission($view_permission_list, $feature_id)
                     }
                     ?>
                     <div class="user-icon">
-                        <img src="../img/<?php echo $imgSrc; ?>" alt="Avatar" class="avt">
+                        <img src="../../img/<?php echo $imgSrc; ?>" alt="Avatar" class="avt">
 
                         <div class="sub-menu">
                             <ul>
@@ -93,7 +93,8 @@ function checkReadPermission($view_permission_list, $feature_id)
                                 // session_start();
                                 if (isset($_SESSION['user_id'])) {
                                     // Nếu đã đăng nhập
-                                    echo '<li><a href="AHome.php?chon=tttk">Thông tin tài khoản</a></li>';
+                                    echo '<li><a href="../../user/php/home.php?chon=tttk">Thông tin tài khoản</a></li>';
+                                    echo '<li><a href="../../user/php/home.php">Về trang mua hàng</a></li>';
                                     echo '<li><a href="../../user/php/logout.php">Đăng xuất</a></li>';
                                 } else {
                                     // Nếu chưa đăng nhập

@@ -1,3 +1,21 @@
+<?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN007");
+
+$isCreate = $userAuth->checkCreatePermission("CN007");
+$isUpdate = $userAuth->checkUpdatePermission("CN007");
+$isDelete = $userAuth->checkDeletePermission("CN007");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -318,7 +336,7 @@
                     <div style="display: flex; flex-direction: row; justify-content:right;">
                         <!--  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"
                  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"-->
-                        <button class="btn-Huy">Hủy</button>
+                        <button class="btn-Huy"><a href="AHome.php?chon=t&id=phieunhap">Hủy</a></button>
                         <button class="btn-HoanTat" >Hoàn tất</button>
 
                     </div>
@@ -330,10 +348,10 @@
     </div>
     <div id="chiTietPhieuNhap">
         <div class="title-ctpn">
-            <div>Phiếu nhập >> </div>
+            <div><a href="AHome.php?chon=t&id=phieunhap">Phiếu nhập >> </a></div>
             <div> Chi tiết phiếu nhập</div>
         </div>
-        <div class="btn-ThemPN" onclick="">Sửa</div>
+        <div class="btn-ThemPN <?=$isUpdate?"":"hidden"?>" onclick="">Sửa</div>
         <div style="clear: both;"></div>
 
         <!-- </div> -->
@@ -380,7 +398,7 @@
     <div id="phieunhap">
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             <div class="title">Phiếu nhập</div>
-            <div class="btn-ThemNV" type="button" onclick="showThemPhieuNhap()"> + Thêm phiếu nhập</div>
+            <div class="btn-ThemNV <?=$isCreate?"":"hidden"?>" type="button" onclick="showThemPhieuNhap()"> + Thêm phiếu nhập</div>
             <div style="clear: both;"></div>
             <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
             <div><br></div>
@@ -465,6 +483,7 @@
         }
         function showChiTiet(button) {
             var mapn= button.id;
+            
             console.log(mapn);
             $.ajax({
                 url: 'load_ctpn.php',
@@ -525,6 +544,7 @@
                 dataType:'html',
                success:function(data){
                 alert(data);
+                window.location.href="AHome.php?chon=t&id=phieunhap";
                },
                 
                 error: function(xhr, status, error) {

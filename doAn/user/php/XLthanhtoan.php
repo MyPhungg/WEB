@@ -30,6 +30,8 @@ if (isset($_POST['maSP']) && isset($_POST['soLuong'])) {
             die("Lỗi trong quá trình thực hiện câu lệnh: " . mysqli_error($conn));
         } else {
             echo "Insert thành công CTDH!";
+            unset($_SESSION["maSP"]);
+            unset($_SESSION["soLuong"]);
         }
         $sqlCapNhatSoLuong = "UPDATE sanpham SET Soluongconlai=Soluongconlai-? WHERE Masp=?";
         $stmtCNSL = mysqli_prepare($conn, $sqlCapNhatSoLuong);

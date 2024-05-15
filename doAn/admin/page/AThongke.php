@@ -86,11 +86,11 @@ input[type="date"]{
 <?php
 $con = mysqli_connect("localhost", "root", "", "bolashop");
 
-$nhanvien = mysqli_query($con, "SELECT COUNT(Manguoidung) AS TotalNV FROM nguoidung WHERE Manguoidung LIKE 'NV%'");
+$nhanvien = mysqli_query($con, "SELECT COUNT(Manguoidung) AS TotalNV FROM nguoidung WHERE Loainguoidung NOT IN ('Q0', 'Q2')");
 $row = mysqli_fetch_assoc($nhanvien);
 $totalNV = $row["TotalNV"];
 
-$khachhang = mysqli_query($con, "SELECT COUNT(Manguoidung) AS TotalKH FROM nguoidung WHERE Manguoidung LIKE 'KH%'");
+$khachhang = mysqli_query($con, "SELECT COUNT(Manguoidung) AS TotalKH FROM nguoidung WHERE Loainguoidung = 'Q2'");
 $row = mysqli_fetch_assoc($khachhang);
 $totalKH = $row["TotalKH"];
 
@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         FROM sanpham sp
                         LEFT JOIN chitietdonhang ctdh ON sp.Masp = ctdh.Masp
                         LEFT JOIN donhang dh ON ctdh.Madonhang = dh.Madonhang
-                        WHERE dh.Ngay BETWEEN '$startdate' AND '$enddate'
+                        WHERE dh.Ngay BETWEEN '$startdate' AND '$enddate' AND dh.Trangthai='3'
                         GROUP BY sp.Masp, sp.Tensp
                         ORDER BY TongSoLuong DESC");
     }
@@ -133,6 +133,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tksp = mysqli_query($con, "SELECT sp.Masp, sp.Tensp, SUM(ctdh.Soluong) AS TongSoLuong, sp.Madanhmuc 
                 FROM sanpham sp 
                 LEFT JOIN chitietdonhang ctdh ON sp.Masp = ctdh.Masp
+                LEFT JOIN donhang dh ON ctdh.Madonhang = dh.Madonhang
+                WHERE dh.Trangthai='3'
                 GROUP BY sp.Masp, sp.Tensp
                 ORDER BY TongSoLuong DESC");
         } elseif ($category == '0') {
@@ -140,6 +142,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tksp = mysqli_query($con, "SELECT sp.Masp, sp.Tensp, SUM(ctdh.Soluong) AS TongSoLuong, sp.Madanhmuc 
                 FROM sanpham sp 
                 LEFT JOIN chitietdonhang ctdh ON sp.Masp = ctdh.Masp
+                LEFT JOIN donhang dh ON ctdh.Madonhang = dh.Madonhang
+                WHERE dh.Trangthai='3'
                 GROUP BY sp.Masp, sp.Tensp
                 ORDER BY TongSoLuong DESC
                 LIMIT $soluong");
@@ -148,7 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tksp = mysqli_query($con, "SELECT sp.Masp, sp.Tensp, SUM(ctdh.Soluong) AS TongSoLuong, sp.Madanhmuc 
                 FROM sanpham sp 
                 LEFT JOIN chitietdonhang ctdh ON sp.Masp = ctdh.Masp
-                WHERE sp.Madanhmuc = '$category'
+                LEFT JOIN donhang dh ON ctdh.Madonhang = dh.Madonhang
+                WHERE sp.Madanhmuc = '$category' AND dh.Trangthai='3'
                 GROUP BY sp.Masp, sp.Tensp
                 ORDER BY TongSoLuong DESC");
         } else {
@@ -156,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tksp = mysqli_query($con, "SELECT sp.Masp, sp.Tensp, SUM(ctdh.Soluong) AS TongSoLuong, sp.Madanhmuc 
                 FROM sanpham sp 
                 LEFT JOIN chitietdonhang ctdh ON sp.Masp = ctdh.Masp
-                WHERE sp.Madanhmuc = '$category'
+                WHERE sp.Madanhmuc = '$category' AND dh.Trangthai='3'
                 GROUP BY sp.Masp, sp.Tensp
                 ORDER BY TongSoLuong DESC
                 LIMIT $soluong");

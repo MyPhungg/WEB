@@ -47,7 +47,7 @@ mysqli_close($conn);
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Danh sách quyền</div>
-        <div class="btn-ThemNV  <?= $isCreate ?"":"hidden"  ?> "><a href="phanquyen.php"> + Thêm quyền</a></div>
+        <div class="btn-ThemNV  <?= $isCreate ?"":"hidden"  ?> "><a href="AHome.php?chon=t&id=quyen&loai=them"> + Thêm quyền</a></div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -72,7 +72,7 @@ mysqli_close($conn);
                         <div style="width: 40%;">abc</div>
                         <div style="width: 20%;">
                             <a class="<?= $isUpdate?"":"hidden" ?>"
-                                style="background-color: white; border: solid 0.5px #D61EAD; color: black; text-decoration: none;" href="../page/updatequyen.php?id=<?php echo $value['Maquyen'] ;?>">Sửa</a>
+                                style="background-color: white; border: solid 0.5px #D61EAD; color: black; text-decoration: none;" href="AHome.php?chon=t&id=quyen&loai=sua&idquyen=<?php echo $value['Maquyen'] ;?>">Sửa</a>
                             <button  class="<?= $isDelete?"":"hidden" ?>"type="button">Xóa</button>
                         </div>
                     </div>
