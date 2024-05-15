@@ -1,47 +1,43 @@
-<div class="banner" id="banner"></div>
+<?php
+$con = mysqli_connect("localhost", "root", "", "bolashop");
+mysqli_query($con, "set names 'utf8'");
+
+$sql= "SELECT thuonghieu.* FROM sanpham, thuonghieu WHERE sanpham.Mathuonghieu = thuonghieu.Mathuonghieu GROUP BY thuonghieu.Mathuonghieu";
+$result_query = mysqli_query($con, $sql);
+
+$sqll = "SELECT Gioitinh FROM sanpham GROUP BY Gioitinh";
+$rs_gt = mysqli_query($con,$sqll);
+mysqli_close($con);
+?>
+<div class="banner" id="banner">   
+</div>
 <div class="content-title">
     <div class="page-noti">
         <h1>Trang chủ</h1>
     </div>
-    <div class="filter-btn">Lọc
-        <div class="angle-down" onclick="filterTool()"><img src="../../img/angle-down-solid.svg"></div>
-    </div>
-    <div class="arrange-btn">Sắp xếp
-        <div class="angle-down"><img src="../../img/angle-down-solid.svg"></div>
-        <ul class="dropdown-menu">
-            <li><a href="#">A - Z</a></li>
-            <li><a href="#">Z - A</a></li>
-            <li><a href="#">Giá từ cao đến thấp</a></li>
-            <li><a href="#">Giá từ thấp đến cao</a></li>
-        </ul>
-    </div>
 </div>
 <div class="container">
-    <form class="filter-tool" id="filter-tool" name="formFilter" method="get">
+    <form class="filter-tool" id="filter-tool" name="formFilter" method="POST">
         <h1>Bộ lọc</h1>
         <hr />
+        
+        <input type="search" class="search-bar" placeholder="Search..." name="txtSearch" />
         <h4>Thương hiệu</h4>
-        <input type="checkbox" id="brand1" name="brand1" value="Brand1" />
-        <label for="brand1">Balenciaga</label>
+        <?php foreach($result_query as $key => $value) { ?>
+        <input type="checkbox" id="brand" name="brand[]" value="<?php echo $value["Mathuonghieu"]; ?>" />
+        <label for="<?php echo $value["Mathuonghieu"]; ?>"><?php echo $value["tenThuonghieu"]; ?></label>
         <br />
-        <input type="checkbox" id="brand2" name="brand2" value="Brand2" />
-        <label for="brand2">Dolce & Gabana</label>
-        <br />
-        <input type="checkbox" id="brand3" name="brand3" value="Brand3" />
-        <label for="brand3">Chanel</label>
-        <br />
-        <h4>Loại balo</h4>
-        <input type="checkbox" id="type1" name="type1" value="Type1" />
-        <label for="type1">Balo du lịch</label><br />
-        <input type="checkbox" id="type2" name="type2" value="Type2" />
-        <label for="type2">Balo thể thao</label><br />
-        <input type="checkbox" id="type3" name="type3" value="Type3" />
-        <label for="type3">Túi, ví</label><br />
+        <?php } ?>
+        <h4>Giới tính</h4>
+        <?php foreach($rs_gt as $key => $value) { ?>
+        <input type="checkbox" id="gender" name="gender[]" value="<?php echo $value["Gioitinh"]; ?>" />
+        <label for="<?php echo $value["Gioitinh"]; ?>"><?php echo $value["Gioitinh"]; ?></label><br />
+        <?php } ?>
+        
+       
         <br />
         <br />
         <br />
-        <input type="submit" value="Lọc">
-        <input type="button" value="Xóa">
 
     </form>
     <div class="content-container">

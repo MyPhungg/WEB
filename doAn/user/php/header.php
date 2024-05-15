@@ -13,10 +13,7 @@ require_once('../../db_connect.php');
 <div class="logo-bola">
     <b><a href="home.php?idtl"> BOLA</a></b>
 </div>
-<form name="search" method="get">
 
-    <input type="search" class="search-bar" placeholder="Search..." name="txtSearch" />
-</form>
 <div class="menu-toggle">
     <button onclick="toggleMenu()">Menu</button>
 </div>
@@ -147,6 +144,32 @@ require_once('../../db_connect.php');
                 }
             });
         });
+// <<<<<<< HEAD
+//         $('input[type=checkbox]').change(function(){
+//         var brand = [];
+//         var gender = [];
+//         $('input[name=brand]:checked').each(function(){
+//             brand.push($(this).val());
+//         });
+//         $('input[name=gender]:checked').each(function(){
+//             gender.push($(this).val());
+//         });
+//         $.ajax({
+//             url: 'xulyloc.php',
+//             type: 'POST',
+//             data: { brand: brand, gender: gender },
+//             dataType: 'html',
+//             success: function(data){
+//                 $('.content-container').html(data);
+//             },
+//             error: function(xhr, status, error){
+//                 console.error(xhr.responseText);
+//             }
+//         });
+//     });
+//     });
+    
+// =======
 
         $(document).ready(function() {
     function loadProducts(trang, danhmuc) {
@@ -191,9 +214,10 @@ require_once('../../db_connect.php');
     });
 
     $(document).on('click', '.category-link', function(e) {
-        window.location.href="home.php?";
+        
         e.preventDefault();
         const danhmuc = $(this).data('idtl');
+      
         loadProducts(1, danhmuc); // Load first page of the selected category
     });
 
@@ -204,4 +228,5 @@ require_once('../../db_connect.php');
         
    
    
+// >>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
 </script>
