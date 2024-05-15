@@ -25,6 +25,12 @@ if ($db) {
             $user_data = mysqli_fetch_assoc($result);
             if ($user_data['Matkhau'] === $password) {
                 $_SESSION['user_id'] = $id;
+
+                $_SESSION['userdata'] = [
+                    'id' => $user_data['Manguoidung'],
+                    'maquyen' => $user_data['Loainguoidung']
+                ];
+
                 $response = array(
                     "status" => "success",
                     "message" => "Đăng nhập thành công!"

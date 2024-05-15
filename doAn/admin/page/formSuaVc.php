@@ -53,9 +53,7 @@ if (isset($_GET['idvc'])) {
     } else {
         echo "Lỗi trong quá trình chuẩn bị truy vấn.";
     }
-} else {
-    echo "Dữ liệu không được gửi đi.";
-}
+} 
 mysqli_close($con);
 ?>
 <div class="form-km">
@@ -76,7 +74,7 @@ mysqli_close($con);
         <?php } ?>
 
         <div class="group-btn">
-            <button type="button" id="delBtn" class="delBtn">Hủy</button>
+            <button type="button" id="delBtn" class="delBtn" onclick="history.back();">Hủy</button>
             <button type="submit" id="submitBtn" name="submitBtn" class="submitBtn">Lưu</button>
         </div>
     </form>

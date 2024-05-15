@@ -58,7 +58,7 @@
                     <input type="text" name="Sdt" value="<?php echo $value["Sdt"]; ?>" />
                 <?php } ?>
                 <div class="group-btn">
-                    <button type="button" id="delBtn" class="delBtn">Hủy</button>
+                    <button type="button" id="delBtn" class="delBtn" onclick="history.back();">Hủy</button>
                     
                     <button type="Submit" name="submitBtn" id="submitBtn" class="submitBtn">Lưu</button>
                 </div>

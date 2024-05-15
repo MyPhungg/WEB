@@ -72,6 +72,21 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
             window.location.href = "AHome.php?chon=t&id=khuyenmai";
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('formkhuyenmai');
+
+            form.addEventListener('submit', function(event) {
+                var txtSale = document.querySelector('input[name="txtSale"]').value;
+                var regex = /^[0-9]+$/;
+
+                if (!regex.test(txtSale)) {
+                    alert("Vui lòng nhập số nguyên cho mức giảm.");
+                    event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu nếu dữ liệu không hợp lệ
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
