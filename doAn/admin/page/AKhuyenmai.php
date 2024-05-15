@@ -1,3 +1,21 @@
+<?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN010");
+
+$isCreate = $userAuth->checkCreatePermission("CN010");
+$isUpdate = $userAuth->checkUpdatePermission("CN010");
+$isDelete = $userAuth->checkDeletePermission("CN010");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -17,7 +35,7 @@
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Khuyến mãi</div>
-        <div class="btn-ThemNV" onclick="redirectToForm()"> + Thêm khuyến mãi</div>
+        <div class="btn-ThemNV <?=$isCreate?"":"hidden"?>" onclick="redirectToForm()"> + Thêm khuyến mãi</div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -52,14 +70,24 @@
                     if ($result->num_rows > 0) {
                         // Output data of each row
                         while ($row = $result->fetch_assoc()) {
+                            $textupd="";
+                            $textdel="";
+                            if(!$isUpdate)
+                            {
+                                $textupd="hidden";
+                            }
+                            if(!$isDelete)
+                            {
+                                $textdel="hidden";
+                            }
                             echo '<div class="table-items">';
                             echo '<div style="width: 30%;">' . $row["Magiamgia"] . '</div>';
                             echo '<div style="width: 30%;">' . $row["tenGiamgia"] . '</div>';
                             echo '<div style="width: 20%;">' . $row["Mucgiam"] . '</div>';
                             echo '<div style="width: 20%;">';
-                            echo '<button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;" onclick="window.location.href=\'AHome.php?chon=t&id=khuyenmai&loai=sua&Magiamgia=' . $row["Magiamgia"] . '\'">Sửa</button>';
+                            echo '<button type="button" class="'.$textupd.'"   style="background-color: white; border: solid 0.5px #D61EAD; color: black;" onclick="window.location.href=\'AHome.php?chon=t&id=khuyenmai&loai=sua&Magiamgia=' . $row["Magiamgia"] . '\'">Sửa</button>';
                             echo '<input type="hidden" name="Magiamgia" value="' . $row["Magiamgia"] . '">';
-                            echo '<button type="button" class="delete-btn" onclick="deleteItem(\'' . $row["Magiamgia"] . '\')">Xóa</button>';
+                            echo '<button type="button" class="delete-btn '.$textdel.'" onclick="deleteItem(\'' . $row["Magiamgia"] . '\')">Xóa</button>';
                             echo '</div>';
                             echo '</div>';
                         }
