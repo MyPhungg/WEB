@@ -369,7 +369,7 @@ function connect()
                     } else {
                         maGG = maGiamGia;
                     }
-                    alert('aaaa');
+                    // alert('aaaa');
                     var loai = getParameterByName('loai');
                     console.log(loai);
                     if (loai !== null && loai == 'muangay') {
