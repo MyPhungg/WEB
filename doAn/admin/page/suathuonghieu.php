@@ -66,7 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-    <div class="form-km">
+<h2><a href="AHome.php">Trang chủ >> </a><a href="AHome.php?chon=t&id=thuonghieu">Thương hiệu >> </a>Sửa thương hiệu</h2>
+    
+<div class="form-km">
         <form class="formkhuyenmai" id="formkhuyenmai" method="post" action="">
             <h3>Sửa thương hiệu</h3>
             <label for="txtMakh">Mã thương hiệu</label>

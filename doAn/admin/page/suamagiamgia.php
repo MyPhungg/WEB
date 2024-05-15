@@ -53,7 +53,7 @@ if (isset($_POST['txtMakm']) && isset($_POST['txtTenkm']) && isset($_POST['start
     <title>Sửa khuyến mãi</title>
 </head>
 <body>
-    <h2><a href="AHome.php">Trang chủ</a>>><a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a>>>Sửa khuyến mãi</h2>
+    <h2><a href="AHome.php">Trang chủ</a> >> <a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a> > >Sửa khuyến mãi</h2>
     <div class="form-km">
         <form class="formkhuyenmai" id="formkhuyenmai" method="post" action="">
             <h3>Sửa khuyến mãi</h3>
