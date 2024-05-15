@@ -153,7 +153,7 @@ if (isset($_GET['maND'])) {
                         <input type="text" name="address" id="address" value="<?php echo $diachi; ?>">
                         <p>Mật khẩu:</p>
                         <input type="text" name="password" id="password" value="<?php echo $password; ?>">
-                        <p>Trạng thái:</p>
+                        <p>Quyền:</p>
                         <select name="status" id="status">
                             <?php foreach ($roles as $role): ?>
                                 <option value="<?php echo $role['Maquyen']; ?>" <?php echo ($role['Maquyen'] == $status) ? 'selected' : ''; ?>><?php echo $role['Tenquyen']; ?></option>

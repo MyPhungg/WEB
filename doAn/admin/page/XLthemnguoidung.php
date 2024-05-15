@@ -7,45 +7,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $current_date = date("Y-m-d");
-    $response=array();
+    $status = $_POST['status'];
+    $response = array();
     if (!preg_match('/^0\d{9}$/', $phone)) {
-            $response = array(
-                'status' => 'PHONE',
-                'message' => 'Số điện thoại phải chứa đúng 10 chữ số!' 
-            );
-            echo json_encode($response);
-            exit;
-        }
-
-        
-
-        if (!preg_match('/^.{4,}$/', $id)) {
-            $response = array(
-                'status' => 'ID',
-                'message' => 'Tên đăng nhập ít nhất 4 ký tự!' 
-            );
-            echo json_encode($response);
-            exit;
-        }
-        
-        if (!preg_match('/^[\w\.-]+@[\w\.-]+\.\w+$/', $email)) { 
-            $response = array(
-                'status' => 'EMAIL',
-                'message' => 'Email phải đúng định dạng!' 
-            );
-            echo json_encode($response);
-            exit;
-        }
+        $response = array(
+            'status' => 'PHONE',
+            'message' => 'Số điện thoại phải chứa đúng 10 chữ số!'
+        );
+        echo json_encode($response);
+        exit;
+    }
 
 
-        if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/', $password)) {
-            $response = array(
-                'status' => 'PASSWORD',
-                'message' => 'Mật khẩu phải đủ 8 ký tự, có kí tự in hoa,in thường,ký tự đặc biệt và số ' 
-            );
-            echo json_encode($response);
-            exit; 
-        }
+
+    if (!preg_match('/^.{4,}$/', $id)) {
+        $response = array(
+            'status' => 'ID',
+            'message' => 'Tên đăng nhập ít nhất 4 ký tự!'
+        );
+        echo json_encode($response);
+        exit;
+    }
+
+    if (!preg_match('/^[\w\.-]+@[\w\.-]+\.\w+$/', $email)) {
+        $response = array(
+            'status' => 'EMAIL',
+            'message' => 'Email phải đúng định dạng!'
+        );
+        echo json_encode($response);
+        exit;
+    }
+
+
+    if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/', $password)) {
+        $response = array(
+            'status' => 'PASSWORD',
+            'message' => 'Mật khẩu phải đủ 8 ký tự, có kí tự in hoa,in thường,ký tự đặc biệt và số '
+        );
+        echo json_encode($response);
+        exit;
+    }
 
     // Kết nối đến cơ sở dữ liệu
     $server = 'localhost';
@@ -81,9 +82,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $img_query = "SELECT img FROM nguoidung WHERE Manguoidung='$id'";
                 $img_result = mysqli_query($db, $img_query);
                 $img_row = mysqli_fetch_assoc($img_result);
-                $img_name = $img_row['img'];
+                $img_name = "";
             }
-            $sql = "INSERT INTO nguoidung (Manguoidung, Matkhau, Ten, Email, Sodienthoai, Diachi, Ngaytao, Loainguoidung, img) VALUES ('$id', '$password','$name', '$email', '$phone', '$address','$current_date','Q0','$img_name')";
+            $sql = "INSERT INTO nguoidung (Manguoidung, Matkhau, Ten, Email, Sodienthoai, Diachi, Ngaytao, Loainguoidung, img) VALUES ('$id', '$password','$name', '$email', '$phone', '$address','$current_date','$status','$img_name')";
 
             if (mysqli_query($db, $sql)) {
                 $response = array(
@@ -99,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         echo json_encode($response);
+        // exit;
         $db->close();
     } else {
         echo 'Kết nối đến cơ sở dữ liệu thất bại';

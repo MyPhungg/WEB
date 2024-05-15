@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin khách hàng</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         a {
             color: black;
@@ -93,6 +92,32 @@
 </head>
 
 <body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <?php
+    $server ='localhost';
+    $user ='root';
+    $pass = '';
+    $database = 'bolashop';
+
+    $db = new mysqli($server, $user, $pass, $database);
+
+    if ($db) {
+        mysqli_query($db, "SET NAMES 'utf8'");
+    } else {
+        echo 'Kết nối database thất bại';
+        exit;
+    }
+    $status="";
+    $sql_roles = "SELECT * FROM quyen WHERE Maquyen!='Q0'";
+    $result_roles = $db->query($sql_roles);
+    $roles = [];
+    if ($result_roles->num_rows > 0) {
+        while ($row_role = $result_roles->fetch_assoc()) {
+            $roles[] = $row_role;
+        }
+    }
+    ?>
     <div class="form_TTKhachHang">
         <form id="TND" action="XLthemnguoidung.php" method="post">
             <h1>Thêm người dùng mới</h1>
@@ -122,6 +147,12 @@
                     <input type="text" name="address" id="address">
                     <p>Mật khẩu:</p>
                     <input type="password" name="password" id="password">
+                    <p>Quyền:</p>
+                    <select name="status" id="status">
+                        <?php foreach ($roles as $role) : ?>
+                            <option value="<?php echo $role['Maquyen']; ?>" <?php echo ($role['Maquyen'] == $status) ? 'selected' : ''; ?>><?php echo $role['Tenquyen']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="ThongTinKhachHang-data2">
                     <p>Họ tên:</p>
@@ -184,7 +215,10 @@
                     } else {
                         alert(response.message);
                     }
-                }
+                },
+                error: function(xhr, status, error) {
+                                        console.log(xhr.responseText);
+                                    }
             });
         });
     });

@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $status = $_POST['status'];
-
+    $response=array();
     if (!preg_match('/^0\d{9}$/', $phone)) {
         $response = array(
             'status' => 'PHONE',
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_num_rows($check_result) > 0) {
             // Xử lý ảnh tải lên
-            $upload_dir = '../img/';
+            $upload_dir = '../../img/';
             $img_name = '';
             if (isset($_FILES['txtHinhAnh']) && $_FILES['txtHinhAnh']['error'] == 0) {
                 $img_name = basename($_FILES['txtHinhAnh']['name']);

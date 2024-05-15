@@ -14,6 +14,8 @@ if(isset($_SESSION['user_id'])){
   <title>Trang chủ</title>
   <link href="../css/home.css?v=<?php echo time(); ?>" rel="stylesheet" />
   <script src="../js/home.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
