@@ -57,7 +57,7 @@
                             echo '<div style="width: 30%;">' . $row["tenGiamgia"] . '</div>';
                             echo '<div style="width: 20%;">' . $row["Mucgiam"] . '</div>';
                             echo '<div style="width: 20%;">';
-                            echo '<button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;" onclick="window.location.href=\'suamagiamgia.php?Magiamgia=' . $row["Magiamgia"] . '\'">Sửa</button>';
+                            echo '<button type="button" style="background-color: white; border: solid 0.5px #D61EAD; color: black;" onclick="window.location.href=\'AHome.php?chon=t&id=khuyenmai&loai=sua&Magiamgia=' . $row["Magiamgia"] . '\'">Sửa</button>';
                             echo '<input type="hidden" name="Magiamgia" value="' . $row["Magiamgia"] . '">';
                             echo '<button type="button" class="delete-btn" onclick="deleteItem(\'' . $row["Magiamgia"] . '\')">Xóa</button>';
                             echo '</div>';

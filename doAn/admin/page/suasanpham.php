@@ -42,7 +42,7 @@ if (isset($_POST["txtSuaSanpham"])) {
         if (mysqli_query($conn, $sql_update_product)) {
             echo "<script>
             alert('Cập nhật sản phẩm thành công!');
-            window.location.href = 'ASanpham.php';
+            window.location.href = 'AHome.php?chon=t&id=sanpham';
           </script>";
         } else {
             echo "Lỗi: " . mysqli_error($conn);

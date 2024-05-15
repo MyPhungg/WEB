@@ -8,7 +8,6 @@
 </head>
 
 <body>
-<h1><a href="AHome.php">Trang chủ>></a><a href="AHome.php?chon=t&id=thuonghieu">Thương hiệu</a></h1>
     <div class="form-km">
         <form class="formkhuyenmai" id="formkhuyenmai" method="post" action="">
             <h3>Thương hiệu</h3>

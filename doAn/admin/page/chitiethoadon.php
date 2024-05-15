@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="../css/phieuxuat.css">
     <link rel="stylesheet" href="../css/dsnv.css">
     <link rel="stylesheet" href="style.css?version=1.0">
+    <style>
+        a{
+            color: black;
+            text-decoration: none;
+        }
+    </style>
     <!-- <script>
         function changeStatus(){
             var selectedStatus = document.getElementById('status').value;
@@ -39,7 +45,7 @@
 
         mysqli_close($con);
         ?>
-        <div class="title">Chi tiết đơn hàng</div>
+        <div class="title"><a href="AHome.php">Trang chủ >> </a><a href="AHome.php?chon=t&id=donhang">Đơn hàng >> </a>Chi tiết đơn hàng</div>
         <!-- <div class="title">Thống kê >> Chi tiết đơn hàng</div> -->
         <div id="flex-container">
             <div class="left">

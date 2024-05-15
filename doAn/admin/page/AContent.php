@@ -6,22 +6,30 @@ if (isset($_GET['chon']) && isset($_GET['id'])) {
     if ($_GET['id'] == 'thongke') {
         include_once('./AThongke.php');
     } else if ($_GET['id'] == 'sanpham') {
-        include_once('./ASanpham.php');
+        if (isset($_GET['loai'])) {
+            if ($_GET['loai'] == 'them') {
+                include_once('./themsp.php');
+            } else if ($_GET['loai'] == 'sua') {
+                include_once('./suasanpham.php');
+            }
+        } else {
+            include_once('./ASanpham.php');
+        }
     } else if ($_GET['id'] == 'phieunhap') {
         include_once('./APhieunhap.php');
     } else if ($_GET['id'] == 'donhang') {
         include_once('./APhieuxuat.php');
     } else if ($_GET['id'] == 'nhacungcap') {
-        // if (isset($_GET['loai'])) {
+        if (isset($_GET['loai'])) {
 
-        //     if ($_GET['loai'] == 'them') {
-        //         include_once('./formNcc.php');
-        //     } else if ($_GET['loai'] == 'sua') {
-        //         include_once('./formSuaNcc.php');
-        //     }
-        // } else {
+            if ($_GET['loai'] == 'them') {
+                include_once('./formNcc.php');
+            } else if ($_GET['loai'] == 'sua') {
+                include_once('./formSuaNcc.php');
+            }
+        } else {
             include_once('./ANCC.php');
-        // }
+        }
     } else if ($_GET['id'] == 'nguoidung') {
         if (isset($_GET['loai'])) {
             if ($_GET['loai'] == 'them') {
@@ -45,7 +53,15 @@ if (isset($_GET['chon']) && isset($_GET['id'])) {
             include_once('./AKhuyenmai.php');
         }
     } else if ($_GET['id'] == 'vanchuyen') {
-        include_once('./AVanchuyen.php');
+        if (isset($_GET['loai'])) {
+            if ($_GET['loai'] == 'them') {
+                include_once('./formVanchuyen.php');
+            } else if ($_GET['loai'] == 'sua') {
+                include_once('./formSuaVc.php');
+            }
+        } else {
+            include_once('./AVanchuyen.php');
+        }
     } else if ($_GET['id'] == 'thuonghieu') {
         if (isset($_GET['loai'])) {
             if ($_GET['loai'] == 'them') {
@@ -56,7 +72,7 @@ if (isset($_GET['chon']) && isset($_GET['id'])) {
         } else {
             include_once('./AThuonghieu.php');
         }
-    } else {
-        include_once('./AThongke.php');
     }
+} else {
+    include_once('./AThongke.php');
 }

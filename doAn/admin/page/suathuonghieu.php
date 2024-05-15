@@ -15,8 +15,9 @@ mysqli_query($db, "SET NAMES 'utf8'");
 $mathuonghieu = '';
 $tenthuonghieu = '';
 
-if (isset($_GET['maTH'])) {
-    $id = $_GET['maTH'];
+if (isset($_GET['idth'])) {
+    $id = $_GET['idth'];
+
     $sql = "SELECT * FROM thuonghieu WHERE Mathuonghieu = ?";
     $stmt = $db->prepare($sql);
     if ($stmt) {
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt_update) {
         $stmt_update->bind_param('ss', $tenthuonghieu, $mathuonghieu);
         if ($stmt_update->execute()) {
-            header('Location: Athuonghieu.php');
+            header('Location: AHome.php?chon=t&id=thuonghieu');
             exit();
         } else {
             echo 'error: ' . $stmt_update->error;
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" name="txtTenkh" value="<?php echo $tenthuonghieu; ?>" placeholder="Nhập vào tên thương hiệu..." />
 
             <div class="group-btn">
-                <button type="button" id="delBtn" class="delBtn" onclick="window.location.href='Athuonghieu.php';">Hủy</button>
+                <button type="button" id="delBtn" class="delBtn" onclick="window.location.href='AHome.php?chon=t&id=thuonghieu';">Hủy</button>
                 <button type="reset" id="resetBtn" class="resetBtn">Đặt lại</button>
                 <button type="submit" id="submitBtn" class="submitBtn">Lưu</button>
             </div>

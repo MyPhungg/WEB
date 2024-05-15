@@ -15,7 +15,7 @@ if (isset($_POST["txtThemsanpham"])) {
         $soluong = $_POST["txtSoluongnhap"];
         $gianhap = $_POST["txtGianhap"];
         $giaban = $_POST["txtGiaban"];
-        $path = "../img/";
+        $path = "../../img/";
 
         // Kiểm tra xem sản phẩm đã tồn tại trong cơ sở dữ liệu chưa
         $sql_check_product = mysqli_query($conn, "SELECT * FROM sanpham WHERE Tensp = '$tensp'");
@@ -27,12 +27,15 @@ if (isset($_POST["txtThemsanpham"])) {
             $soluongconlai = $row['Soluongconlai'] + $soluong;
 
             $sql_update_product = mysqli_query($conn, "UPDATE sanpham SET Soluongconlai = '$soluongconlai' WHERE Tensp = '$tensp'");
+            echo '<script>window.location.href = "AHome.php?chon=t&id=sanpham"</script>';
         } else {
             // Sản phẩm chưa tồn tại, thêm sản phẩm mới
             $sqp_insert_product = mysqli_query($conn, "INSERT INTO sanpham(Tensp, Giaban, Soluongconlai, Mota, Madanhmuc, Mathuonghieu, Img, Gianhap, Gioitinh) 
                 VALUES('$tensp', '$giaban', '$soluong', '$motasp', '$danhmuc', '$thuonghieu', '$hinhanh', '$gianhap', '$gioitinhsp')");
 
             move_uploaded_file($hinhanh_temp, $path . $hinhanh);
+            echo '<script>window.location.href = "AHome.php?chon=t&id=sanpham"</script>';
+            
         }
     }
 }
@@ -50,10 +53,7 @@ if (isset($_POST["txtThemsanpham"])) {
   
 </head>
 <body>
-<div id="topmenu">
-           
-<?php require('header.php'); ?>
-        </div>
+
     <form action="" method="POST" enctype="multipart/form-data" class="addsp">
     <h1>Thêm sản phẩm</h1>
         <div class="addleft">
@@ -123,12 +123,6 @@ if (isset($_POST["txtThemsanpham"])) {
 
         <input type="submit" value="Thêm sản phẩm" name="txtThemsanpham" class="addsp_submit">
     </form>
-    <footer class="footer">
-  <div class="footer__addr">
-        <?php require('footer.php'); ?>
-   
-     </div> 
-    </footer>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
     var form = document.querySelector('.addsp');

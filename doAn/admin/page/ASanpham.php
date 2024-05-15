@@ -73,7 +73,7 @@
                     echo '<label class="item-dongia">' . $row_sanpham["Giaban"] . ' VND</label>';
                     echo '<label class="item-soluong">' . $row_sanpham["Soluongconlai"] . '</label>';
                     echo '<div class="item-actions">';
-                    echo '<a href="suasanpham.php?Masp=' . $row_sanpham["Masp"] . '" class="btn_sua_sp">Sửa</a>';
+                    echo '<a href="AHome.php?chon=t&id=sanpham&loai=sua&Masp=' . $row_sanpham["Masp"] . '" class="btn_sua_sp">Sửa</a>';
                     echo '<button type="button" class="delete-btn-sp" onclick="deleteItem(\'' . $row_sanpham["Masp"] . '\')">Xóa</button>';
                     echo '</div>';
                     echo '</div>';
@@ -110,7 +110,7 @@
 
 
             function redirectToForm() {
-                window.location.href = 'themsp.php';
+                window.location.href = 'AHome.php?chon=t&id=sanpham&loai=them   ';
             }
         </script>
     </form>

@@ -34,8 +34,9 @@ if (isset($_GET['idvc'])) {
                     if (mysqli_stmt_affected_rows($update_stmt) > 0) {
                         mysqli_stmt_close($update_stmt);
                         mysqli_close($con);
-                        header('Location: AHome.php?chon=t&id=vanchuyen');
-                        exit();
+                        echo '<script>window.location.href = "AHome.php?chon=t&id=vanchuyen";</script>';
+                        // header('Location: AHome.php?chon=t&id=vanchuyen');
+                        // exit();
                     } else {
                         echo "Không thể cập nhật phương thức vận chuyển.";
                     }
@@ -56,6 +57,8 @@ if (isset($_GET['idvc'])) {
 } 
 mysqli_close($con);
 ?>
+        <h2><a href="AHome.php">Trang chủ >> </a><a href="AHome.php?chon=t&id=vanchuyen">Vận chuyển >> </a>Sửa vận chuyển</h2>
+
 <div class="form-km">
     <form class="formkhuyenmai" id="formvanchuyen" method="post" action="">
         <h3>Vận chuyển</h3>

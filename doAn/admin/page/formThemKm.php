@@ -38,7 +38,7 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
 </head>
 
 <body>
-    <h1><a href="AHome.php">Trang chủ>></a><a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a></h1>
+<h2><a href="AHome.php">Trang chủ</a> >><a href="AHome.php?chon=t&id=khuyenmai"> Khuyến mãi</a> >> Thêm khuyến mãi</h2>
     <div class="form-km">
         <form class="formkhuyenmai" id="formkhuyenmai" method="get" action="">
             <h3>Khuyến mãi</h3>

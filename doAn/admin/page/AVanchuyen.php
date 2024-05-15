@@ -33,7 +33,7 @@ mysqli_close($conn);
 ?>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Đơn vị vận chuyển</div>
-        <div class="btn-ThemNV"> <a href="formVanchuyen.php">+ Thêm đơn vị vận chuyển </a></div>
+        <div class="btn-ThemNV"> <a href="AHome.php?chon=t&id=vanchuyen&loai=them">+ Thêm đơn vị vận chuyển </a></div>
         <div style="clear: both;"></div>
         <form action="" method="post">
                 <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
@@ -60,7 +60,7 @@ mysqli_close($conn);
                             <div style="width: 20%;"><?php echo $value["Gia"]; ?></div>
                            
                             <div class="thaotac">
-                                <button type="button"><a href="formSuaVc.php?idvc=<?php echo $value["Mavc"] ?>">Sửa</a></button>
+                                <button type="button"><a href="AHome.php?chon=t&id=vanchuyen&loai=sua&idvc=<?php echo $value["Mavc"] ?>">Sửa</a></button>
                                 <button onclick="return delNcc('<?php echo $value['Ten']; ?>')" type="button"><a href="xoaVc.php?idncc=<?php echo $value["Mavc"]; ?>">Xóa</a></button>
                             </div> 
                         </div>

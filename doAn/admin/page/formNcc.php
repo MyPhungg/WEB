@@ -41,6 +41,7 @@
        mysqli_close($con);
        
         ?>
+        <h2><a href="AHome.php">Trang chủ >> </a><a href="AHome.php?chon=t&id=nhacungcap">Nhà cung cấp >> </a>Thêm nhà cung cấp</h2>
         <div class="form-km">
             <form class="formkhuyenmai" id="formncc" method="post" action="">
                 <h3>Nhà cung cấp</h3>

@@ -12,7 +12,7 @@
         <div class="topmenu-wrap">
             <div id="topmenu-admin">
                 <div class="logo-bola">
-                    <b> BOLA</b>
+                    <b><a href="AHome.php"> BOLA</a></b>
                 </div>
 
                 <div class="menu-toggle">

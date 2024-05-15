@@ -24,8 +24,9 @@
                
                // Kiểm tra xem có hàng được thêm vào hay không
                if (mysqli_stmt_affected_rows($stmt) > 0) {
-                   header('Location: AHome.php?chon=t&id=vanchuyen');
-                   exit(); // Kết thúc kịch bản sau khi chuyển hướng
+                    echo '<script>window.location.href = "AHome.php?chon=t&id=vanchuyen";</script>';
+                //    header('Location: AHome.php?chon=t&id=vanchuyen');
+                //    exit(); // Kết thúc kịch bản sau khi chuyển hướng
                } else {
                    echo "Không thể thêm phương thức vận chuyển.";
                }
@@ -38,6 +39,8 @@
        mysqli_close($con);
        
         ?>
+        <h2><a href="AHome.php">Trang chủ >> </a><a href="AHome.php?chon=t&id=vanchuyen">Vận chuyển >> </a>Thêm vận chuyển</h2>
+
         <div class="form-km">
             <form class="formkhuyenmai" id="formvanchuyen" method="post" action="">
                 <h3>Vận chuyển</h3>
