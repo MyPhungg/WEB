@@ -2,14 +2,14 @@
 ?>
 <?php
 
-if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDate']) && isset($_GET['endDate']) && isset($_GET['txtSale']) && isset($_GET['txtMota'])) {
+if (isset($_POST['txtMakh']) && isset($_POST['txtTenkh']) && isset($_POST['startDate']) && isset($_POST['endDate']) && isset($_POST['txtSale']) && isset($_POST['txtMota'])) {
 
-    $maKhuyenMai = $_GET['txtMakh'];
-    $tenKhuyenMai = $_GET['txtTenkh'];
-    $ngayBatDau = $_GET['startDate'];
-    $ngayKetThuc = $_GET['endDate'];
-    $mucGiam = $_GET['txtSale'];
-    $moTa = $_GET['txtMota'];
+    $maKhuyenMai = $_POST['txtMakh'];
+    $tenKhuyenMai = $_POST['txtTenkh'];
+    $ngayBatDau = $_POST['startDate'];
+    $ngayKetThuc = $_POST['endDate'];
+    $mucGiam = $_POST['txtSale'];
+    $moTa = $_POST['txtMota'];
 
     $sql_check = "SELECT * FROM giamgia WHERE Magiamgia = '$maKhuyenMai'";
     $result_check = mysqli_query($conn, $sql_check);
@@ -19,13 +19,14 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
         $sql_insert = "INSERT INTO giamgia (Magiamgia, Ngaybatdau, Ngayketthuc, Mucgiam, tenGiamgia, moTa) VALUES ('$maKhuyenMai', '$ngayBatDau', '$ngayKetThuc', '$mucGiam', '$tenKhuyenMai', '$moTa')";
 
         if (mysqli_query($conn, $sql_insert)) {
-            echo "";
+            echo '<script>window.location.href = "AHome.php?chon=t&id=khuyenmai";</script>';
         } else {
             echo "Lỗi: " . $sql_insert . "<br>" . mysqli_error($conn);
         }
     }
 
     mysqli_close($conn);
+    // echo '';
 }
 ?>
 
@@ -38,9 +39,11 @@ if (isset($_GET['txtMakh']) && isset($_GET['txtTenkh']) && isset($_GET['startDat
 </head>
 
 <body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <h2><a href="AHome.php">Trang chủ</a> >><a href="AHome.php?chon=t&id=khuyenmai"> Khuyến mãi</a> >> Thêm khuyến mãi</h2>
     <div class="form-km">
-        <form class="formkhuyenmai" id="formkhuyenmai" method="get" action="">
+        <form class="formkhuyenmai" id="formkhuyenmai" method="post" action="">
             <h3>Khuyến mãi</h3>
             <label for="txtMakh">Mã khuyến mãi</label>
             <input type="text" name="txtMakh" value="" placeholder="Nhập vào mã khuyến mãi..." />
