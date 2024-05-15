@@ -1,15 +1,10 @@
 
 <?php
-<<<<<<< HEAD
-require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/role_check.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
-=======
 
 require_once('../../role_check.php');
 require_once('../../db_connect.php');
 
 
->>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -149,32 +144,32 @@ require_once('../../db_connect.php');
                 }
             });
         });
-<<<<<<< HEAD
-        $('input[type=checkbox]').change(function(){
-        var brand = [];
-        var gender = [];
-        $('input[name=brand]:checked').each(function(){
-            brand.push($(this).val());
-        });
-        $('input[name=gender]:checked').each(function(){
-            gender.push($(this).val());
-        });
-        $.ajax({
-            url: 'xulyloc.php',
-            type: 'POST',
-            data: { brand: brand, gender: gender },
-            dataType: 'html',
-            success: function(data){
-                $('.content-container').html(data);
-            },
-            error: function(xhr, status, error){
-                console.error(xhr.responseText);
-            }
-        });
-    });
-    });
+// <<<<<<< HEAD
+//         $('input[type=checkbox]').change(function(){
+//         var brand = [];
+//         var gender = [];
+//         $('input[name=brand]:checked').each(function(){
+//             brand.push($(this).val());
+//         });
+//         $('input[name=gender]:checked').each(function(){
+//             gender.push($(this).val());
+//         });
+//         $.ajax({
+//             url: 'xulyloc.php',
+//             type: 'POST',
+//             data: { brand: brand, gender: gender },
+//             dataType: 'html',
+//             success: function(data){
+//                 $('.content-container').html(data);
+//             },
+//             error: function(xhr, status, error){
+//                 console.error(xhr.responseText);
+//             }
+//         });
+//     });
+//     });
     
-=======
+// =======
 
         $(document).ready(function() {
     function loadProducts(trang, danhmuc) {
@@ -233,5 +228,5 @@ require_once('../../db_connect.php');
         
    
    
->>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
+// >>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
 </script>
