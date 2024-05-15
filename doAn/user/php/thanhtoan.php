@@ -193,12 +193,12 @@ function connect()
                     <p class="total-row"></p>
 
                     <?php
-                    if (isset($_GET["loai"])){
-                        if($_GET["loai"]== 'muangay'){
+                    if (isset($_GET["loai"])) {
+                        if ($_GET["loai"] == 'muangay') {
                             $maNguoiDung = $_SESSION["user_id"];
                             $maSP = $_SESSION["Masp"];
                             $soLuong = $_SESSION["Soluong"];
-    
+
                             $sql = "SELECT * FROM sanpham sp WHERE Masp = '$maSP'";
                             $rs = mysqli_query($conn, $sql);
                             if (!$rs) {
@@ -215,9 +215,7 @@ function connect()
                                 }
                             }
                         }
-                    } 
-                        
-                     else {
+                    } else {
                         $maNguoiDung = $_SESSION["user_id"];
 
                         $sql = "SELECT * FROM sanpham sp, giohang gh WHERE sp.Masp=gh.Masp AND Manguoidung='$maNguoiDung'";
@@ -251,7 +249,7 @@ function connect()
 
                     <?php
                     global $gia;
-                    if (isset($_GET['loai']) == 'muangay') {
+                    if (isset($_GET['loai']) && $_GET['loai'] == 'muangay') {
                         $maNguoiDung = $_SESSION["user_id"];
                         $maSP = $_SESSION["Masp"];
                         $soLuong = $_SESSION["Soluong"];
@@ -371,12 +369,13 @@ function connect()
                     } else {
                         maGG = maGiamGia;
                     }
+                    // alert('aaaa');
                     var loai = getParameterByName('loai');
                     console.log(loai);
-                    if (loai == 'muangay') {
+                    if (loai !== null && loai == 'muangay') {
                         var maKH = <?php echo json_encode($maNguoiDung); ?>;
-                        var maSP = <?php echo json_encode($maSP); ?>;
-                        var soLuong = <?php echo json_encode($soLuong); ?>;
+                        var maSP = <?php echo $_SESSION["Masp"]?>;
+                        var soLuong = <?php echo $_SESSION["Soluong"]?>;
                         var currentDate = new Date();
                         var year = currentDate.getFullYear();
                         var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
@@ -406,7 +405,7 @@ function connect()
                         });
                     } else {
                         var maKH = <?php echo json_encode($maNguoiDung); ?>;
-                        
+
                         var currentDate = new Date();
                         var year = currentDate.getFullYear();
                         var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
@@ -421,7 +420,7 @@ function connect()
                                 maGG: maGG,
                                 maKH: maKH,
                                 ngay: ngay
-                                
+
                             },
                             // dataType: 'html',
                             success: function(data) {
