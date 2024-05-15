@@ -1,21 +1,21 @@
 
 <?php
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/role_check.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
+// require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/role_check.php');
+// require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
 
-=======
->>>>>>> c0bfca8e739b87101ea301cdb3c3ce0d14adfdff
+// =======
+// >>>>>>> c0bfca8e739b87101ea301cdb3c3ce0d14adfdff
 
 require_once('../../role_check.php');
 require_once('../../db_connect.php');
 
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
-=======
->>>>>>> c0bfca8e739b87101ea301cdb3c3ce0d14adfdff
+// =======
+// >>>>>>> c0bfca8e739b87101ea301cdb3c3ce0d14adfdff
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
