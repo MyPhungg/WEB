@@ -7,7 +7,7 @@ include 'connectDB.php';
     return;
   }else{
     while($row=mysqli_fetch_array($result)){
-        echo '<div class="table-items"> ';
+        echo '<div class="table-items" id="'.$row['Mapn'].'"> ';
       echo  '<div style="width: 20%;">'.$row['Mapn'] .'</div>';
     echo '<div style="width: 20%;">'.$row['Manhanvien'].'</div>';
     echo '<div style="width: 20%;">'.$row['Manhacungcap'].'</div>';
@@ -17,7 +17,7 @@ include 'connectDB.php';
     echo      ' <button type="button" class="btn-X-PN">X</button>';
     echo      ' <button type="button" class="btn-xemct" onmousedown="showChiTiet(this)" id="'.$row['Mapn'].'">Xem</button>';
     echo   ' </div>';
-       
+    echo   ' </div>';
       }
   }
     

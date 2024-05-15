@@ -53,18 +53,18 @@ mysqli_close($conn);
                         <div style="width: 20%;"><?php echo $value["Tenquyen"]; ?></div>
                         <div style="width: 40%;">abc</div>
                         <div style="width: 20%;">
-                            <button type="button"
-                                style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Sửa</button>
+                            <a 
+                                style="background-color: white; border: solid 0.5px #D61EAD; color: black; text-decoration: none;" href="../page/updatequyen.php?id=<?php echo $value['Maquyen'] ;?>">Sửa</a>
                             <button type="button">Xóa</button>
                         </div>
                     </div>
                     <?php }?>
                 </div>
 
-                <div class="horizontal-line"></div>
+                <!-- <div class="horizontal-line"></div>
                 <div class="page">
                     < 1 2 3 ...>
-                </div>
+                </div> -->
 
             </div>
         </div>

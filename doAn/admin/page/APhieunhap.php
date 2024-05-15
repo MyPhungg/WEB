@@ -116,6 +116,17 @@
             text-align: center;
             margin-top: 20px;
         }
+        .btn-Huy {
+            float: right;
+            margin-right: 40px;
+            width: 20%;
+            padding: 5px;
+            background-color: #D61EAD;
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
 
         #chiTietPhieuNhap {
             margin: 10%;
@@ -293,6 +304,13 @@
 
                 <!--sửa: đem ra ngoài div-->
                 <div id="end-themPN">
+                    <div class="total-price"><b>Ngày nhập:</b>
+                    <?php 
+                    $ngayhientai=date('Y-m-d');
+                    ?>
+                        <input type="data" name="txtngaynhap" id="txtngaynhap" value="<?php echo $ngayhientai?>" readonly>
+                        
+                    </div>
                     <div class="total-price"><b>Tổng Tiền:</b>
                         <input type="number" name="txtTongtien" id="txtTongtien" value="0" readonly>
                         VND
@@ -300,7 +318,7 @@
                     <div style="display: flex; flex-direction: row; justify-content:right;">
                         <!--  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"
                  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"-->
-                        <button class="btn-HoanTat">Hủy</button>
+                        <button class="btn-Huy">Hủy</button>
                         <button class="btn-HoanTat" >Hoàn tất</button>
 
                     </div>
@@ -404,9 +422,8 @@
             a.style.display = "none";
             b.style.display = "none";
         }
-        function confirm_addPN(){
+       
             
-        }
         function addSP_toPN(){
             var masp=document.getElementById('sel1').value;
             var soluong=document.getElementsByName('txtsoluong')[0].value;
@@ -497,6 +514,28 @@
                 }
             }); 
        });
+       $('.btn-HoanTat').click(function(){
+        var mapn= $('#mapn').val();
+        var ngaynhap= $('#txtngaynhap').val();
+        var mancc=$('#sel2').val();
+        $.ajax({
+                url: 'insert_new_pn.php',
+                type: 'POST',
+                data: { data:mapn, ngaynhap:ngaynhap, mancc:mancc},
+                dataType:'html',
+               success:function(data){
+                alert(data);
+               },
+                
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+
+
+       });
        $('#sel1').change(function() {
             var dongia = $(this).val();
             
@@ -533,17 +572,72 @@
             });
         });
         
-        function delete_new_item(div){
-            var masp= div.id;
+        $(document).on('click',".btn-X",function(){
             var confirmation = confirm("Bạn có chắc chắn muốn xóa?"); // Hiển thị hộp thoại xác nhận
-
+            var id=$(this).closest('.table-items').attr('id');
+            var soluong=$(this).closest('.table-items').find('.soluong_in').val();
             if (confirmation) {
 
             $(this).closest('.table-items').remove();
+            $.ajax({
+                url: 'delete_item_pnnew.php',
+                type: 'POST',
+                data: { data: id },
+                dataType: 'html',
+                success: function(data) {
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+            $.ajax({
+                url: 'xl_thanhtien_add.php',
+                type: 'POST',
+                data: { data : id , sl:soluong},
+                dataType: 'html',
+                success: function(data) {
+                    var currentData =$('#txtTongtien').val(); // Lấy dữ liệu hiện tại
+                    var newData = parseInt(currentData) - parseInt(data); // Gộp dữ liệu mới vào dữ liệu hiện tại
+                    $('#txtTongtien').val(newData); // Đặt lại nội dung phần tử HTML
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
             
             }
-        }
-    
+
+        })
+        $(document).on('click',".btn-X",function(){
+            var confirmation = confirm("Bạn có chắc chắn muốn xóa?"); // Hiển thị hộp thoại xác nhận
+            var id=$(this).closest('.table-items').attr('id');
+         
+            if (confirmation) {
+
+            $(this).closest('.table-items').remove();
+            $.ajax({
+                url: 'delete_pn.php',
+                type: 'POST',
+                data: { data: id },
+                dataType: 'html',
+                success: function(data) {
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
+                    
+                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
+                }
+            });
+            
+            }
+
+        })
     </script>
  
 </body>
