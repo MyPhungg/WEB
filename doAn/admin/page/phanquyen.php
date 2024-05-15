@@ -36,7 +36,9 @@ if (isset($_POST['submit'])) {
     }
   }
   $conn->close();
-
+  echo'
+  <script>window.location.href = "AHome.php?chon=t&id=quyen";</script>
+  ';
   // // session_start();
   // header("Location: ./AQuyen.php");
   // exit();
@@ -102,10 +104,10 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="permission-group__actions">
           <button type="submit" name="submit" class="btn btn--primary">Cập nhật</button>
-          <button class="btn btn--danger">Hủy bỏ</button>
+          <button class="btn btn--danger"><a href="AHome.php?chon=t&id=quyen">Hủy bỏ</a></button>
         </div>
       </form>
       </div>
 </body>
-
+<!-- <a href="AHome.php?chon=t&id=quyen"> -->
 </html>

@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
   // Connect to your database
   $conn = new Database();
 
-  $role_id = $_GET['id'];
+  $role_id = $_GET['idquyen'];
 
   // Retrieve the role name from the $_POST array
   $role_name = $_POST['txtNhomquyen'];
@@ -44,11 +44,12 @@ if (isset($_POST['submit'])) {
 
 //   session_start();
 //   $_SESSION["role_msg"] = "Chỉnh sửa quyền thành công";
-  header("Location: ./Aquyen.php");
-  exit();
+  echo'
+  <script>window.location.href = "AHome.php?chon=t&id=quyen";</script>
+  ';
 }
 
-$role_id = $_GET['id'];
+$role_id = $_GET['idquyen'];
 $role = $conn->query("SELECT * FROM quyen WHERE Maquyen = '$role_id'")->fetch_assoc();
 $role_name=$role['Tenquyen'];
 if (!$role) {
@@ -82,7 +83,7 @@ $conn->close();
   
     <div class="permission-group">
         <h2>Thêm/sửa nhóm quyền</h2>
-      <form action="../page/updatequyen.php?id=<?php echo $role_id ?>" method="POST">
+      <form action="../page/updatequyen.php?idquyen=<?php echo $role_id ?>" method="POST">
       <div class="permission-group__input">
           <p>Tên nhóm quyền</p>
           <input type="text" id="txtNhomquyen" name="txtNhomquyen" value="<?php echo $role_name ?> " required/>
@@ -128,7 +129,7 @@ $conn->close();
         </div>
         <div class="permission-group__actions">
           <button type="submit" name="submit" class="btn btn--primary">Cập nhật</button>
-          <button class="btn btn--danger">Hủy bỏ</button>
+          <button class="btn btn--danger" ><a href="AHome.php?chon=t&id=quyen">Hủy bỏ</a></button>
         </div>
       </form>
       </div>

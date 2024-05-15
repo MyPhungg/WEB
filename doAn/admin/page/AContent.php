@@ -41,7 +41,15 @@ if (isset($_GET['chon']) && isset($_GET['id'])) {
             include_once('./ANguoidung.php');
         }
     } else if ($_GET['id'] == 'quyen') {
-        include_once('./AQuyen.php');
+        if (isset($_GET['loai'])) {
+            if ($_GET['loai'] == 'them') {
+                include_once('./phanquyen.php');
+            } else if ($_GET['loai'] == 'sua') {
+                include_once('./updatequyen.php');
+            }
+        } else {
+            include_once('./AQuyen.php');
+        }
     } else if ($_GET['id'] == 'khuyenmai') {
         if (isset($_GET['loai'])) {
             if ($_GET['loai'] == 'them') {

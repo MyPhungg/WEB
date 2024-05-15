@@ -318,7 +318,7 @@
                     <div style="display: flex; flex-direction: row; justify-content:right;">
                         <!--  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"
                  onclick="closeThemPhieuNhap()"><a href="AHome.php?chon=t&id=phieunhap"-->
-                        <button class="btn-Huy">Hủy</button>
+                        <button class="btn-Huy"><a href="AHome.php?chon=t&id=phieunhap">Hủy</a></button>
                         <button class="btn-HoanTat" >Hoàn tất</button>
 
                     </div>
@@ -330,7 +330,7 @@
     </div>
     <div id="chiTietPhieuNhap">
         <div class="title-ctpn">
-            <div>Phiếu nhập >> </div>
+            <div><a href="AHome.php?chon=t&id=phieunhap">Phiếu nhập >> </a></div>
             <div> Chi tiết phiếu nhập</div>
         </div>
         <div class="btn-ThemPN" onclick="">Sửa</div>
@@ -465,6 +465,7 @@
         }
         function showChiTiet(button) {
             var mapn= button.id;
+            
             console.log(mapn);
             $.ajax({
                 url: 'load_ctpn.php',
@@ -525,6 +526,7 @@
                 dataType:'html',
                success:function(data){
                 alert(data);
+                window.location.href="AHome.php?chon=t&id=phieunhap";
                },
                 
                 error: function(xhr, status, error) {
