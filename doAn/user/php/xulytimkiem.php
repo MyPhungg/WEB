@@ -10,7 +10,7 @@ if($num>0)
     while($row=mysqli_fetch_array($query))
     {
         echo "<div class='content-item' onclick='showChiTietSanPham(\"" . $row['Masp'] . "\")'>";
-    echo "<div class='product-image'><img src='../img/" . $row['Img'] . "' alt=''></div>";
+    echo "<div class='product-image'><img src='../../img/" . $row['Img'] . "' alt=''></div>";
     echo "<h3>" . $row["Tensp"] . "</h3>";
     echo "<p>Giá: " . $row['Giaban'] . " VND</p>";
     echo "</div>";

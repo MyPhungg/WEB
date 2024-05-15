@@ -30,4 +30,27 @@ function toggleMenu() {
   menu.classList.toggle('open');
 }
 
+// $(document).ready(function () {
+//   function loadProduct(page, category) {
+//     $.ajax({
+//       url: 'middleContent.php',
+//       type: 'GET',
+//       data: {trang:page, idlt:category},
+//       success:function(data){
+//         $('.content-container').append(data);
+//       }
+//     });
+    
+//   }
+  
 
+// $(document).on('click', '.page-segment a', function(e) {
+//   e.preventDefault();
+//   const page = $(this).data('trang');
+//   const category = '<?php echo $danhMuc; ?>';
+//   loadProducts(page, category);
+// });
+
+
+// loadProducts(1, '<?php echo $danhMuc; ?>');
+// });
