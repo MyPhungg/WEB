@@ -39,7 +39,7 @@
             $maDH=$_GET["iddh"];
             $status = $_POST["status"];
             mysqli_query($con,"UPDATE donhang SET Trangthai=$status WHERE Madonhang=$maDH");
-            header('location:AHome.php?chon=t&id=donhang');
+            echo "<script>window.location.href='AHome.php?chon=t&id=donhang';</script>";
         }
 
 
