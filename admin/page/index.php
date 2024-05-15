@@ -1,4 +1,4 @@
 
 <?php
-include 'ANguoidung.php'
+include 'AHome.php'
 ?>0

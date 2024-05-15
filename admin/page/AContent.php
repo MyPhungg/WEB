@@ -30,7 +30,15 @@ if (isset($_GET['chon']) && isset($_GET['id'])) {
     } else if ($_GET['id'] == 'vanchuyen') {
         include_once('./AVanchuyen.php');
     } else if ($_GET['id'] == 'thuonghieu') {
-        include_once('./AThuonghieu.php');
+        if (isset($_GET['loai'])) {
+            if ($_GET['loai'] == 'them') {
+                include_once('./formThuonghieu.php');
+            } else if ($_GET['loai'] == 'sua') {
+                include_once('./suathuonghieu.php');
+            }
+        } else {
+            include_once('./AThuonghieu.php');
+        }
     }
 } else {
     include_once('./AThongke.php');

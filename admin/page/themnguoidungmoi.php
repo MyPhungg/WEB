@@ -85,9 +85,23 @@
             <h1>Thêm người dùng mới</h1>
             <p><a href="AHome.php">Trang chủ >> </a><span class="chuXam"><a href="AHome.php?chon=t&id=nguoidung">Người dùng >></a></span><span> Thêm người dùng mới</span></p>
             <div class="ThongTinKhachHang">
-                <div class="photo">
-                    <img src="" alt="ảnh">
-                </div>
+                    <div class="ThongTinKhachHang-data1">
+                        <div class="photo">
+                            <img id="hinhAnh" src="../img/<?php echo $img; ?>" alt="ảnh" style="width: 80%; height: 80%;background-position: center;
+                                width: 250px;
+                                height: 250px;
+                                background-color: #ddd;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                position: relative;  
+                                margin: auto;
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                ">
+                        </div>
+                        <input type="file" id="uploadInput" name="txtHinhAnh" onchange="hienThiAnh(event)">
+                    </div>
                     <div class="ThongTinKhachHang-data1">
                     <p>Tên đăng nhập:</p>
                     <input type="text" name="id" id="id">
@@ -112,29 +126,35 @@
 </body>
 </html>
 <script>
+function hienThiAnh(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            reader.onload = function(){
+                var dataURL = reader.result;
+                var img = document.getElementById("hinhAnh");
+                img.src = dataURL;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
 $(document).ready(function(){
     $("#TND").submit(function(event){
         event.preventDefault();
-
+        var formData = new FormData(this);
         
 
-        var name = $("#name").val();
-        var phone = $("#phone").val();
-        var address = $("#address").val();
-        var id = $("#id").val();
-        var email = $("#email").val();
-        var password = $("#password").val();
 
         
         $.ajax({
             type: 'POST',
             url: 'XLthemnguoidung.php',
-            data: { name: name, phone: phone, address: address, id: id, email: email, password: password },
-            dataType: 'json', 
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
             success: function(response){
                 if(response.status === 'success'){
                     alert(response.message); 
-                    window.location.href = "ANguoidung.php"; 
+                    window.location.href = "AHome.php?chon=t&id=nguoidung"; 
                 } 
                 else if(response.status === 'PASSWORD')
                 {
