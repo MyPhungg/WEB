@@ -78,7 +78,7 @@ mysqli_close($conn);
                            
                             <div class="thaotac">
                                 <button class="<?=$isUpdate?"":"hidden"?>" type="button"><a href="AHome.php?chon=t&id=vanchuyen&loai=sua&idvc=<?php echo $value["Mavc"] ?>">Sửa</a></button>
-                                <button class="<?=$isDelete?"":"hidden"?>" onclick="return delNcc('<?php echo $value['Ten']; ?>')" type="button"><a href="xoaVc.php?idncc=<?php echo $value["Mavc"]; ?>">Xóa</a></button>
+                                <button class="<?=$isDelete?"":"hidden"?>" onclick="return delNcc('<?php echo $value['Ten']; ?>')" type="button"><a href="xoaVanchuyen.php?idvc=<?php echo $value["Mavc"]; ?>">Xóa</a></button>
                             </div> 
                         </div>
                         <?php }?>
