@@ -31,6 +31,9 @@
     position: absolute;
 }
 
+.hidden{
+  display: none !important;
+}
 
 .btn_sua_sp {
   background: #D61EAD;

@@ -1,3 +1,9 @@
+
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Web-master-git/doAn/role_check.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Web-master-git/doAn/db_connect.php');
+?>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script src="../js/home.js"></script>
@@ -71,7 +77,14 @@
                 <?php
                 // session_start();
                 if (isset($_SESSION['user_id'])) {
+
+                    $userData = $_SESSION['userdata'];
+                    // Xuất thông tin người dùng trong một thẻ HTML
+                    $conn = new Database();
+                    $userAuth = new userAuth($conn);
+                    $isAdmin = $userAuth->isAdmin();
                     // Nếu đã đăng nhập
+                    echo '<li><a href="../../admin/page/AHome.php"   class="<?= $isAdmin ? "" : "hidden" ?> >Trang quản trị</a></li>';
                     echo '<li><a href="home.php?chon=tttk">Thông tin tài khoản</a></li>';
                     echo '<li><a href="./logout.php">Đăng xuất</a></li>';
                 } else {

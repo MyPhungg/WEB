@@ -7,7 +7,7 @@ if(mysqli_num_rows($result_ctpn)>0)
     while($row=mysqli_fetch_array($result_ctpn)){
         echo '      <div class="table-items-details">
         <div class="staff">
-            <div class="avt-sp"> <img src="../img/' . $row['Img'] . '" alt=""></div>
+            <div class="avt-sp"> <img src="../../img/' . $row['Img'] . '" alt=""></div>
             <div>'.$row['Tensp'].'n</div>
         </div>
         <div style="width: 20%;">'.$row['Masp'].'</div>
