@@ -191,9 +191,10 @@ require_once('../../db_connect.php');
     });
 
     $(document).on('click', '.category-link', function(e) {
-        window.location.href="home.php?";
+        
         e.preventDefault();
         const danhmuc = $(this).data('idtl');
+      
         loadProducts(1, danhmuc); // Load first page of the selected category
     });
 
