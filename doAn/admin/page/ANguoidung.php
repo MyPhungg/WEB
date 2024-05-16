@@ -77,17 +77,17 @@ $result = $db->query($sql);
                 <div style="overflow-y: scroll;">
                     <?php
                     if ($result->num_rows > 0) {
+                        $textupd="";
+                        $textdel="";
+                        if(!$isUpdate)
+                        {
+                            $textupd="hidden";
+                        }
+                        if(!$isDelete)
+                        {
+                            $textdel="hidden";
+                        }
                         while ($row = $result->fetch_assoc()) {
-                            $textupd="";
-                            $textdel="";
-                            if(!$isUpdate)
-                            {
-                                $textupd="hidden";
-                            }
-                            if(!$isDelete)
-                            {
-                                $textdel="hidden";
-                            }
                             echo '<div class="table-items">';
                             echo '<div class="staff">';
                             echo '<div class="avt" style="background-image: url(\'../../img/' . $row['img'] . '\');"></div>';
@@ -105,8 +105,8 @@ $result = $db->query($sql);
                                 echo '<option value="0">Chưa duyệt</option>';
                             }
                             echo '</select>';
-                            echo '<button type="button" class="edit-btn  '.$textupd.'">Sửa</button>';
-                            echo '<button type="button" class="delete-btn  '.$textdel.'">X</button>';
+                            echo '<button type="button" class="edit-btn '.$textupd.'">Sửa</button>';
+                            echo '<button type="button" class="delete-btn '.$textdel.'">X</button>';
                             echo '</div>';
                             echo '</div>';
                         }
