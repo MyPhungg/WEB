@@ -1,3 +1,26 @@
+<?php
+require_once('../../db_connect.php');
+require_once('../../role_check.php');
+$conn = new Database();
+$features_list = $conn->query("SELECT * FROM chucnang");
+
+$userAuth = new userAuth($conn);
+$view_permission_list = $userAuth->view_permission_list;
+
+$conn->close();
+
+function checkReadPermission($view_permission_list, $feature_id)
+{
+  if (in_array($feature_id, $view_permission_list)) {
+    return ' ';
+  } else {
+    return 'hidden';
+  }
+}
+
+
+?>
+
 <html>
 
 <head>
@@ -20,19 +43,19 @@
                 </div>
 
                 <div class="menu">
-                    <div class="option" id="thongke"><a href="AHome.php?chon=t&id=thongke" onclick="selectOption(this)">Thống kê</a></div>
-                    <div class="option" id="sanpham"><a href="AHome.php?chon=t&id=sanpham" onclick="selectOption(this)">Sản phẩm</a></div>
-                    <div class="option" id="phieunhap"><a href="AHome.php?chon=t&id=phieunhap">Phiếu nhập</a></div>
-                    <div class="option" id="donhang"><a href="AHome.php?chon=t&id=donhang">Đơn hàng</a></div>
-                    <div class="option" id="nhacungcap"><a href="AHome.php?chon=t&id=nhacungcap">Nhà cung cấp</a></div>
-                    <div class="option" id="nguoidung"><a href="AHome.php?chon=t&id=nguoidung">Người dùng</a></div>
+                    <div class="option <?=checkReadPermission($view_permission_list, "CN009")?>" id="thongke"><a href="AHome.php?chon=t&id=thongke" onclick="selectOption(this)">Thống kê</a></div>
+                    <div class="option <?=checkReadPermission($view_permission_list, "CN003")?>" id="sanpham"><a href="AHome.php?chon=t&id=sanpham" onclick="selectOption(this)">Sản phẩm</a></div>
+                    <div class="option <?=checkReadPermission($view_permission_list, "CN007")?>" id="phieunhap"><a href="AHome.php?chon=t&id=phieunhap">Phiếu nhập</a></div>
+                    <div class="option <?=checkReadPermission($view_permission_list, "CN005")?>"  id="donhang"><a href="AHome.php?chon=t&id=donhang">Đơn hàng</a></div>
+                    <div class="option <?=checkReadPermission($view_permission_list, "CN008")?>" id="nhacungcap"><a href="AHome.php?chon=t&id=nhacungcap">Nhà cung cấp</a></div>
+                    <div class="option <?=checkReadPermission($view_permission_list, "CN004")?>" id="nguoidung"><a href="AHome.php?chon=t&id=nguoidung">Người dùng</a></div>
                     <div class="option" id="cart">Khác
                         <div class="sub-menu">
                             <ul>
-                                <li><a href="AHome.php?chon=t&id=quyen">Quyền</a></li>
-                                <li><a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a></li>
-                                <li><a href="AHome.php?chon=t&id=vanchuyen">Vận chuyển</a></li>
-                                <li><a href="AHome.php?chon=t&id=thuonghieu">Thương hiệu</a></li>
+                                <li class="<?=checkReadPermission($view_permission_list, "CN006")?>"><a href="AHome.php?chon=t&id=quyen">Quyền</a></li>
+                                <li class="<?=checkReadPermission($view_permission_list, "CN010")?>"><a href="AHome.php?chon=t&id=khuyenmai">Khuyến mãi</a></li>
+                                <li class="<?=checkReadPermission($view_permission_list, "CN011")?>"><a href="AHome.php?chon=t&id=vanchuyen">Vận chuyển</a></li>
+                                <li class="<?=checkReadPermission($view_permission_list, "CN012")?>"><a href="AHome.php?chon=t&id=thuonghieu">Thương hiệu</a></li>
                             </ul>
                         </div>
                     </div>

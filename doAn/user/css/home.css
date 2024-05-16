@@ -24,7 +24,9 @@
     top:0;
     z-index: 10000000000000000;
 }
-
+.hidden{
+   display: none !important;
+}
 #topmenu .logo-bola{
     
     font-size: 36px;
