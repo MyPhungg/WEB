@@ -12,12 +12,25 @@ if (!$isDelete) {
   exit();
 }
 
-$idToDelete = $_GET['id'];
-$sql = "DELETE FROM chitietquyen WHERE Maquyen =' $idToDelete'";
+$idToDelete = $_POST['id'];
+$sql_xctq = "DELETE FROM chitietquyen WHERE Maquyen ='$idToDelete'";
+$result_xoa_ctq=$conn->query($sql_xctq);
+
+$sql_up_ngd="UPDATE nguoidung set Maquyen ='Q2' WHERE  Maquyen = '$idToDelete'";
+
+$result_doi_quyen=$conn->query($sql_up_ngd);
+
 $sql = "DELETE FROM quyen WHERE Maquyen = '$idToDelete'";
 
-$conn->query($sql);
+$result_xoa_q=$conn->query($sql);
+if($result_doi_quyen && $result_xoa_ctq && $result_xoa_q)
+{
+  echo 1;
 
+}
+else{
+  echo 0;
+}
 $conn->close();
 
 session_start();

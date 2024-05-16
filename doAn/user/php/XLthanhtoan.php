@@ -15,6 +15,7 @@ if (isset($_POST['maSP']) && isset($_POST['soLuong'])) {
     $trangthai = 0;
     $maSP = $_POST['maSP'];
     $soLuong = $_POST['soLuong'];
+    
     $stmt = mysqli_prepare($conn, "INSERT INTO donhang(Trangthai, Ngay, Tonggiatri, Magiamgia, Mavc, maKhachhang) VALUE (?,?,?,?,?,?)");
     mysqli_stmt_bind_param($stmt, 'isssss', $trangthai, $ngay, $tongGiaTri, $maGG, $maVC, $maKH);
     $rs = mysqli_stmt_execute($stmt);
@@ -47,6 +48,7 @@ if (isset($_POST['maSP']) && isset($_POST['soLuong'])) {
         echo "Insert thành công!";
     }
 } else {
+    
     $tongGiaTri = $_POST['tonggiatri'];
     $maGG = $_POST['maGG'];
     $maVC = $_POST['maVC'];

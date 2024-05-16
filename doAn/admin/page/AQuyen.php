@@ -30,6 +30,7 @@ $conn->close();
     <style>
 
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <?php
 ?>
@@ -73,7 +74,7 @@ mysqli_close($conn);
                         <div style="width: 20%;">
                             <a class="<?= $isUpdate?"":"hidden" ?>"
                                 style="background-color: white; border: solid 0.5px #D61EAD; color: black; text-decoration: none;" href="AHome.php?chon=t&id=quyen&loai=sua&idquyen=<?php echo $value['Maquyen'] ;?>">Sửa</a>
-                            <button  class="<?= $isDelete?"":"hidden" ?>"type="button">Xóa</button>
+                            <button id="<?php echo $value["Maquyen"]; ?>" class="<?= $isDelete?"":"hidden" ?>"type="button" onclick="xoaquyen(this)" >Xóa</button>
                         </div>
                     </div>
                     <?php }?>
@@ -91,3 +92,29 @@ mysqli_close($conn);
 </body>
 
 </html>
+<script>
+    function xoaquyen(button){
+        var id=$(this).attr("id");
+        $.ajax({
+
+            url: "delete_quyen.php",
+            type: "POST",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                if (data == 1) {
+                    alert("Xóa thành công");
+                    location.reload();
+                } else {
+                    alert("Xóa thất bại");
+                }
+            },
+            error: function(data) {
+                alert("Xóa thất bại");
+            }
+        });
+
+
+    }
+</script>

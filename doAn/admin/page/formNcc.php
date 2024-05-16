@@ -9,6 +9,7 @@
   $con = mysqli_connect('localhost', 'root', '', 'bolashop');
   mysqli_query($con, "set names 'utf8'");
 
+
   if (!$con) {
       die("Lỗi kết nối: " . mysqli_connect_error());
   }
@@ -44,6 +45,7 @@
       }
   } 
   mysqli_close($con);
+
         ?> 
         <h2><a href="AHome.php">Trang chủ >> </a><a href="AHome.php?chon=t&id=nhacungcap">Nhà cung cấp >> </a>Thêm nhà cung cấp</h2>
         <div class="form-km">
@@ -91,6 +93,7 @@
             }
 
            
+
         //     var xhr = new XMLHttpRequest();
         //     xhr.open("POST", "xulythemNcc.php", true);
         //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -107,7 +110,7 @@
         //     };
         //     xhr.send("Mancc=" + inputIdncc);
 
-        //     event.preventDefault(); 
+        // 
         });
     });
 </script>
