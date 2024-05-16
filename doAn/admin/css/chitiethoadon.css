@@ -31,6 +31,9 @@
     width: 100%;
    
 }
+.hidden{
+    display: none !important;
+}
 
 .left-element {
     /* margin: 10px; */

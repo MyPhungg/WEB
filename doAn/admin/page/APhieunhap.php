@@ -1,3 +1,21 @@
+<?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN007");
+
+$isCreate = $userAuth->checkCreatePermission("CN007");
+$isUpdate = $userAuth->checkUpdatePermission("CN007");
+$isDelete = $userAuth->checkDeletePermission("CN007");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -333,7 +351,7 @@
             <div>Phiếu nhập >> </div>
             <div> Chi tiết phiếu nhập</div>
         </div>
-        <div class="btn-ThemPN" onclick="">Sửa</div>
+        <div class="btn-ThemPN <?=$isUpdate?"":"hidden"?>" onclick="">Sửa</div>
         <div style="clear: both;"></div>
 
         <!-- </div> -->
@@ -380,7 +398,7 @@
     <div id="phieunhap">
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             <div class="title">Phiếu nhập</div>
-            <div class="btn-ThemNV" type="button" onclick="showThemPhieuNhap()"> + Thêm phiếu nhập</div>
+            <div class="btn-ThemNV <?=$isCreate?"":"hidden"?>" type="button" onclick="showThemPhieuNhap()"> + Thêm phiếu nhập</div>
             <div style="clear: both;"></div>
             <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
             <div><br></div>

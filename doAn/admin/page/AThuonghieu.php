@@ -1,3 +1,21 @@
+<?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN012");
+
+$isCreate = $userAuth->checkCreatePermission("CN012");
+$isUpdate = $userAuth->checkUpdatePermission("CN012");
+$isDelete = $userAuth->checkDeletePermission("CN012");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -17,7 +35,7 @@
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Danh sách thương hiệu</div>
-        <div class="btn-ThemNV" onclick="window.location.href='AHome.php?chon=t&id=thuonghieu&loai=them'"> + Thêm thương hiệu</div>
+        <div class="btn-ThemNV <?=$isCreate?"":"hidden"?>" onclick="window.location.href='AHome.php?chon=t&id=thuonghieu&loai=them'"> + Thêm thương hiệu</div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -54,13 +72,23 @@
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
+                            $textupd="";
+                            $textdel="";
+                            if(!$isUpdate)
+                            {
+                                $textupd="hidden";
+                            }
+                            if(!$isDelete)
+                            {
+                                $textdel="hidden";
+                            }
                             echo '<div class="table-items">';
                             echo '<div style="width: 35%;">' . $row['Mathuonghieu'] . '</div>';
                             echo '<div style="width: 35%;">' . $row['tenThuonghieu'] . '</div>';
                             echo '<div style="width: 30%;">';
                             echo '<div class="staff" data-id="' . $row['Mathuonghieu'] . '">';
-                            echo '<button type="button" class="edit-btn" style="background-color: ##D61EAD; border: solid 0.5px #D61EAD; color: black;">Sửa</button>';
-                            echo '<button type="button" class="DLT" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Xóa</button>';
+                            echo '<button type="button" class="edit-btn  '.$textupd.'" style="background-color: ##D61EAD; border: solid 0.5px #D61EAD; color: black;">Sửa</button>';
+                            echo '<button type="button" class="DLT  '.$textdel.'" style="background-color: white; border: solid 0.5px #D61EAD; color: black;">Xóa</button>';
                             echo '</div>'; // staff
                             echo '</div>'; // table-items
                             echo '</div>'; // container
