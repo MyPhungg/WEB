@@ -191,7 +191,7 @@ require_once('../../db_connect.php');
     });
 
     $(document).on('click', '.category-link', function(e) {
-        
+   
         e.preventDefault();
         const danhmuc = $(this).data('idtl');
       
