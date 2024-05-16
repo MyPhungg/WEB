@@ -1,4 +1,24 @@
 <?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN008");
+
+$isCreate = $userAuth->checkCreatePermission("CN008");
+$isUpdate = $userAuth->checkUpdatePermission("CN008");
+$isDelete = $userAuth->checkDeletePermission("CN008");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
+
+
+
+<?php
 $server = 'localhost';
 $user = 'root';
 $pass = '';
@@ -40,7 +60,7 @@ $result = $db->query($sql);
 <body>
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <div class="title">Người dùng</div>
-        <div class="btn-ThemNV" onclick="window.location.href='AHome.php?chon=t&id=nguoidung&loai=them'"> + Thêm người dùng mới</div>
+        <div class="btn-ThemNV <?=$isCreate?"":"hidden"?>" onclick="window.location.href='AHome.php?chon=t&id=nguoidung&loai=them'"> + Thêm người dùng mới</div>
         <div style="clear: both;"></div>
         <input class="search" type="text" name="txtTimKiem" placeholder="Tìm kiếm...">
         <div><br></div>
@@ -58,6 +78,16 @@ $result = $db->query($sql);
                     <?php
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
+                            $textupd="";
+                            $textdel="";
+                            if(!$isUpdate)
+                            {
+                                $textupd="hidden";
+                            }
+                            if(!$isDelete)
+                            {
+                                $textdel="hidden";
+                            }
                             echo '<div class="table-items">';
                             echo '<div class="staff">';
                             echo '<div class="avt" style="background-image: url(\'../../img/' . $row['img'] . '\');"></div>';
@@ -75,8 +105,8 @@ $result = $db->query($sql);
                                 echo '<option value="0">Chưa duyệt</option>';
                             }
                             echo '</select>';
-                            echo '<button type="button" class="edit-btn">Sửa</button>';
-                            echo '<button type="button" class="delete-btn">X</button>';
+                            echo '<button type="button" class="edit-btn  '.$textupd.'">Sửa</button>';
+                            echo '<button type="button" class="delete-btn  '.$textdel.'">X</button>';
                             echo '</div>';
                             echo '</div>';
                         }

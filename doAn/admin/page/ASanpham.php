@@ -1,3 +1,20 @@
+<?php
+require_once("../../db_connect.php");
+require_once("../../role_check.php");
+
+$connn = new Database();
+
+$userAuth = new userAuth($connn);
+$userAuth->checkReadPermission("CN003");
+
+$isCreate = $userAuth->checkCreatePermission("CN003");
+$isUpdate = $userAuth->checkUpdatePermission("CN003");
+$isDelete = $userAuth->checkDeletePermission("CN003");
+
+$role = $connn->query("SELECT * FROM quyen");
+
+$connn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,6 +55,9 @@
             border: 0.2px solid rgba(0, 0, 0, 0.6);
             margin-left: 35px;
         }
+        .hidden{
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -48,7 +68,7 @@
             <div class="text-thuonghieu">
 
             </div>
-            <div class="btn-ThemNV" onclick="redirectToForm()"> + Thêm sản phẩm</div>
+            <div class="btn-ThemNV <?= $isCreate?"":"hidden" ?>" onclick="redirectToForm()"> + Thêm sản phẩm</div>
             <label for="">Tìm kiếm</label>
             <input type="text" id="searchInput" class="ip_timkiemsp" placeholder="Tìm kiếm">
 
@@ -66,6 +86,16 @@
                 include("../page/connectDB.php");
                 $sql_sanpham = mysqli_query($conn, "SELECT * FROM sanpham ORDER BY Masp ASC");
                 while ($row_sanpham = mysqli_fetch_array($sql_sanpham)) {
+                    $textupd="";
+                    $textdel="";
+                    if(!$isUpdate)
+                    {
+                        $textupd="hidden";
+                    }
+                    if(!$isDelete)
+                    {
+                        $textdel="hidden";
+                    }
 
                     echo '<div class="item" id="item-' . $row_sanpham["Masp"] . '">';
                     echo '<img src="../../img/' . $row_sanpham["Img"] . '" alt="">';
@@ -73,8 +103,8 @@
                     echo '<label class="item-dongia">' . $row_sanpham["Giaban"] . ' VND</label>';
                     echo '<label class="item-soluong">' . $row_sanpham["Soluongconlai"] . '</label>';
                     echo '<div class="item-actions">';
-                    echo '<a href="AHome.php?chon=t&id=sanpham&loai=sua&Masp=' . $row_sanpham["Masp"] . '" class="btn_sua_sp">Sửa</a>';
-                    echo '<button type="button" class="delete-btn-sp" onclick="deleteItem(\'' . $row_sanpham["Masp"] . '\')">Xóa</button>';
+                    echo '<a href="AHome.php?chon=t&id=sanpham&loai=sua&Masp=' . $row_sanpham["Masp"] . '" class="btn_sua_sp  '.$textupd.'">Sửa</a>';
+                    echo '<button type="button" class="delete-btn-sp  '.$textdel.'" onclick="deleteItem(\'' . $row_sanpham["Masp"] . '\')">Xóa</button>';
                     echo '</div>';
                     echo '</div>';
                 }
