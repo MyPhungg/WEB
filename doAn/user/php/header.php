@@ -1,13 +1,13 @@
 
 <?php
 
-
 require_once('../../role_check.php');
 require_once('../../db_connect.php');
 
-
-
 ?>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -109,7 +109,7 @@ require_once('../../db_connect.php');
         window.location.reload(true); // Tải lại trang một cách đầy đủ
     }
 
-        $(document).ready(function() {
+          $(document).ready(function() {
     function loadProducts(trang, danhmuc) {
         $.ajax({
             url: 'content.php',
@@ -167,4 +167,7 @@ require_once('../../db_connect.php');
    
    
 
+
 </script>
+
+

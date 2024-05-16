@@ -175,7 +175,7 @@ $conn->close();
                 </div>
                 <div>
                     <button id="backButton" class="type-back">&lt; <a href="home.php">Trở lại mua sắm</a></button>
-                    <button id="cart-checkout-btn" class="custom-button" ><a href="home.php?chon=thanhtoan">Thanh toán</a></button>
+                    <button id="cart-checkout-btn" class="custom-button" ><a href="home.php?chon=thanhtoan&loai=thanhtoan">Thanh toán</a></button>
                 </div>
             </div>
 

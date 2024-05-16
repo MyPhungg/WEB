@@ -193,12 +193,12 @@ function connect()
                     <p class="total-row"></p>
 
                     <?php
-                    if (isset($_GET["loai"])){
-                        if($_GET["loai"]== 'muangay'){
+                    if (isset($_GET["loai"])) {
+                        if ($_GET["loai"] == 'muangay') {
                             $maNguoiDung = $_SESSION["user_id"];
                             $maSP = $_SESSION["Masp"];
                             $soLuong = $_SESSION["Soluong"];
-    
+
                             $sql = "SELECT * FROM sanpham sp WHERE Masp = '$maSP'";
                             $rs = mysqli_query($conn, $sql);
                             if (!$rs) {
@@ -214,25 +214,25 @@ function connect()
                                 </div>';
                                 }
                             }
-                        }
-                    } 
-                        
-                     else {
-                        $maNguoiDung = $_SESSION["user_id"];
+                        } else {
+                            // $_SESSION['Masp'] = "";
+                            // $_SESSION['Soluong'] = '';
+                            $maNguoiDung = $_SESSION["user_id"];
 
-                        $sql = "SELECT * FROM sanpham sp, giohang gh WHERE sp.Masp=gh.Masp AND Manguoidung='$maNguoiDung'";
-                        $rs = mysqli_query($conn, $sql);
-                        if (!$rs) {
-                            die("Lỗi truy vấn: " . mysqli_error($conn));
-                        }
-                        if (mysqli_num_rows($rs) > 0) {
-                            while ($row = mysqli_fetch_array($rs)) {
-                                echo '<br>
-                                <div class="list-title">
-                                        <div style="width: 50%;" id="' . $row["Masp"] . '">' . $row["Tensp"] . ' </div>
-                                        <div style="width: 25%; text-align: center">' . $row["Soluong"] . '</div>
-                                        <div style="width: 25%; text-align: center">' . $row["Giaban"] . ' VNĐ</div>
-                                </div>';
+                            $sql = "SELECT * FROM sanpham sp, giohang gh WHERE sp.Masp=gh.Masp AND Manguoidung='$maNguoiDung'";
+                            $rs = mysqli_query($conn, $sql);
+                            if (!$rs) {
+                                die("Lỗi truy vấn: " . mysqli_error($conn));
+                            }
+                            if (mysqli_num_rows($rs) > 0) {
+                                while ($row = mysqli_fetch_array($rs)) {
+                                    echo '<br>
+                                    <div class="list-title">
+                                            <div style="width: 50%;" id="' . $row["Masp"] . '">' . $row["Tensp"] . ' </div>
+                                            <div style="width: 25%; text-align: center">' . $row["Soluong"] . '</div>
+                                            <div style="width: 25%; text-align: center">' . $row["Giaban"] . ' VNĐ</div>
+                                    </div>';
+                                }
                             }
                         }
                     }
@@ -251,22 +251,23 @@ function connect()
 
                     <?php
                     global $gia;
-                    if (isset($_GET['loai']) == 'muangay') {
-                        $maNguoiDung = $_SESSION["user_id"];
-                        $maSP = $_SESSION["Masp"];
-                        $soLuong = $_SESSION["Soluong"];
+                    if (isset($_GET['loai'])) {
+                        if ($_GET['loai'] == 'muangay') {
+                            $maNguoiDung = $_SESSION["user_id"];
+                            $maSP = $_SESSION["Masp"];
+                            $soLuong = $_SESSION["Soluong"];
 
-                        $sql = "SELECT * FROM sanpham sp WHERE Masp = '$maSP'";
-                        $rs = mysqli_query($conn, $sql);
-                        if (!$rs) {
-                            die("Lỗi truy vấn: " . mysqli_error($conn));
-                        }
-                        if (mysqli_num_rows($rs) > 0) {
-                            while ($row = mysqli_fetch_array($rs)) {
-                                $sum += $soLuong;
-                                $price += $row["Giaban"] * $soLuong;
+                            $sql = "SELECT * FROM sanpham sp WHERE Masp = '$maSP'";
+                            $rs = mysqli_query($conn, $sql);
+                            if (!$rs) {
+                                die("Lỗi truy vấn: " . mysqli_error($conn));
                             }
-                            echo '<div class="line-info-checkout ">
+                            if (mysqli_num_rows($rs) > 0) {
+                                while ($row = mysqli_fetch_array($rs)) {
+                                    $sum += $soLuong;
+                                    $price += $row["Giaban"] * $soLuong;
+                                }
+                                echo '<div class="line-info-checkout ">
                                 <div>Tổng số lượng: </div>
                                 <div id="num">' . $sum . '</div>
                             </div>
@@ -287,43 +288,44 @@ function connect()
                                 <div>Thành tiền: </div>
                                 <div id="thanhtien"></div>
                             </div>';
-                        }
-                    } else {
-                        $maNguoiDung = $_SESSION["user_id"];
-
-                        $sql = "SELECT * FROM sanpham sp, giohang gh WHERE sp.Masp=gh.Masp AND Manguoidung='$maNguoiDung'";
-                        $rs = mysqli_query($conn, $sql);
-                        if (!$rs) {
-                            die("Lỗi truy vấn: " . mysqli_error($conn));
-                        }
-                        if (mysqli_num_rows($rs) > 0) {
-                            while ($row = mysqli_fetch_array($rs)) {
-                                $sum += $row["Soluong"];
-                                $price += $row["Giaban"] * $row["Soluong"];
                             }
+                        } else {
+                            $maNguoiDung = $_SESSION["user_id"];
 
-                            // $tongGiaTri = ($price - $mucGiam + $gia);
-                            echo '<div class="line-info-checkout ">
-                                <div>Tổng số lượng: </div>
-                                <div id="num">' . $sum . '</div>
-                            </div>
-                            <div class="line-info-checkout ">
-                                <div>Tạm tính: </div>
-                                <div id="tamtinh">' . $price . ' VND</div>
-                            </div>
-                            <div class="line-info-checkout ">
-                                <div>Phí vận chuyển: </div>
-                                <div id="phiVC">0 VND</div>
-                            </div>
-                            <div class="line-info-checkout ">
-                                <div>Mã giảm giá: </div>
-                                <div id="giamgia">0 VND</div>
-                            </div>
-                            <p class="total-row"></p>
-                            <div class="line-info-checkout ">
-                                <div>Thành tiền: </div>
-                                <div id="thanhtien"></div>
-                            </div>';
+                            $sql = "SELECT * FROM sanpham sp, giohang gh WHERE sp.Masp=gh.Masp AND Manguoidung='$maNguoiDung'";
+                            $rs = mysqli_query($conn, $sql);
+                            if (!$rs) {
+                                die("Lỗi truy vấn: " . mysqli_error($conn));
+                            }
+                            if (mysqli_num_rows($rs) > 0) {
+                                while ($row = mysqli_fetch_array($rs)) {
+                                    $sum += $row["Soluong"];
+                                    $price += $row["Giaban"] * $row["Soluong"];
+                                }
+
+                                // $tongGiaTri = ($price - $mucGiam + $gia);
+                                echo '<div class="line-info-checkout ">
+                                    <div>Tổng số lượng: </div>
+                                    <div id="num">' . $sum . '</div>
+                                </div>
+                                <div class="line-info-checkout ">
+                                    <div>Tạm tính: </div>
+                                    <div id="tamtinh">' . $price . ' VND</div>
+                                </div>
+                                <div class="line-info-checkout ">
+                                    <div>Phí vận chuyển: </div>
+                                    <div id="phiVC">0 VND</div>
+                                </div>
+                                <div class="line-info-checkout ">
+                                    <div>Mã giảm giá: </div>
+                                    <div id="giamgia">0 VND</div>
+                                </div>
+                                <p class="total-row"></p>
+                                <div class="line-info-checkout ">
+                                    <div>Thành tiền: </div>
+                                    <div id="thanhtien"></div>
+                                </div>';
+                            }
                         }
                     }
 
@@ -371,12 +373,45 @@ function connect()
                     } else {
                         maGG = maGiamGia;
                     }
+                    // alert('aaaa');
                     var loai = getParameterByName('loai');
                     console.log(loai);
+                    if (loai == 'thanhtoan') {
+                        var maKH = <?php echo json_encode($maNguoiDung); ?>;
+
+                        var currentDate = new Date();
+                        var year = currentDate.getFullYear();
+                        var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
+                        var day = currentDate.getDate();
+                        var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
+                        $.ajax({
+                            url: 'XLthanhtoan.php',
+                            type: 'POST',
+                            data: {
+                                tonggiatri: tonggiatri[0],
+                                maVC: maVC,
+                                maGG: maGG,
+                                maKH: maKH,
+                                ngay: ngay
+
+                            },
+                            // dataType: 'html',
+                            success: function(data) {
+                                // console.log(data);
+                                // $('#compltete-button').html(data);
+                                $('#form_complete_payment').show();
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
                     if (loai == 'muangay') {
                         var maKH = <?php echo json_encode($maNguoiDung); ?>;
-                        var maSP = <?php echo json_encode($maSP); ?>;
-                        var soLuong = <?php echo json_encode($soLuong); ?>;
+                        
+                        var maSP = <?php echo isset($_SESSION["Masp"]) ? json_encode($_SESSION["Masp"]) : 'null'; ?>;
+                        var soLuong = <?php echo isset($_SESSION["Soluong"]) ? json_encode($_SESSION["Soluong"]) : 'null'; ?>;
+                        
                         var currentDate = new Date();
                         var year = currentDate.getFullYear();
                         var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
@@ -404,36 +439,7 @@ function connect()
                                 console.log(xhr.responseText);
                             }
                         });
-                    } else {
-                        var maKH = <?php echo json_encode($maNguoiDung); ?>;
-                        
-                        var currentDate = new Date();
-                        var year = currentDate.getFullYear();
-                        var month = currentDate.getMonth() + 1; // Lưu ý: tháng bắt đầu từ 0, vì vậy cần cộng thêm 1
-                        var day = currentDate.getDate();
-                        var ngay = (year.toString() + "-" + month.toString() + "-" + day.toString());
-                        $.ajax({
-                            url: 'XLthanhtoan.php',
-                            type: 'POST',
-                            data: {
-                                tonggiatri: tonggiatri[0],
-                                maVC: maVC,
-                                maGG: maGG,
-                                maKH: maKH,
-                                ngay: ngay
-                                
-                            },
-                            // dataType: 'html',
-                            success: function(data) {
-                                // console.log(data);
-                                // $('#compltete-button').html(data);
-                                $('#form_complete_payment').show();
-                            },
-                            error: function(xhr, status, error) {
-                                console.log(xhr.responseText);
-                            }
-                        });
-                    }
+                    } 
 
                     // document.getElementById("form_complete_payment").style.display = "block";
                 }
