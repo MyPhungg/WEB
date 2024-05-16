@@ -1,8 +1,10 @@
 
 <?php
 
+
 require_once('../../role_check.php');
 require_once('../../db_connect.php');
+
 
 
 ?>
@@ -13,10 +15,7 @@ require_once('../../db_connect.php');
 <div class="logo-bola">
     <b><a href="home.php?idtl"> BOLA</a></b>
 </div>
-<form name="search" method="get">
 
-    <input type="search" class="search-bar" placeholder="Search..." name="txtSearch" />
-</form>
 <div class="menu-toggle">
     <button onclick="toggleMenu()">Menu</button>
 </div>
@@ -109,44 +108,6 @@ require_once('../../db_connect.php');
     if (!<?php echo json_encode(session_id()); ?>) {
         window.location.reload(true); // Tải lại trang một cách đầy đủ
     }
-    $(document).ready(function() {
-        var idtl="";
-        var trang=1;
-        $.ajax({
-                url: 'content.php',
-                type: 'GET',
-                data:{idtl:idtl,trang:trang},
-                dataType: 'html',
-                success: function(data) {
-                    $('.content-container').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
-
-                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
-                }
-            });
-    });
-    $('.search-bar').keyup(function() {
-            var textsearch = $('.search-bar').val();
-
-            $.ajax({
-                url: 'xulytimkiem.php',
-                type: 'POST',
-                data: {
-                    data: textsearch
-                },
-                dataType: 'html',
-                success: function(data) {
-                    $('.content-container').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
-
-                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
-                }
-            });
-        });
 
         $(document).ready(function() {
     function loadProducts(trang, danhmuc) {
@@ -202,7 +163,8 @@ require_once('../../db_connect.php');
     loadProducts(1, '');
 });
 
-        
+
    
    
+
 </script>
