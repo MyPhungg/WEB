@@ -47,9 +47,13 @@
     <div class="content-container">
        
         <div class='page-segment'>
-            <ul id="pagination-container">
-
-            </ul>
+           
         </div>
     </div>
+
+    <script type="text/javascript">
+    function showChiTietSanPham(maSP) {
+        showChiTietSanPham(maSP);
+    }
+</script>
     <!-- <div id="product-details-container"></div> -->

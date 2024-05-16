@@ -35,7 +35,7 @@ require_once('../../db_connect.php');
     while ($row = mysqli_fetch_array($result)) {
         $id = $row['Madanhmuc'];
         $name = $row['Tendanhmuc'];
-        echo "<div class='option ' id='$id' onclick='bannerHide()'><a data-idtl='$id'  class='category-link' href='#' ><li>$name</li></a> </div>";
+        echo "<div class='option ' id='$id' onclick='bannerHide()'><a data-idtl='$id'  class='category-link' href='home.php?idtl' ><li>$name</li></a> </div>";
     }
 
 
@@ -86,8 +86,11 @@ require_once('../../db_connect.php');
                     $conn = new Database();
                     $userAuth = new userAuth($conn);
                     $isAdmin = $userAuth->isAdmin();
-                    // Nếu đã đăng nhập
-                    echo '<li><a href="../../admin/page/AHome.php"   class="<?= $isAdmin ? "" : "hidden" ?> >Trang quản trị</a></li>';
+                    $textadm="";
+                    if(!$isAdmin) {
+                        $textadm="hidden";
+                    }  
+                    echo '<li><a href="../../admin/page/AHome.php"   class="'.$textadm.'" >Trang quản trị</a></li>';
                     echo '<li><a href="home.php?chon=tttk">Thông tin tài khoản</a></li>';
                     echo '<li><a href="./logout.php">Đăng xuất</a></li>';
                 } else {
@@ -159,11 +162,11 @@ require_once('../../db_connect.php');
                 const data = JSON.parse(response);
                 let productsHtml = '';
                 data.products.forEach(product => {
-                    productsHtml += `<div class='content-item' onclick='showChiTietSanPham("${product.Masp}")'>`;
+                    productsHtml += `<div class='content-item' ><a href='home.php?chon=ctsp&id=${product.Masp}'>`;
                     productsHtml += `<div class='product-image'><img src='../../img/${product.Img}' alt=''></div>`;
                     productsHtml += `<h3>${product.Tensp}</h3>`;
                     productsHtml += `<p>Giá: ${product.Giaban} VND</p>`;
-                    productsHtml += `</div>`;
+                    productsHtml += `</a></div>`;
                 });
                 productsHtml +=` <div class='page-segment'>
                 
@@ -188,6 +191,7 @@ require_once('../../db_connect.php');
     });
 
     $(document).on('click', '.category-link', function(e) {
+        window.location.href="home.php?";
         e.preventDefault();
         const danhmuc = $(this).data('idtl');
         loadProducts(1, danhmuc); // Load first page of the selected category
@@ -199,7 +203,5 @@ require_once('../../db_connect.php');
 
         
    
-    function showChiTietSanPham(maSP) {
-        showChiTietSanPham(maSP);
-        }
+   
 </script>

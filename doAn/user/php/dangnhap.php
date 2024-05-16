@@ -118,7 +118,7 @@
                     success: function(response) {
                         if (response.status === 'success') {
                             // alert(response.message);
-                            window.location.href = "../../admin/page/AHome.php";
+                            window.location.href = "../../user/php/home.php";
                         } else if (response.status === 'MK') {
                             alert(response.message);
                             document.getElementsByName("password")[0].focus();
