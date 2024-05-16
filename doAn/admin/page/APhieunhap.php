@@ -633,7 +633,7 @@ $connn->close();
             }
 
         })
-        $(document).on('click',".btn-X",function(){
+        $(document).on('click',".btn-X-PN",function(){
             var confirmation = confirm("Bạn có chắc chắn muốn xóa?"); // Hiển thị hộp thoại xác nhận
             var id=$(this).closest('.table-items').attr('id');
          

@@ -1,22 +1,13 @@
 
 <?php
-// <<<<<<< HEAD
-
-// require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/role_check.php');
-// require_once($_SERVER['DOCUMENT_ROOT'] . '/gitWeb/doAn/db_connect.php');
-
-// =======
-// >>>>>>> c0bfca8e739b87101ea301cdb3c3ce0d14adfdff
 
 require_once('../../role_check.php');
 require_once('../../db_connect.php');
 
-
-// <<<<<<< HEAD
-
-// =======
-// >>>>>>> c0bfca8e739b87101ea301cdb3c3ce0d14adfdff
 ?>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -117,72 +108,8 @@ require_once('../../db_connect.php');
     if (!<?php echo json_encode(session_id()); ?>) {
         window.location.reload(true); // Tải lại trang một cách đầy đủ
     }
-    $(document).ready(function() {
-        var idtl="";
-        var trang=1;
-        $.ajax({
-                url: 'content.php',
-                type: 'GET',
-                data:{idtl:idtl,trang:trang},
-                dataType: 'html',
-                success: function(data) {
-                    $('.content-container').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
 
-                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
-                }
-            });
-    });
-    $('.search-bar').keyup(function() {
-            var textsearch = $('.search-bar').val();
-
-            $.ajax({
-                url: 'xulytimkiem.php',
-                type: 'POST',
-                data: {
-                    data: textsearch
-                },
-                dataType: 'html',
-                success: function(data) {
-                    $('.content-container').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText); // Hiển thị thông báo lỗi trong console
-
-                    // Nếu cần, bạn có thể thực hiện xử lý lỗi khác ở đây
-                }
-            });
-        });
-// <<<<<<< HEAD
-//         $('input[type=checkbox]').change(function(){
-//         var brand = [];
-//         var gender = [];
-//         $('input[name=brand]:checked').each(function(){
-//             brand.push($(this).val());
-//         });
-//         $('input[name=gender]:checked').each(function(){
-//             gender.push($(this).val());
-//         });
-//         $.ajax({
-//             url: 'xulyloc.php',
-//             type: 'POST',
-//             data: { brand: brand, gender: gender },
-//             dataType: 'html',
-//             success: function(data){
-//                 $('.content-container').html(data);
-//             },
-//             error: function(xhr, status, error){
-//                 console.error(xhr.responseText);
-//             }
-//         });
-//     });
-//     });
-    
-// =======
-
-        $(document).ready(function() {
+          $(document).ready(function() {
     function loadProducts(trang, danhmuc) {
         $.ajax({
             url: 'content.php',
@@ -225,7 +152,7 @@ require_once('../../db_connect.php');
     });
 
     $(document).on('click', '.category-link', function(e) {
-        
+   
         e.preventDefault();
         const danhmuc = $(this).data('idtl');
       
@@ -236,8 +163,11 @@ require_once('../../db_connect.php');
     loadProducts(1, '');
 });
 
-        
+
    
    
-// >>>>>>> 4997b7246a40eb3afa07c2602281593ecbed93dc
+
+
 </script>
+
+
