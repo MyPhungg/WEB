@@ -5,11 +5,11 @@ require_once("../../role_check.php");
 $connn = new Database();
 
 $userAuth = new userAuth($connn);
-$userAuth->checkReadPermission("CN008");
+$userAuth->checkReadPermission("CN004");
 
-$isCreate = $userAuth->checkCreatePermission("CN008");
-$isUpdate = $userAuth->checkUpdatePermission("CN008");
-$isDelete = $userAuth->checkDeletePermission("CN008");
+$isCreate = $userAuth->checkCreatePermission("CN004");
+$isUpdate = $userAuth->checkUpdatePermission("CN004");
+$isDelete = $userAuth->checkDeletePermission("CN004");
 
 $role = $connn->query("SELECT * FROM quyen");
 
