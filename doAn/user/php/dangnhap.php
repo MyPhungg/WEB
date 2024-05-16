@@ -118,11 +118,14 @@
                     success: function(response) {
                         if (response.status === 'success') {
                             // alert(response.message);
-                            window.location.href = "../../user/php/home.php";
+                            window.location.href = "../../user/php/home.php?idtl";
                         } else if (response.status === 'MK') {
                             alert(response.message);
                             document.getElementsByName("password")[0].focus();
-                        } else {
+                        } else if (response.status === 'Duyet') {
+                            alert(response.message);
+                            // document.getElementsByName("password")[0].focus();
+                        }else {
                             alert(response.message);
                             document.getElementsByName("id")[0].focus();
                         }

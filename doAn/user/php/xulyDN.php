@@ -16,7 +16,7 @@ if ($db) {
         $id = $_POST['id'];
         $password = $_POST['password'];
 
-        
+
 
         $query = "SELECT * FROM nguoidung WHERE Manguoidung='$id'";
         $result = mysqli_query($db, $query);
@@ -25,16 +25,25 @@ if ($db) {
             $user_data = mysqli_fetch_assoc($result);
             if ($user_data['Matkhau'] === $password) {
                 $_SESSION['user_id'] = $id;
-
-                $_SESSION['userdata'] = [
-                    'id' => $user_data['Manguoidung'],
-                    'maquyen' => $user_data['Loainguoidung']
-                ];
-
-                $response = array(
-                    "status" => "success",
-                    "message" => "Đăng nhập thành công!"
-                );
+                if ($user_data['Loainguoidung'] != 'Q0') {
+                    $_SESSION['userdata'] = [
+                        'id' => $user_data['Manguoidung'],
+                        'maquyen' => $user_data['Loainguoidung']
+                    ];
+    
+                    $response = array(
+                        "status" => "success",
+                        "message" => "Đăng nhập thành công!"
+                    );
+                }else {
+                    $response = array(
+                        "status" => "Duyet",
+                        "message" => "Tài khoản chưa được duyệt! Vui lòng chờ admin duyệt tài khoản!"
+                    );
+                    echo json_encode($response);
+                    exit;
+                }
+                
             } else {
                 $response = array(
                     "status" => "MK",
@@ -56,4 +65,3 @@ if ($db) {
 } else {
     echo 'Kết nối thất bại';
 }
-?>

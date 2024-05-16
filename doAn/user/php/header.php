@@ -22,7 +22,7 @@ require_once('../../db_connect.php');
 
 <script src="../js/home.js"></script>
 <div class="logo-bola">
-    <b><a href="home.php?idtl"> BOLA</a></b>
+    <b><a href="home.php"> BOLA</a></b>
 </div>
 
 <div class="menu-toggle">
