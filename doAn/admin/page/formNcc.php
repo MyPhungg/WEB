@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
+<!-- <<<<<<< HEAD -->
     <head>
         <meta charset="utf-8"/>
         <link href="../css/formthemKM.css?version=1.0" rel="stylesheet"/>
@@ -56,15 +56,6 @@
                 <h3>Nhà cung cấp</h3>
                 <label for="txtMakh">Mã nhà cung cấp</label>
                 <input type="text" name="Mancc" value=""  required/>
-=======
-
-<head>
-    <meta charset="utf-8" />
-    <link href="../css/formthemKM.css?version=1.0" rel="stylesheet" />
-    <title>Form Nhà cung cấp</title>
-    <script src="../js/formncc.js"></script>
-</head>
->>>>>>> 279c0be9d4f89263e44825277fc0849067cfec9c
 
 <body>
     <?php
@@ -80,7 +71,7 @@
         $sql = "INSERT INTO nhacungcap (Mancc, Ten, Diachi, Sdt) VALUES (?, ?, ?, ?)";
         $stmt = mysqli_prepare($con, $sql);
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
                 <div class="group-btn">
                     <button type="button" id="delBtn" class="delBtn" onclick="history.back();">Hủy</button>
                     <button type="reset" id="resetBtn" class="resetBtn">Đặt lại</button>
@@ -102,7 +93,7 @@
                 return;            
             } 
 
-=======
+// =======
         // Kiểm tra lỗi khi chuẩn bị truy vấn
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, "ssss", $ma_ncc, $ten_ncc, $dc_ncc, $sdt_ncc);
@@ -162,7 +153,7 @@
                 return;
             }
 
->>>>>>> 279c0be9d4f89263e44825277fc0849067cfec9c
+// >>>>>>> 279c0be9d4f89263e44825277fc0849067cfec9c
             // Kiểm tra Số điện thoại
             var vnf_regex = /^(0[3|7|8|5])+([0-9]{8})$/;
             if (!vnf_regex.test(inputSdt)) {
@@ -170,7 +161,7 @@
                 event.preventDefault();
                 return;
             }
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
            
             // var xhr = new XMLHttpRequest();
@@ -195,10 +186,10 @@
 </script>
 
 </html>
-=======
+<!-- =======
         });
     });
 </script>
->>>>>>> 279c0be9d4f89263e44825277fc0849067cfec9c
+>>>>>>> 279c0be9d4f89263e44825277fc0849067cfec9c -->
 
 </html>
